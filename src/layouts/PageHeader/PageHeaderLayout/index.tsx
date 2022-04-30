@@ -10,6 +10,7 @@ interface PageHeaderProps {
 const PageHeader = ({ isOnMainPage, children }: PageHeaderProps) => {
   const [bgColor, setBgColor] = useState("");
   const [shadow, setShadow] = useState("");
+  const toolbarClasses = `${classes.toolbar} ${bgColor} ${shadow}`;
 
   useEffect(() => {
     if (isOnMainPage && !shadow) {
@@ -34,9 +35,7 @@ const PageHeader = ({ isOnMainPage, children }: PageHeaderProps) => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  return (
-    <div className={`${classes.toolbar} ${bgColor} ${shadow}`}>{children}</div>
-  );
+  return <div className={toolbarClasses}>{children}</div>;
 };
 
 export default React.memo(PageHeader);

@@ -1,4 +1,5 @@
-import { Routes, useLocation, Link } from "react-router-dom";
+import Home from "components/Hero";
+import { Routes, useLocation, Route } from "react-router-dom";
 import PageHeader from "./layouts/PageHeader";
 
 function App() {
@@ -13,50 +14,10 @@ function App() {
   return (
     <>
       <PageHeader isOnMainPage={checkOnMainPage()} />
-
-      <div>z</div>
-      <div>z</div>
-      <div>z</div>
-      <div>z</div>
-      <div>z</div>
-      <div>z</div>
-      <div>z</div>
-      <div>z</div>
-      <div>z</div>
-      <div>z</div>
-      <div>z</div>
-      <div>z</div>
-      <div>z</div>
-      <div>z</div>
-      <div>z</div>
-      <div>z</div>
-      <div>z</div>
-      <div>z</div>
-      <div>z</div>
-      <div>z</div>
-      <div>z</div>
-      <div>z</div>
-      <div>z</div>
-      <div>z</div>
-      <div>z</div>
-      <div>z</div>
-      <div>z</div>
-      <div>z</div>
-      <div>z</div>
-      <div>z</div>
-      <div>z</div>
-      <div>z</div>
-      <div>z</div>
-      <div>z</div>
-      <div>z</div>
-      <div>z</div>
-      <div>z</div>
-      <div>z</div>
-      <div>z</div>
-      <div>z</div>
-      <div>z</div>
+      <Routes>
+        <Route path="/" element={<Home />} />
+      </Routes>
     </>
-    // <Routes></Routes>
   );
 }
 

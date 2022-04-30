@@ -7,7 +7,9 @@ interface PageHeaderProps {
 
 const PageHeader = ({ isOnMainPage }: PageHeaderProps) => {
   return (
-    <PageHeaderLayout isOnMainPage={isOnMainPage}>PageHeader</PageHeaderLayout>
+    <PageHeaderLayout isOnMainPage={isOnMainPage}>
+      <div className="container">abc</div>
+    </PageHeaderLayout>
   );
 };
 

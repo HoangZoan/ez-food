@@ -1,0 +1,53 @@
+import { createTheme } from "@mui/material";
+
+declare module "@mui/material/styles" {
+  interface Theme {
+    colors: {
+      background: {
+        primary: string;
+      };
+      common: {
+        grey: string;
+      };
+    };
+  }
+  // allow configuration using `createTheme`
+  interface ThemeOptions {
+    colors?: {
+      background?: {
+        primary?: string;
+      };
+      common?: {
+        grey?: string;
+      };
+    };
+  }
+}
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#F0932B",
+      light: "#f3ab5b",
+    },
+    secondary: {
+      main: "#2A1803",
+    },
+  },
+  colors: {
+    background: {
+      primary: "#FDF4E9",
+    },
+    common: {
+      grey: "#C7C7C7",
+    },
+  },
+  typography: {
+    htmlFontSize: 10,
+    h1: {
+      fontSize: "4.8rem",
+    },
+  },
+});
+
+export default theme;

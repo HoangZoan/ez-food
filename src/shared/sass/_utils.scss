@@ -7,6 +7,14 @@
   background-color: $bg-dark;
 }
 
+// POSITION
+.centered-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
 // SHADOW
 .shadow {
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
