@@ -1,0 +1,13 @@
+// BACKGROUND COLOR
+.bg-clear {
+  background-color: transparent;
+}
+
+.bg-dark {
+  background-color: $bg-dark;
+}
+
+// SHADOW
+.shadow {
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+}

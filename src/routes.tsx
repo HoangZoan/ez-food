@@ -1,10 +1,62 @@
-import { Routes } from "react-router-dom";
+import { Routes, useLocation, Link } from "react-router-dom";
+import PageHeader from "./layouts/PageHeader";
 
 function App() {
+  const { pathname } = useLocation();
+
+  const checkOnMainPage = () => {
+    if (pathname !== "/") return false;
+
+    return true;
+  };
+
   return (
     <>
-      <Routes>{/* Place all 'Route' Component here */}</Routes>
+      <PageHeader isOnMainPage={checkOnMainPage()} />
+
+      <div>z</div>
+      <div>z</div>
+      <div>z</div>
+      <div>z</div>
+      <div>z</div>
+      <div>z</div>
+      <div>z</div>
+      <div>z</div>
+      <div>z</div>
+      <div>z</div>
+      <div>z</div>
+      <div>z</div>
+      <div>z</div>
+      <div>z</div>
+      <div>z</div>
+      <div>z</div>
+      <div>z</div>
+      <div>z</div>
+      <div>z</div>
+      <div>z</div>
+      <div>z</div>
+      <div>z</div>
+      <div>z</div>
+      <div>z</div>
+      <div>z</div>
+      <div>z</div>
+      <div>z</div>
+      <div>z</div>
+      <div>z</div>
+      <div>z</div>
+      <div>z</div>
+      <div>z</div>
+      <div>z</div>
+      <div>z</div>
+      <div>z</div>
+      <div>z</div>
+      <div>z</div>
+      <div>z</div>
+      <div>z</div>
+      <div>z</div>
+      <div>z</div>
     </>
+    // <Routes></Routes>
   );
 }
 
