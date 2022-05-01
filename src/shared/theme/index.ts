@@ -25,6 +25,7 @@ declare module "@mui/material/styles" {
 }
 
 const theme = createTheme({
+  spacing: [0, 4, 8, 16, 24, 32, 48, 56, 64],
   palette: {
     primary: {
       main: "#F0932B",
@@ -46,6 +47,11 @@ const theme = createTheme({
     htmlFontSize: 10,
     h1: {
       fontSize: "4.8rem",
+      fontWeight: 700,
+      letterSpacing: "1px",
+    },
+    subtitle1: {
+      fontSize: "2.1rem",
     },
   },
 });

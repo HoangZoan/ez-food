@@ -1,0 +1,29 @@
+@use "~shared/sass/styles.scss";
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 0.6rem 1rem;
+  transition: all 0.2s;
+
+  &:hover {
+    background-color: rgb(255, 255, 255, 0.2);
+  }
+
+  &:hover .text,
+  &:hover .icon {
+    color: styles.$color-primary;
+  }
+
+  .text,
+  .icon {
+    transition: all 0.2s;
+  }
+
+  .text {
+    text-transform: uppercase;
+    color: white;
+    letter-spacing: 1px;
+  }
+}

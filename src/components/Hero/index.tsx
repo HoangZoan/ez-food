@@ -5,14 +5,37 @@ import Button from "components/Button";
 import classes from "./index.module.scss";
 
 const Hero = () => {
+  const contentWrapperClasses = `${classes["content-wrapper"]} centered-content`;
+
   return (
     <div className={classes.hero}>
-      <div className="centered-content">
-        <Typography textTransform="uppercase" variant="h1" color="common.white">
-          Some interesting title
+      <div className={contentWrapperClasses}>
+        <Typography
+          textTransform="uppercase"
+          variant="h1"
+          color="common.white"
+          textAlign="center"
+        >
+          Một vài lời giới thiệu
         </Typography>
 
-        <Button>Abc</Button>
+        <Typography
+          textTransform="uppercase"
+          variant="subtitle1"
+          color="common.white"
+          textAlign="center"
+          mt={3}
+        >
+          Một vài lời giới thiệu
+        </Typography>
+
+        <Button
+          size="lg"
+          variant="contained"
+          className={classes["hero-button"]}
+        >
+          Xem thực đơn
+        </Button>
       </div>
     </div>
   );

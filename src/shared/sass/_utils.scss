@@ -15,7 +15,42 @@
   transform: translate(-50%, -50%);
 }
 
+// PADDING
+.mt-1 {
+  margin-top: 6rem;
+}
+
+.mt-2 {
+  margin-top: 12rem;
+}
+
+.mt-3 {
+  margin-top: 18rem;
+}
+
+.mt-4 {
+  margin-top: 24rem;
+}
+
+.mt-5 {
+  margin-top: 32rem;
+}
+
+.mt-6 {
+  margin-top: 48rem;
+}
+
+// TEXT COLOR
+.white {
+  color: white;
+}
+
 // SHADOW
 .shadow {
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+}
+
+// BORDER RADIUS
+.rounded {
+  border-radius: 0.9rem;
 }
