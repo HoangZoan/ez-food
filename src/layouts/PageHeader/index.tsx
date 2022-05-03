@@ -1,6 +1,7 @@
 import React from "react";
 import PageHeaderLayout from "./PageHeaderLayout";
 import MenuButton from "./MenuButton";
+import RightHeaderTools from "./RightHeaderTools";
 
 import classes from "./index.module.scss";
 
@@ -18,7 +19,7 @@ const PageHeader = ({ isOnMainPage }: PageHeaderProps) => {
 
         <div className="centered-content white">LOGO</div>
 
-        <div>Tools</div>
+        <RightHeaderTools />
       </div>
     </PageHeaderLayout>
   );

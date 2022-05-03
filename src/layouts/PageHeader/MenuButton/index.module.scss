@@ -8,7 +8,7 @@
   transition: all 0.2s;
 
   &:hover {
-    background-color: rgb(255, 255, 255, 0.2);
+    background-color: styles.$bg-hover-1;
   }
 
   &:hover .text,

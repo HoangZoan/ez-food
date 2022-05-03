@@ -1,0 +1,24 @@
+@use "~shared/sass/styles.scss";
+
+.wrapper {
+  color: white;
+  display: flex;
+  align-items: center;
+}
+
+.icon {
+  margin-right: 0.6rem;
+  cursor: pointer;
+  padding: 0.6rem 1rem;
+  border-radius: styles.$rounded;
+  transition: all 0.2s;
+
+  &:hover {
+    color: styles.$color-primary;
+    background-color: styles.$bg-hover-1;
+  }
+}
+
+.button {
+  margin-left: 1.6rem;
+}
