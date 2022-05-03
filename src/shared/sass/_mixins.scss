@@ -1,0 +1,13 @@
+// Header Tool Buttons
+@mixin toolButton {
+  margin-right: 0.6rem;
+  cursor: pointer;
+  padding: 0.6rem 1rem;
+  border-radius: $rounded;
+  transition: all 0.2s;
+
+  &:hover {
+    color: $color-primary;
+    background-color: $bg-hover-1;
+  }
+}

@@ -1,4 +1,5 @@
 import { createTheme } from "@mui/material";
+import { createStyled } from "@mui/system";
 
 declare module "@mui/material/styles" {
   interface Theme {
@@ -45,6 +46,7 @@ const theme = createTheme({
   },
   typography: {
     htmlFontSize: 10,
+    fontSize: 12,
     h1: {
       fontSize: "4.8rem",
       fontWeight: 700,
@@ -57,3 +59,5 @@ const theme = createTheme({
 });
 
 export default theme;
+
+export const styled = createStyled({ defaultTheme: theme });
