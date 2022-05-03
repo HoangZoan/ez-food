@@ -34,8 +34,11 @@ const PopupMenu = ({
           overflow: "visible",
         },
         "& .MuiList-root": {
-          maxHeight: "48rem",
-          overflowY: itemsMaxLength > 4 ? "scroll" : "visible",
+          maxHeight: "54rem",
+          paddingTop: "1.6rem",
+          paddingBottom: "0",
+          marginBottom: "0.8rem",
+          overflowY: itemsMaxLength > 3 ? "scroll" : "visible",
         },
       }}
     >

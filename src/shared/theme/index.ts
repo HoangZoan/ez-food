@@ -55,6 +55,9 @@ const theme = createTheme({
     subtitle1: {
       fontSize: "2.1rem",
     },
+    body2: {
+      fontSize: "1.3rem",
+    },
   },
 });
 

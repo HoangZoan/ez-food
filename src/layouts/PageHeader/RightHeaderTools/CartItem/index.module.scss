@@ -1,0 +1,9 @@
+.box {
+  max-width: 40rem;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 10rem 1fr 1.6rem;
+  gap: 2.4rem;
+  align-items: flex-start;
+  white-space: pre-wrap;
+}

@@ -5,7 +5,7 @@ import classes from "./index.module.scss";
 interface ButtonProps {
   children: React.ReactNode;
   size?: "lg" | "md";
-  variant: "contained" | "outlined";
+  variant?: "contained" | "outlined";
   style?: CSSProperties;
   className?: string;
 }

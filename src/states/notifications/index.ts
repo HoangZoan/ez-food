@@ -5,7 +5,7 @@ const dummyCartData = [
   {
     id: "1",
     image: "",
-    title: "Some heading title",
+    title: "Some heading title Some heading title Some heading title",
     description:
       "This a an absolutely woderful descirption for the post. This a an absolutely woderful descirption for the post.",
   },
