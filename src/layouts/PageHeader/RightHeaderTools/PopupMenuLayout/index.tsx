@@ -27,6 +27,7 @@ const PopupMenuLayout = ({
 
   function handleCloseMenu() {
     setShow(false);
+    setAnchorEl(null);
   }
 
   return (

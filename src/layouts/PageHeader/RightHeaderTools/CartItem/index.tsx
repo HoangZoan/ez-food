@@ -26,7 +26,7 @@ const CartItem = ({ title, total, quantity }: ProductInCartType) => {
             Số lượng: {quantity}
           </Typography>
           <Typography variant="body1">
-            Tổng: <strong>{total}</strong>{" "}
+            Tổng: <strong>{total}</strong>
           </Typography>
         </div>
 
