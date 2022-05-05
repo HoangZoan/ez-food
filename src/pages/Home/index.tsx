@@ -1,10 +1,12 @@
 import React from "react";
-import Hero from "components/Hero";
+import Hero from "pages/Home/Hero";
+import Trends from "./Trends";
 
 const Home = () => {
   return (
     <>
       <Hero />
+      <Trends />
     </>
   );
 };

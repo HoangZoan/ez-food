@@ -1,4 +1,4 @@
-import Home from "components/Hero";
+import Home from "pages/Home";
 import { Routes, useLocation, Route } from "react-router-dom";
 import PageHeader from "./layouts/PageHeader";
 

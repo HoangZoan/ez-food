@@ -50,6 +50,11 @@ const theme = createTheme({
     h1: {
       fontSize: "4.8rem",
       fontWeight: 700,
+      letterSpacing: "2px",
+    },
+    h2: {
+      fontSize: "3.2rem",
+      fontWeight: 400,
       letterSpacing: "1px",
     },
     subtitle1: {

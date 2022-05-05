@@ -20,6 +20,7 @@ const MenuListPopupLayout = ({
       anchorEl={anchorEl}
       open={show}
       onClose={onClose}
+      disableScrollLock={true}
       anchorOrigin={{
         vertical: "bottom",
         horizontal: "left",
