@@ -1,5 +1,5 @@
 import React from "react";
-import { Menu } from "@mui/material";
+import { Menu, makeStyles } from "@mui/material";
 
 interface PopupMenuProps {
   anchorEl: HTMLElement | null;
@@ -35,6 +35,7 @@ const PopupMenu = ({
           overflow: "visible",
         },
         "& .MuiList-root": {
+          marginTop: "1.8rem",
           maxHeight: "54rem",
           paddingTop: "1.6rem",
           paddingBottom: "0",

@@ -44,6 +44,9 @@ const theme = createTheme({
       grey: "#C7C7C7",
     },
   },
+  shape: {
+    borderRadius: "9px",
+  },
   typography: {
     htmlFontSize: 10,
     fontSize: 12,
@@ -56,6 +59,10 @@ const theme = createTheme({
       fontSize: "3.2rem",
       fontWeight: 400,
       letterSpacing: "1px",
+    },
+    h3: {
+      fontSize: "3.2rem",
+      fontWeight: 300,
     },
     subtitle1: {
       fontSize: "2.1rem",

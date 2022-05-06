@@ -1,11 +1,24 @@
 .wrapper {
-  margin: 7.2rem auto !important;
-}
-
-.slider-wrapper {
+  margin: 12rem auto !important;
 }
 
 .slider {
   text-align: center;
   padding: 0 3.2rem;
+}
+
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.arrow-right {
+  @extend .arrow;
+  right: -1.8rem;
+}
+
+.arrow-left {
+  @extend .arrow;
+  left: -1.8rem;
 }
