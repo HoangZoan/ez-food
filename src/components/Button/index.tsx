@@ -8,6 +8,7 @@ interface ButtonProps {
   variant?: "contained" | "outlined";
   style?: CSSProperties;
   className?: string;
+  onClick?: () => void;
 }
 
 const Button = ({
@@ -15,13 +16,13 @@ const Button = ({
   size = "md",
   variant = "contained",
   style,
-
+  onClick,
   className: cutomClass = "",
 }: ButtonProps) => {
   const buttonClass = `${classes.button} ${classes[size]} ${classes[variant]} ${cutomClass} rounded`;
 
   return (
-    <button style={style} className={buttonClass}>
+    <button onClick={onClick} style={style} className={buttonClass}>
       {children}
     </button>
   );

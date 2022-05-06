@@ -34,6 +34,7 @@ const theme = createTheme({
     },
     secondary: {
       main: "#2A1803",
+      dark: "#1A0F02",
     },
   },
   colors: {
@@ -64,8 +65,16 @@ const theme = createTheme({
       fontSize: "3.2rem",
       fontWeight: 300,
     },
+    h5: {
+      fontSize: "2rem",
+      lineHeight: 2,
+    },
     subtitle1: {
       fontSize: "2.1rem",
+    },
+    body1: {
+      fontSize: "1.6rem",
+      lineHeight: 1.7,
     },
     body2: {
       fontSize: "1.3rem",

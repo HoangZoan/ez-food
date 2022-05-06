@@ -1,0 +1,15 @@
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.arrow-right {
+  @extend .arrow;
+  right: -1.8rem;
+}
+
+.arrow-left {
+  @extend .arrow;
+  left: -1.8rem;
+}

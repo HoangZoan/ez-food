@@ -42,7 +42,7 @@ const Trends = () => {
                 style={{ backgroundColor: "green" }}
                 className="image-sqr"
               ></div>
-              <Typography variant="h6" mt={3}>
+              <Typography variant="h5" mt={3}>
                 {data.title}
               </Typography>
             </div>
@@ -64,4 +64,4 @@ const Trends = () => {
   );
 };
 
-export default React.memo(Trends);
+export default Trends;
