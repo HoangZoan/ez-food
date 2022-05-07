@@ -1,7 +1,6 @@
 import React from "react";
 import { useRecoilValue } from "recoil";
 import { notificationsState } from "states/notifications";
-import Button from "components/Button";
 import NotificationsButton from "./NotificationsButton";
 import CartButton from "./CartButton";
 
@@ -12,12 +11,8 @@ const RightHeaderTools = () => {
 
   return (
     <div className={classes.wrapper}>
-      <NotificationsButton notifications={notifications} />
       <CartButton />
-
-      <Button variant="outlined" className={classes.button}>
-        Đăng nhập
-      </Button>
+      <NotificationsButton notifications={notifications} />
     </div>
   );
 };

@@ -1,19 +1,21 @@
 import React from "react";
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import BoxedHeading from "../../components/BoxedHeading";
 
 interface MenuListLayoutProps {
   children: React.ReactNode;
+  onTop?: boolean;
 }
 
-const MenuListLayout = ({ children }: MenuListLayoutProps) => {
+const MenuListLayout = ({ children, onTop }: MenuListLayoutProps) => {
   return (
     <div>
       <Box
         display="flex"
         justifyContent="center"
-        py={9}
-        bgcolor={(theme) => theme.palette.secondary.main}
+        pb={9}
+        bgcolor="black"
+        pt={(theme) => theme.spacing(onTop ? 13 : 9)}
       >
         <BoxedHeading content="Bánh mỳ" />
       </Box>

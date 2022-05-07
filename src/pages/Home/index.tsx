@@ -4,6 +4,7 @@ import Trends from "./Trends";
 import HomeMenuList from "./HomeMenuList";
 import AboutUs from "./AboutUs";
 import Locations from "./Locations";
+import Footer from "layouts/Footer";
 
 const Home = () => {
   return (
@@ -13,6 +14,7 @@ const Home = () => {
       <HomeMenuList />
       <AboutUs />
       <Locations />
+      <Footer />
     </>
   );
 };

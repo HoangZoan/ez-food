@@ -1,4 +1,5 @@
 import Home from "pages/Home";
+import Products from "pages/Products";
 import { Routes, useLocation, Route } from "react-router-dom";
 import PageHeader from "./layouts/PageHeader";
 
@@ -16,6 +17,7 @@ function App() {
       <PageHeader isOnMainPage={checkOnMainPage()} />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/products" element={<Products />} />
       </Routes>
     </>
   );

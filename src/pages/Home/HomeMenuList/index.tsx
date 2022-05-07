@@ -12,6 +12,7 @@ import {
   CardActions,
   Button as MuiButton,
 } from "@mui/material";
+import { Link } from "react-router-dom";
 import Button from "../../../components/Button";
 
 interface ProductType {
@@ -63,39 +64,43 @@ const HomeMenuList = () => {
                   sx={{
                     backgroundColor: "primary.main",
                     width: 1,
-                    paddingTop: "100%",
+                    aspectRatio: "1 / 1",
                   }}
                 ></Box>
-                <CardContent sx={{ px: 5 }}>
-                  <Typography
-                    mb={3}
-                    textAlign="center"
-                    variant="h5"
-                    fontWeight={700}
+                <div>
+                  <CardContent sx={{ px: 5 }}>
+                    <Typography
+                      mb={3}
+                      textAlign="center"
+                      variant="h5"
+                      fontWeight={700}
+                    >
+                      {data.title}
+                    </Typography>
+                    <Typography variant="body1">{data.description}</Typography>
+                  </CardContent>
+                  <CardActions
+                    sx={{
+                      px: 5,
+                      pb: 4,
+                      display: "flex",
+                      justifyContent: "space-between",
+                    }}
                   >
-                    {data.title}
-                  </Typography>
-                  <Typography variant="body1">{data.description}</Typography>
-                </CardContent>
-                <CardActions
-                  sx={{
-                    px: 5,
-                    pb: 4,
-                    display: "flex",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <Typography variant="h6">
-                    Giá: {formatPriceText(data.price)}
-                  </Typography>
-                  <Button>Đặt món</Button>
-                </CardActions>
+                    <Typography variant="h6">
+                      Giá: {formatPriceText(data.price)}
+                    </Typography>
+                    <Button>Đặt món</Button>
+                  </CardActions>
+                </div>
               </Card>
             </Grid>
           ))}
         </Grid>
 
-        <MuiButton variant="outlined">Xem thực đơn</MuiButton>
+        <Link to="/products">
+          <MuiButton variant="outlined">Xem thực đơn</MuiButton>
+        </Link>
       </Container>
     </MenuListLayout>
   );
