@@ -1,4 +1,4 @@
-import { createTheme } from "@mui/material";
+import { createTheme, Components } from "@mui/material";
 import { createStyled } from "@mui/system";
 
 declare module "@mui/material/styles" {
@@ -26,7 +26,7 @@ declare module "@mui/material/styles" {
 }
 
 const theme = createTheme({
-  spacing: [0, 4, 8, 16, 24, 32, 48, 56, 64, 72, 86, 96, 120, 150],
+  spacing: [0, 4, 8, 16, 24, 32, 48, 56, 64, 72, 86, 96, 120, 150, 180, 240],
   palette: {
     primary: {
       main: "#F0932B",
@@ -63,7 +63,7 @@ const theme = createTheme({
     },
     h3: {
       fontSize: "3.2rem",
-      fontWeight: 300,
+      fontWeight: 500,
     },
     h5: {
       fontSize: "2rem",
@@ -81,6 +81,33 @@ const theme = createTheme({
     },
   },
 });
+
+theme.components = {
+  MuiButton: {
+    defaultProps: {
+      disableRipple: true,
+    },
+    styleOverrides: {
+      outlined: {
+        border: `1px solid ${theme.palette.primary.main}`,
+        ":hover": {
+          backgroundColor: theme.palette.primary.main,
+          color: "white",
+        },
+      },
+      contained: {
+        color: "white",
+        boxShadow: "none",
+        ":hover": {
+          boxShadow: "none",
+          backgroundColor: theme.palette.primary.light,
+        },
+      },
+    },
+  },
+} as Components;
+
+// theme.props
 
 export default theme;
 

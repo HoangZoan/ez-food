@@ -13,10 +13,10 @@ const CartButton = () => {
 
   return (
     <PopupMenuLayout type="cart" itemsLength={cartState.length}>
-      {cartState.map(({ productId, title, quantity, total }) => (
+      {cartState.map(({ id, title, quantity, total }) => (
         <CartItem
-          key={productId}
-          productId={productId}
+          key={id}
+          id={id}
           title={title}
           quantity={quantity}
           total={total}
