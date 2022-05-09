@@ -29,7 +29,7 @@ export interface OptionVariantType {
   defaultChoice: boolean;
 }
 
-interface OptionsType {
+export interface OptionsType {
   name: string;
   variants: OptionVariantType[];
 }
@@ -43,6 +43,15 @@ export interface ProductDetailType {
   id: string;
   title: string;
   price: number;
-  options?: OptionsType[];
-  sideDish?: SideDistType[];
+  options: OptionsType[];
+  sideDish: SideDistType[];
+}
+
+// PRODUCT DETAIL STATE TYPE
+export interface ProductDetailStateType {
+  options: boolean[][];
+  availableSideDish: SideDistType[];
+  selectedSideDish: SideDistType[];
+  quantity: number;
+  totalPrice: number;
 }
