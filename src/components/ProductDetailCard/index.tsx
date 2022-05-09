@@ -1,13 +1,14 @@
-import { FormEvent } from "react";
+import { FormEvent, useEffect } from "react";
 import { Grid, SxProps, Box, Stack, Typography, Button } from "@mui/material";
 import { ProductDetailType } from "shared/types";
-import { useProductDetail } from "hooks/useProductDetail";
 import BorderBoxLayout from "layouts/BorderBoxLayout";
 import ProductVariantOption from "components/ProductVariantOption";
 import SideDishOption from "components/SideDishOption";
 import SelectToAddButton from "components/SelectToAddButton";
 import ProductCounter from "components/ProductCounter";
 import ProductDetailTotalPrice from "components/ProductDetailTotalPrice";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { productDetailState } from "states/productDetail";
 
 interface ProductDetailCardProps {
   sx?: SxProps;
@@ -15,7 +16,17 @@ interface ProductDetailCardProps {
 }
 
 const ProductDetailCard = ({ sx, item }: ProductDetailCardProps) => {
-  const { price, options, sideDish } = item;
+  const { options } = item;
+  const setInitialState = useSetRecoilState(productDetailState);
+
+  useEffect(() => {
+    setInitialState((oldState) => ({
+      ...oldState,
+      options: item.options,
+      availableSideDish: item.sideDish,
+      totalPrice: item.price,
+    }));
+  }, [setInitialState, item]);
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
@@ -37,7 +48,7 @@ const ProductDetailCard = ({ sx, item }: ProductDetailCardProps) => {
       <Grid item xs={7}>
         <BorderBoxLayout sx={{ py: 4, px: 6 }}>
           <Stack spacing={4}>
-            {options?.map(({ name: title, variants }) => (
+            {options.map(({ name: title, variants }) => (
               <ProductVariantOption
                 key={title}
                 title={title}
@@ -50,7 +61,7 @@ const ProductDetailCard = ({ sx, item }: ProductDetailCardProps) => {
                 Gọi thêm:
               </Typography>
 
-              <SelectToAddButton items={sideDish} content="+ Lựa chọn" />
+              <SelectToAddButton content="+ Lựa chọn" />
             </div>
 
             <Stack direction="row" justifyContent="space-between">
@@ -66,7 +77,7 @@ const ProductDetailCard = ({ sx, item }: ProductDetailCardProps) => {
                 variant="contained"
                 sx={{ mt: 5 }}
               >
-                <Typography variant="h6">Thanh toán</Typography>
+                <Typography variant="h6">Đặt món</Typography>
               </Button>
             </Stack>
           </Stack>

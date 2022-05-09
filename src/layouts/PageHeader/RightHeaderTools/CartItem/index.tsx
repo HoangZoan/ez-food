@@ -1,5 +1,5 @@
 import React from "react";
-import MenuItem from "components/MenuItem";
+import MenuItem from "components/UI/MenuItem";
 import { Typography } from "@mui/material";
 import { ProductInCartType } from "shared/types";
 import CloseIcon from "@mui/icons-material/Close";

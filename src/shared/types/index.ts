@@ -26,7 +26,7 @@ export interface ProductInCartType {
 export interface OptionVariantType {
   type: string;
   price: number;
-  defaultChoice: boolean;
+  selected: boolean;
 }
 
 export interface OptionsType {
@@ -49,7 +49,7 @@ export interface ProductDetailType {
 
 // PRODUCT DETAIL STATE TYPE
 export interface ProductDetailStateType {
-  options: boolean[][];
+  options: OptionsType[];
   availableSideDish: SideDistType[];
   selectedSideDish: SideDistType[];
   quantity: number;

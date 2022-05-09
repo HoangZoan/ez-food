@@ -1,6 +1,6 @@
 import React from "react";
 import { Box } from "@mui/material";
-import BoxedHeading from "../../components/BoxedHeading";
+import BoxedHeading from "../../components/UI/BoxedHeading";
 
 interface MenuListLayoutProps {
   children: React.ReactNode;

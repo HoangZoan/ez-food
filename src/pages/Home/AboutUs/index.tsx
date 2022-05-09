@@ -2,8 +2,8 @@ import React, { useRef } from "react";
 import { Paper, Container, Box, Typography, Grid } from "@mui/material";
 import { styled } from "@mui/system";
 import Slider, { Settings } from "react-slick";
-import ArrowButton from "components/ArrowButton";
-import BoxedHeading from "components/BoxedHeading";
+import ArrowButton from "components/UI/ArrowButton";
+import BoxedHeading from "components/UI/BoxedHeading";
 
 import classes from "./index.module.scss";
 

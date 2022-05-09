@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { SideDistType } from "shared/types";
 import { Button, Menu as MuiMenu, MenuItem, MenuProps } from "@mui/material";
 import { styled } from "shared/theme";
 import { formatPriceText } from "shared/utils";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { productDetailState } from "states/productDetail";
 
 const Menu = styled(({ children, ...props }: MenuProps) => {
   return (
@@ -28,12 +29,12 @@ const Menu = styled(({ children, ...props }: MenuProps) => {
 
 interface SelectToAddButtonProps {
   content: string;
-  items?: SideDistType[];
 }
 
-const SelectToAddButton = ({ content, items }: SelectToAddButtonProps) => {
-  const initialSelections = items ? [...items] : [];
-  const [leftedSelections, setLeftedSelections] = useState(initialSelections);
+const SelectToAddButton = ({ content }: SelectToAddButtonProps) => {
+  const { availableSideDish, selectedSideDish } =
+    useRecoilValue(productDetailState);
+  const setProductState = useSetRecoilState(productDetailState);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -45,6 +46,30 @@ const SelectToAddButton = ({ content, items }: SelectToAddButtonProps) => {
     setAnchorEl(null);
   };
 
+  const handleItemClick = (itemName: string) => {
+    const newSelectedIndex = availableSideDish.findIndex(
+      ({ name }) => name === itemName
+    );
+    const newAvailableSideDish = [
+      ...availableSideDish.slice(0, newSelectedIndex),
+      ...availableSideDish.slice(newSelectedIndex + 1),
+    ];
+
+    setProductState((oldState) => ({
+      ...oldState,
+      selectedSideDish: [
+        ...selectedSideDish,
+        availableSideDish[newSelectedIndex],
+      ],
+      availableSideDish: newAvailableSideDish,
+    }));
+    handleClose();
+  };
+
+  if (availableSideDish.length <= 0) {
+    return null;
+  }
+
   return (
     <div>
       <Button id="select-button" onClick={handleClick} variant="outlined">
@@ -52,8 +77,9 @@ const SelectToAddButton = ({ content, items }: SelectToAddButtonProps) => {
       </Button>
 
       <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
-        {leftedSelections.map(({ name, price }) => (
+        {availableSideDish.map(({ name, price }) => (
           <MenuItem
+            onClick={() => handleItemClick(name)}
             sx={{
               px: 4,
               transition: "all 0.2s",

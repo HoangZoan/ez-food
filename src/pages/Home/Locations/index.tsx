@@ -1,6 +1,6 @@
 import React from "react";
 import { Container, Grid, Typography, Box } from "@mui/material";
-import BoxedHeading from "components/BoxedHeading";
+import BoxedHeading from "components/UI/BoxedHeading";
 
 const Locations = () => {
   return (

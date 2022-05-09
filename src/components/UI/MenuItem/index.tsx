@@ -1,5 +1,5 @@
 import { MenuItem as MuiMenuItem } from "@mui/material";
-import { styled } from "../../shared/theme";
+import { styled } from "../../../shared/theme";
 
 const MenuItem = styled(MuiMenuItem)(({ theme }) => ({
   cursor: "auto",

@@ -1,7 +1,7 @@
 import React from "react";
 import { Card, CardContent, CardActions, Box, Typography } from "@mui/material";
 import { formatPriceText } from "shared/utils";
-import Button from "../../components/Button";
+import Button from "../UI/Button";
 
 interface ProductCardProps {
   title: string;

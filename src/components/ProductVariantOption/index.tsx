@@ -18,11 +18,11 @@ const ProductVariantOption = ({ title, variants }: OptionProps) => {
       </Typography>
 
       <Stack spacing={4} direction="row">
-        {variants.map(({ type, price, defaultChoice }) => (
+        {variants.map(({ type, price, selected }) => (
           <Button
             onClick={() => handleClick}
             key={type}
-            variant={defaultChoice ? "contained" : "outlined"}
+            variant={selected ? "contained" : "outlined"}
             sx={{
               "&.MuiButton-contained:hover": {
                 cursor: "auto",

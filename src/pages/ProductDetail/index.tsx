@@ -10,16 +10,16 @@ const dummyData: ProductDetailType = {
     {
       name: "Cỡ",
       variants: [
-        { type: "Nửa chiếc", price: -10000, defaultChoice: false },
-        { type: "Cỡ vừa", price: 0, defaultChoice: true },
-        { type: "Cỡ lớn", price: 5000, defaultChoice: false },
+        { type: "Nửa chiếc", price: -10000, selected: false },
+        { type: "Cỡ vừa", price: 0, selected: true },
+        { type: "Cỡ lớn", price: 5000, selected: false },
       ],
     },
     {
       name: "Nhân bánh",
       variants: [
-        { type: "Pate", price: 2000, defaultChoice: true },
-        { type: "Trứng", price: 0, defaultChoice: false },
+        { type: "Pate", price: 2000, selected: true },
+        { type: "Trứng", price: 0, selected: false },
       ],
     },
   ],
@@ -31,6 +31,7 @@ const dummyData: ProductDetailType = {
 
 const ProductDetail = () => {
   const { title } = dummyData;
+
   return (
     <Container sx={{ pt: 13 }}>
       <Typography textAlign="center" color="primary" variant="h3">

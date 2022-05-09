@@ -1,7 +1,11 @@
 import { Stack, Typography } from "@mui/material";
+import { useRecoilValue } from "recoil";
 import { formatPriceText } from "shared/utils";
+import { productDetailState } from "states/productDetail";
 
 const ProductDetailTotalPrice = () => {
+  const { totalPrice } = useRecoilValue(productDetailState);
+
   return (
     <Stack direction="row" spacing={4}>
       <Typography variant="h6">Tổng:</Typography>
@@ -13,7 +17,7 @@ const ProductDetailTotalPrice = () => {
           color: (theme) => theme.palette.primary.main,
         }}
       >
-        {formatPriceText(15000)}
+        {formatPriceText(totalPrice)}
       </Typography>
     </Stack>
   );

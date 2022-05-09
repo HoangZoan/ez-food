@@ -1,7 +1,7 @@
 import React from "react";
 import { Typography } from "@mui/material";
 import { NotificationListType } from "shared/types";
-import MenuItem from "components/MenuItem";
+import MenuItem from "components/UI/MenuItem";
 
 import classes from "./index.module.scss";
 

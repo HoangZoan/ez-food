@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import { Typography } from "@mui/material";
 import Slider, { Settings } from "react-slick";
-import ArrowButton from "components/ArrowButton";
+import ArrowButton from "components/UI/ArrowButton";
 
 import classes from "./index.module.scss";
 

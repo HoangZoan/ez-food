@@ -2,7 +2,7 @@ import React from "react";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { ThemeProvider } from "@mui/material";
-import defaultTheme from "../../shared/theme";
+import defaultTheme from "../../../shared/theme";
 
 import classes from "./index.module.scss";
 
