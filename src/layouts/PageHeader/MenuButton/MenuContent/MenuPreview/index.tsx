@@ -1,6 +1,6 @@
 import React from "react";
 import Grid from "@mui/material/Grid";
-import ProductPreviewCard from "components/ProductPreviewCard";
+import ProductPreviewCard from "components/UI/ProductPreviewCard";
 
 const MenuPreview = () => {
   return (

@@ -1,5 +1,5 @@
-import { Container, Typography } from "@mui/material";
-import { ProductDetailType } from "shared/types";
+import { Button, Container, Typography } from "@mui/material";
+import { ProductDetailStateType, ProductDetailType } from "shared/types";
 import ProductDetailCard from "components/ProductDetailCard";
 
 const dummyData: ProductDetailType = {
@@ -29,8 +29,20 @@ const dummyData: ProductDetailType = {
   ],
 };
 
+const SubmitButton = () => {
+  return (
+    <Button type="submit" size="large" variant="contained">
+      <Typography variant="h6">Đặt món</Typography>
+    </Button>
+  );
+};
+
 const ProductDetail = () => {
   const { title } = dummyData;
+
+  const handleSubmit = (data: ProductDetailStateType) => {
+    console.log(data);
+  };
 
   return (
     <Container sx={{ pt: 13 }}>
@@ -38,7 +50,12 @@ const ProductDetail = () => {
         {title}
       </Typography>
 
-      <ProductDetailCard sx={{ my: 7 }} item={dummyData} />
+      <ProductDetailCard
+        sx={{ my: 7 }}
+        item={dummyData}
+        actionButton={<SubmitButton />}
+        onSubmit={handleSubmit}
+      />
     </Container>
   );
 };

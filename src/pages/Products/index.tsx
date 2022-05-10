@@ -2,8 +2,8 @@ import React from "react";
 import { ProductType } from "shared/types";
 import MenuListLayout from "layouts/MenuListLayout";
 import { Container, Stack } from "@mui/material";
-import ProductCardList from "components/ProductCardList";
-import PagePagination from "components/PagePagination";
+import ProductCardList from "components/ProductDetailCard/ProductCardList";
+import PagePagination from "components/UI/PagePagination";
 
 const dummyData: ProductType[] = [
   {

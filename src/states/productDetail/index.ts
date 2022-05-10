@@ -12,3 +12,5 @@ export const productDetailState = atom({
     totalPrice: 0,
   } as ProductDetailStateType,
 });
+
+export * as productDetailAction from "./actions";

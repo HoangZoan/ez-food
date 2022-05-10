@@ -1,8 +1,8 @@
 import React from "react";
 import { Typography } from "@mui/material";
-import Button from "components/Button";
 
 import classes from "./index.module.scss";
+import Button from "components/UI/Button";
 
 const Hero = () => {
   const contentWrapperClasses = `${classes["content-wrapper"]} centered-content`;

@@ -4,9 +4,8 @@ import { cartState as state } from "states/cart";
 import { useRecoilValue } from "recoil";
 import CartItem from "../CartItem";
 import { Divider, Typography } from "@mui/material";
-import Button from "components/Button";
-
 import classes from "./index.module.scss";
+import Button from "components/UI/Button";
 
 const CartButton = () => {
   const cartState = useRecoilValue(state);

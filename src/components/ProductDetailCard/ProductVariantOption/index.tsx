@@ -1,4 +1,4 @@
-import { OptionVariantType } from "../../shared/types";
+import { OptionVariantType } from "../../../shared/types";
 import { Typography, Stack, Button } from "@mui/material";
 
 interface OptionProps {
