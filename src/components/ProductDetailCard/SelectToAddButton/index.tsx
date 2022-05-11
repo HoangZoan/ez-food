@@ -8,9 +8,8 @@ import {
 } from "@mui/material";
 import { styled } from "shared/theme";
 import { formatPriceText } from "shared/utils";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { productDetailState } from "states/productDetail";
-import { addSideDish, removeSideDish } from "states/productDetail/actions";
+import { useRecoilValue } from "recoil";
+import { productSideDishState, useProductSideDish } from "states/productDetail";
 import SideDishChips from "../SideDishChips";
 
 const Menu = styled(({ children, ...props }: MenuProps) => {
@@ -40,9 +39,9 @@ interface SelectToAddButtonProps {
 }
 
 const SelectToAddButton = ({ content }: SelectToAddButtonProps) => {
+  const { addSideDish, removeSideDish } = useProductSideDish();
   const { availableSideDish, selectedSideDish } =
-    useRecoilValue(productDetailState);
-  const setProductState = useSetRecoilState(productDetailState);
+    useRecoilValue(productSideDishState);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -55,12 +54,12 @@ const SelectToAddButton = ({ content }: SelectToAddButtonProps) => {
   };
 
   const handleAddSideDish = (itemName: string) => {
-    setProductState((oldState) => addSideDish(oldState, itemName));
+    addSideDish(itemName);
     handleClose();
   };
 
   const handleRemoveSideDish = (itemName: string) => {
-    setProductState((oldState) => removeSideDish(oldState, itemName));
+    removeSideDish(itemName);
   };
 
   return (

@@ -9,7 +9,7 @@ module.exports = function override(config) {
       let forkTsCheckerWebpackPlugin = config.plugins.find((plugin) => {
         return plugin.constructor.name === "ForkTsCheckerWebpackPlugin";
       });
-      forkTsCheckerWebpackPlugin.memoryLimit = 4096;
+      forkTsCheckerWebpackPlugin.memoryLimit = 8096;
       return config;
   }
 };

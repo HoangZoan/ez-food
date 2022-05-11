@@ -5,9 +5,10 @@ import BorderBoxLayout from "layouts/BorderBoxLayout";
 import SelectToAddButton from "components/ProductDetailCard/SelectToAddButton";
 import ProductCounter from "components/ProductDetailCard/ProductCounter";
 import ProductDetailTotalPrice from "components/ProductDetailCard/ProductDetailTotalPrice";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import { productDetailState } from "states/productDetail";
 import ProductVariantOptionList from "components/ProductDetailCard/ProductVariantOptionList";
+import { useProductDetail } from "states/productDetail/hooks/useProductDetail";
 
 interface ProductDetailCardProps {
   sx?: SxProps;
@@ -22,17 +23,12 @@ const ProductDetailCard = ({
   actionButton,
   onSubmit,
 }: ProductDetailCardProps) => {
-  const setInitialState = useSetRecoilState(productDetailState);
   const productState = useRecoilValue(productDetailState);
+  const setProductInitialState = useProductDetail();
 
   useEffect(() => {
-    setInitialState((oldState) => ({
-      ...oldState,
-      options: item.options,
-      availableSideDish: item.sideDish,
-      totalPrice: item.price,
-    }));
-  }, [setInitialState, item]);
+    setProductInitialState(item);
+  }, [setProductInitialState, item]);
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
