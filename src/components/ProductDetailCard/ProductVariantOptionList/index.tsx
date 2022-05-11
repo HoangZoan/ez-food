@@ -1,10 +1,10 @@
 import React from "react";
 import ProductVariantOption from "components/ProductDetailCard/ProductVariantOption";
 import { useRecoilValue } from "recoil";
-import { productDetailState } from "states/productDetail";
+import { productOptionsState } from "states/productDetail";
 
 const ProductVariantOptionList = () => {
-  const { options } = useRecoilValue(productDetailState);
+  const options = useRecoilValue(productOptionsState);
 
   return (
     <>
@@ -15,4 +15,4 @@ const ProductVariantOptionList = () => {
   );
 };
 
-export default ProductVariantOptionList;
+export default React.memo(ProductVariantOptionList);

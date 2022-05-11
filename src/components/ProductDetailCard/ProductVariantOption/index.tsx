@@ -1,7 +1,6 @@
 import { OptionVariantType } from "../../../shared/types";
 import { Typography, Stack, Button } from "@mui/material";
-import { useSetRecoilState } from "recoil";
-import { productDetailState } from "states/productDetail";
+import { useProductOptions } from "states/productDetail";
 
 interface OptionProps {
   title: string;
@@ -9,12 +8,10 @@ interface OptionProps {
 }
 
 const ProductVariantOption = ({ title, variants }: OptionProps) => {
-  const setProductState = useSetRecoilState(productDetailState);
+  const handleOptionChange = useProductOptions();
 
   const handleClick = (type: string, price: number) => {
-    // setProductState((oldState) =>
-    //   selectProductVariant(oldState, { type, title, price })
-    // );
+    handleOptionChange(title, type, price);
   };
 
   return (

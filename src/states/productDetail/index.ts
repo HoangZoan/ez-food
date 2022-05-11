@@ -5,14 +5,6 @@ import {
   SideDistType,
 } from "shared/types";
 
-export const productInfoState = atom({
-  key: "productInfo",
-  default: {
-    id: "",
-    title: "",
-  },
-});
-
 export const productOptionsState = atom({
   key: "productOptions",
   default: [] as OptionsType[],
@@ -24,6 +16,11 @@ export const productSideDishState = atom({
     availableSideDish: [] as SideDistType[],
     selectedSideDish: [] as SideDistType[],
   },
+});
+
+export const productTypePriceState = atom({
+  key: "productTypePrice",
+  default: [] as number[],
 });
 
 export const productPriceState = atom({
@@ -39,16 +36,17 @@ export const productQuantityState = atom({
 export const productDetailState = selector({
   key: "productDetail",
   get: ({ get }) => {
-    const { id, title } = get(productInfoState);
     const options = get(productOptionsState);
     const { availableSideDish, selectedSideDish } = get(productSideDishState);
-    const price = get(productPriceState);
+    const typePrice = get(productTypePriceState).reduce(
+      (increment, newValue) => increment + newValue,
+      0
+    );
+    const price = get(productPriceState) + typePrice;
     const quantity = get(productQuantityState);
     const totalPrice = price * quantity * quantity;
 
     return {
-      id,
-      title,
       options,
       availableSideDish,
       selectedSideDish,
@@ -60,3 +58,5 @@ export const productDetailState = selector({
 });
 
 export { useProductSideDish } from "./hooks/useProductSideDish";
+export { useProductDetail } from "./hooks/useProductDetail";
+export { useProductOptions } from "./hooks/useProductOptions";

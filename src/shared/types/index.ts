@@ -49,8 +49,6 @@ export interface ProductDetailType {
 
 // PRODUCT DETAIL STATE TYPE
 export interface ProductDetailStateType {
-  id: string;
-  title: string;
   options: OptionsType[];
   availableSideDish: SideDistType[];
   selectedSideDish: SideDistType[];

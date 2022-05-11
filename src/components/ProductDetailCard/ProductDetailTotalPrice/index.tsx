@@ -1,10 +1,11 @@
 import { Stack, Typography } from "@mui/material";
+import React from "react";
 import { useRecoilValue } from "recoil";
 import { formatPriceText } from "shared/utils";
-import { productDetailState } from "states/productDetail";
+import { productPriceState } from "states/productDetail";
 
 const ProductDetailTotalPrice = () => {
-  const { totalPrice } = useRecoilValue(productDetailState);
+  const totalPrice = useRecoilValue(productPriceState);
 
   return (
     <Stack direction="row" spacing={4}>
@@ -23,4 +24,4 @@ const ProductDetailTotalPrice = () => {
   );
 };
 
-export default ProductDetailTotalPrice;
+export default React.memo(ProductDetailTotalPrice);

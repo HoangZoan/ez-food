@@ -23,4 +23,4 @@ const ProductCounter = () => {
   );
 };
 
-export default ProductCounter;
+export default React.memo(ProductCounter);

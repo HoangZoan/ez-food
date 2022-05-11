@@ -1,10 +1,9 @@
-import { Paper, PaperProps } from "@mui/material";
+import { Box } from "@mui/material";
 import { styled } from "shared/theme";
 
-const BorderBoxLayout = styled(({ children, ...props }: PaperProps) => (
-  <Paper {...props} elevation={0}>
-    {children}
-  </Paper>
-))(({ theme }) => ({ border: `1px solid ${theme.palette.primary.main}` }));
+const BorderBoxLayout = styled(Box)(({ theme }) => ({
+  border: `1px solid ${theme.palette.primary.main}`,
+  borderRadius: "9px",
+}));
 
 export default BorderBoxLayout;
