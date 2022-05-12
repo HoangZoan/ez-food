@@ -1,9 +1,7 @@
 import React, { useRef } from "react";
 import ArrowButton from "components/UI/ArrowButton";
 import Slider, { Settings } from "react-slick";
-
-import classes from "./index.module.scss";
-import { Box } from "@mui/material";
+import { Box, SxProps } from "@mui/material";
 
 interface CarouselProps {
   settings: Settings;
@@ -12,9 +10,15 @@ interface CarouselProps {
 
 const Carousel = ({ settings, children }: CarouselProps) => {
   const sliderRef = useRef<Slider | null>(null);
+  const arrowButtonStyle: SxProps = {
+    position: "absolute",
+    top: "50%",
+    transform: "translateY(-50%)",
+    cursor: "pointer",
+  };
 
   return (
-    <div className="relative">
+    <Box position="relative">
       <Box sx={{ mx: 5 }}>
         <Slider ref={sliderRef} {...settings}>
           {children}
@@ -22,16 +26,16 @@ const Carousel = ({ settings, children }: CarouselProps) => {
       </Box>
 
       <ArrowButton
+        sx={{ ...arrowButtonStyle, left: "0" }}
         variant="left"
-        className={classes["arrow-left"]}
         onClick={() => sliderRef?.current?.slickPrev()}
       />
       <ArrowButton
+        sx={{ ...arrowButtonStyle, right: "0" }}
         variant="right"
-        className={classes["arrow-right"]}
         onClick={() => sliderRef?.current?.slickNext()}
       />
-    </div>
+    </Box>
   );
 };
 
