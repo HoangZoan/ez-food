@@ -2,6 +2,7 @@ import { Button, Container, Grid, Typography } from "@mui/material";
 import ProductDetailCard from "components/ProductDetailCard";
 import React from "react";
 import { ProductDetailStateType, ProductDetailType } from "shared/types";
+import PreviewProducts from "./PreviewProducts";
 import ProductImage from "./ProductImage";
 
 const dummyData: ProductDetailType = {
@@ -64,6 +65,8 @@ const ProductDetail = () => {
           />
         </Grid>
       </Grid>
+
+      <PreviewProducts sx={{ my: 12 }} />
     </Container>
   );
 };

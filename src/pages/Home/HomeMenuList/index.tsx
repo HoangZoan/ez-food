@@ -3,7 +3,7 @@ import { ProductType } from "shared/types";
 import MenuListLayout from "layouts/MenuListLayout";
 import { Container, Button as MuiButton } from "@mui/material";
 import { Link } from "react-router-dom";
-import ProductCardList from "components/ProductDetailCard/ProductCardList";
+import ProductCardList from "components/ProductCardList";
 
 const dummyData: ProductType[] = [
   {

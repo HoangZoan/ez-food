@@ -33,18 +33,28 @@ export const productQuantityState = atom({
   default: 1,
 });
 
-export const productDetailState = selector({
-  key: "productDetail",
+export const productTotalPriceState = selector({
+  key: "productTotalPrice",
   get: ({ get }) => {
-    const options = get(productOptionsState);
-    const { availableSideDish, selectedSideDish } = get(productSideDishState);
     const typePrice = get(productTypePriceState).reduce(
       (increment, newValue) => increment + newValue,
       0
     );
     const price = get(productPriceState) + typePrice;
     const quantity = get(productQuantityState);
-    const totalPrice = price * quantity * quantity;
+
+    return price * quantity;
+  },
+});
+
+export const productDetailState = selector({
+  key: "productDetail",
+  get: ({ get }) => {
+    const options = get(productOptionsState);
+    const { availableSideDish, selectedSideDish } = get(productSideDishState);
+    const price = get(productPriceState);
+    const quantity = get(productQuantityState);
+    const totalPrice = get(productTotalPriceState);
 
     return {
       options,

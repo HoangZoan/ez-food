@@ -1,9 +1,9 @@
 import React from "react";
+import { Box, SxProps, Typography } from "@mui/material";
 import { ProductType } from "shared/types";
-import MenuListLayout from "layouts/MenuListLayout";
-import { Container, Stack } from "@mui/material";
-import ProductCardList from "components/ProductCardList";
-import PagePagination from "components/PagePagination";
+import { Settings } from "react-slick";
+import ProductCard from "components/UI/ProductCard";
+import Carousel from "components/Carousel";
 
 const dummyData: ProductType[] = [
   {
@@ -50,18 +50,38 @@ const dummyData: ProductType[] = [
   },
 ];
 
-const Products = () => {
-  return (
-    <MenuListLayout onTop>
-      <Container sx={{ py: 8 }}>
-        <Stack alignItems="center">
-          <ProductCardList items={dummyData} />
+interface PreviewProductsProps {
+  sx?: SxProps;
+}
 
-          <PagePagination count={3} />
-        </Stack>
-      </Container>
-    </MenuListLayout>
+const PreviewProducts = ({ sx }: PreviewProductsProps) => {
+  const sliderSettings: Settings = {
+    speed: 500,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    arrows: false,
+    draggable: false,
+  };
+
+  return (
+    <Box sx={{ ...sx }}>
+      <Typography variant="h4" sx={{ mb: 6 }} fontWeight={700}>
+        Combo
+      </Typography>
+
+      <Carousel settings={sliderSettings}>
+        {dummyData.map(({ id, title, description, price }) => (
+          <Box key={id} sx={{ px: 3 }}>
+            <ProductCard
+              title={title}
+              description={description}
+              price={price}
+            />
+          </Box>
+        ))}
+      </Carousel>
+    </Box>
   );
 };
 
-export default Products;
+export default PreviewProducts;
