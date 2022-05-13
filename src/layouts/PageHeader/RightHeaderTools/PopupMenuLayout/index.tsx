@@ -1,53 +1,65 @@
-import React, { useRef, useState } from "react";
-import NotificationsIcon from "@mui/icons-material/Notifications";
-import LocalMallIcon from "@mui/icons-material/LocalMall";
-import PopupMenu from "../PopupMenu";
-
-import classes from "./index.module.scss";
+import React, { useState } from "react";
+import { Button, Popover, SxProps } from "@mui/material";
+import { styled } from "shared/theme";
 
 interface PopupMenuLayoutProps {
-  type: "cart" | "notifications";
   children: any;
-  itemsLength: number;
+  icon: React.ReactNode;
 }
 
-const PopupMenuLayout = ({
-  type,
-  itemsLength,
-  children,
-}: PopupMenuLayoutProps) => {
-  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
-  const [show, setShow] = useState(false);
-  const buttonRef = useRef(null);
+interface ButtonSx {
+  [key: string]: SxProps;
+}
 
-  function handleOpenMenu() {
-    setAnchorEl(buttonRef.current);
-    setShow(true);
+const IconButton = styled(Button)(
+  ({ theme }): ButtonSx => ({
+    "&.MuiButton-root": {
+      backgroundColor: "transparent",
+      padding: "0.8rem 0",
+      minWidth: "45px",
+    },
+    "&.MuiButton-contained:hover": {
+      backgroundColor: "rgba(255, 255, 255, 0.2)",
+      color: theme.palette.primary.main,
+    },
+  })
+);
+
+const PopupMenuLayout = ({ children, icon }: PopupMenuLayoutProps) => {
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+  const open = Boolean(anchorEl);
+
+  function handleOpenMenu(event: React.MouseEvent<HTMLButtonElement>) {
+    setAnchorEl(event.currentTarget);
   }
 
   function handleCloseMenu() {
-    setShow(false);
     setAnchorEl(null);
   }
 
   return (
     <>
-      <div onClick={handleOpenMenu} ref={buttonRef} className={classes.wrapper}>
-        {type === "cart" ? (
-          <LocalMallIcon fontSize="inherit" />
-        ) : (
-          <NotificationsIcon fontSize="inherit" />
-        )}
-      </div>
+      <IconButton onClick={handleOpenMenu} variant="contained">
+        {icon}
+      </IconButton>
 
-      <PopupMenu
+      <Popover
+        elevation={2}
+        disableScrollLock
         anchorEl={anchorEl}
-        open={show}
+        open={open}
         onClose={handleCloseMenu}
-        itemsMaxLength={itemsLength}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "right",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
       >
         {children}
-      </PopupMenu>
+      </Popover>
     </>
   );
 };

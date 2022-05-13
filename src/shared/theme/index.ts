@@ -107,8 +107,6 @@ theme.components = {
   },
 } as Components;
 
-// theme.props
-
 export default theme;
 
 export const styled = createStyled({ defaultTheme: theme });

@@ -1,19 +1,14 @@
 import React from "react";
-import { useRecoilValue } from "recoil";
-import { notificationsState } from "states/notifications";
 import NotificationsButton from "./NotificationsButton";
 import CartButton from "./CartButton";
-
-import classes from "./index.module.scss";
+import { Stack } from "@mui/material";
 
 const RightHeaderTools = () => {
-  const notifications = useRecoilValue(notificationsState);
-
   return (
-    <div className={classes.wrapper}>
+    <Stack direction="row" spacing={3}>
       <CartButton />
-      <NotificationsButton notifications={notifications} />
-    </div>
+      <NotificationsButton />
+    </Stack>
   );
 };
 

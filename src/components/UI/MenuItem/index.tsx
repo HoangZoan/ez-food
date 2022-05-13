@@ -1,10 +1,10 @@
-import { MenuItem as MuiMenuItem } from "@mui/material";
-import { styled } from "../../../shared/theme";
+import { ListItem } from "@mui/material";
+import { styled } from "shared/theme";
 
-const MenuItem = styled(MuiMenuItem)(({ theme }) => ({
+const MenuItem = styled(ListItem)(({ theme }) => ({
   cursor: "auto",
-  paddingTop: "1.8rem",
-  paddingBottom: "1.8rem",
+  paddingTop: "1.2rem",
+  paddingBottom: "1.2rem",
   transition: "all 0.2s",
   "&:hover": {
     backgroundColor: theme.colors.background.primary,
