@@ -22,7 +22,7 @@ export interface ProductInCartType {
   total: number;
 }
 
-// PRODUCT DETIAL TYPE
+// PRODUCT DETAIL TYPE
 export interface OptionVariantType {
   type: string;
   price: number;
@@ -52,6 +52,15 @@ export interface ProductDetailStateType {
   options: OptionsType[];
   availableSideDish: SideDistType[];
   selectedSideDish: SideDistType[];
+  price: number;
   quantity: number;
   totalPrice: number;
+}
+
+// PRODUCT ORDER TYPE
+export interface ProductOrderType extends ProductDetailStateType {
+  orderId: string;
+  title: string;
+  price: number;
+  date: string;
 }

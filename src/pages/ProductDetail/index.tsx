@@ -1,7 +1,11 @@
 import { Button, Container, Grid, Typography } from "@mui/material";
 import ProductDetailCard from "components/ProductDetailCard";
 import React from "react";
+import { useRecoilState } from "recoil";
+import { ORDER_KEY } from "shared/config";
 import { ProductDetailStateType, ProductDetailType } from "shared/types";
+import { createId } from "shared/utils";
+import { cartState } from "states/cart";
 import PreviewProducts from "./PreviewProducts";
 import ProductImage from "./ProductImage";
 
@@ -42,9 +46,18 @@ const SubmitButton = React.memo(() => {
 
 const ProductDetail = () => {
   const { title } = dummyData;
+  const [ordersState, setOrdersState] = useRecoilState(cartState);
 
   const handleSubmit = (data: ProductDetailStateType) => {
-    console.log(data);
+    const orderId = createId(ORDER_KEY);
+    const orderData = {
+      ...data,
+      orderId,
+      title,
+      date: new Date().toISOString(),
+    };
+
+    setOrdersState([orderData, ...ordersState]);
   };
 
   return (
