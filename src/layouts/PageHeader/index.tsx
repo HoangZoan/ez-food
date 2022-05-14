@@ -1,28 +1,32 @@
-import React from "react";
 import PageHeaderLayout from "./PageHeaderLayout";
 import MenuButton from "./MenuButton";
-import RightHeaderTools from "./RightHeaderTools";
+import { Container, Stack, Typography } from "@mui/material";
+import CartButton from "./CartButton";
+import NotificationsButton from "./NotificationsButton";
 
-import classes from "./index.module.scss";
-
-interface PageHeaderProps {
-  isOnMainPage: boolean;
-}
-
-const PageHeader = ({ isOnMainPage }: PageHeaderProps) => {
-  const toolbarWrapperClasses = `${classes["toolbar-wrapper"]} container`;
-
+const PageHeader = () => {
   return (
-    <PageHeaderLayout isOnMainPage={isOnMainPage}>
-      <div className={toolbarWrapperClasses}>
-        <MenuButton />
+    <PageHeaderLayout>
+      <Container>
+        <Stack
+          direction="row"
+          justifyContent="space-between"
+          alignItems="center"
+        >
+          <MenuButton />
 
-        <div className="centered-content white">LOGO</div>
+          <Typography variant="h4" color="white" lineHeight={1.2}>
+            LOGO
+          </Typography>
 
-        <RightHeaderTools />
-      </div>
+          <Stack direction="row" spacing={3}>
+            <CartButton />
+            <NotificationsButton />
+          </Stack>
+        </Stack>
+      </Container>
     </PageHeaderLayout>
   );
 };
 
-export default React.memo(PageHeader);
+export default PageHeader;

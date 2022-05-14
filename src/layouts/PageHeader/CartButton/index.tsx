@@ -3,8 +3,7 @@ import PopupMenuLayout from "../PopupMenuLayout";
 import { headerCartState } from "states/cart";
 import { useRecoilValue } from "recoil";
 import CartItem from "../CartItem";
-import { Box, Divider, List, Typography } from "@mui/material";
-import Button from "components/UI/Button";
+import { Button, Divider, List, Paper, Typography } from "@mui/material";
 import LocalMallIcon from "@mui/icons-material/LocalMall";
 
 const CartButton = () => {
@@ -12,7 +11,7 @@ const CartButton = () => {
 
   return (
     <PopupMenuLayout icon={<LocalMallIcon sx={{ fontSize: "24px" }} />}>
-      <Box>
+      <Paper sx={{ backgroundColor: "white", width: "36rem" }}>
         <List>
           {cartState.map(({ orderId, title, quantity, totalPrice }) => (
             <CartItem
@@ -32,9 +31,11 @@ const CartButton = () => {
             Tong: xx.xxxd
           </Typography>
 
-          <Button>Thanh toán</Button>
+          <Button variant="contained">
+            <Typography variant="h6">Thanh toán</Typography>
+          </Button>
         </div>
-      </Box>
+      </Paper>
     </PopupMenuLayout>
   );
 };

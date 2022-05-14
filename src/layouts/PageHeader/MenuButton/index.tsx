@@ -1,31 +1,28 @@
-import React, { useCallback, useState } from "react";
-import MenuButtonBase from "./MenuButtonBase";
+import React, { useState } from "react";
 import MenuListPopupLayout from "./MenuListPopupLayout";
 import MenuContent from "./MenuContent";
+import IconButton from "layouts/PageHeader/IconButton";
+import MenuIcon from "@mui/icons-material/Menu";
+import { Typography } from "@mui/material";
 
 const MenuButton = () => {
-  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
-  const [show, setShow] = useState(false);
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+  const show = Boolean(anchorEl);
 
-  const handleButtonClick = useCallback(
-    (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-      const target = event.target as HTMLElement;
-      const buttonEl = target.closest(".rounded") as HTMLElement;
-
-      setShow(true);
-      setAnchorEl(buttonEl);
-    },
-    []
-  );
+  const handleOnOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
 
   const handleOnClose = () => {
     setAnchorEl(null);
-    setShow(false);
   };
 
   return (
-    <div>
-      <MenuButtonBase onClick={handleButtonClick} />
+    <>
+      <IconButton onClick={handleOnOpen} variant="contained" sx={{ px: 3 }}>
+        <MenuIcon fontSize="large" sx={{ marginRight: "1.2rem" }} />
+        <Typography variant="h5">Thực đơn</Typography>
+      </IconButton>
 
       <MenuListPopupLayout
         show={show}
@@ -34,7 +31,7 @@ const MenuButton = () => {
       >
         <MenuContent />
       </MenuListPopupLayout>
-    </div>
+    </>
   );
 };
 

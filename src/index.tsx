@@ -5,9 +5,9 @@ import { BrowserRouter } from "react-router-dom";
 import { ThemeProvider } from "@mui/material";
 import { RecoilRoot } from "recoil";
 import theme from "./shared/theme";
-
-import "./shared/sass/styles.scss";
 import ScrollToTop from "components/ScrollToTop";
+
+import "./index.css";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement

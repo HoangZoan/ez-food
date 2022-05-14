@@ -1,7 +1,12 @@
-import React from "react";
-import { Card, CardContent, CardActions, Box, Typography } from "@mui/material";
+import {
+  Card,
+  CardContent,
+  CardActions,
+  Box,
+  Typography,
+  Button,
+} from "@mui/material";
 import { formatPriceText } from "shared/utils";
-import Button from "../Button";
 
 interface ProductCardProps {
   title: string;
@@ -41,7 +46,9 @@ const ProductCard = ({ title, description, price }: ProductCardProps) => {
           }}
         >
           <Typography variant="h6">Giá: {formatPriceText(price)}</Typography>
-          <Button>Đặt món</Button>
+          <Button variant="contained">
+            <Typography variant="body1">Đặt món</Typography>
+          </Button>
         </CardActions>
       </div>
     </Card>

@@ -1,15 +1,26 @@
 import React from "react";
-import { Typography } from "@mui/material";
+import { Box, Button, Stack, Typography } from "@mui/material";
+import { styled } from "shared/theme";
+import heroImg from "../../../shared/images/hero.jpg";
 
-import classes from "./index.module.scss";
-import Button from "components/UI/Button";
+const HeroBackground = styled(Box)({
+  backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0.45) 70%, transparent), url(${heroImg})`,
+  backgroundSize: "cover",
+  height: "100vh",
+  position: "relative",
+});
+
+const HeroStack = styled(Stack)({
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+});
 
 const Hero = () => {
-  const contentWrapperClasses = `${classes["content-wrapper"]} centered-content`;
-
   return (
-    <div className={classes.hero}>
-      <div className={contentWrapperClasses}>
+    <HeroBackground>
+      <HeroStack alignItems="center">
         <Typography
           textTransform="uppercase"
           variant="h1"
@@ -25,19 +36,16 @@ const Hero = () => {
           color="common.white"
           textAlign="center"
           mt={3}
+          mb={6}
         >
           Một vài lời giới thiệu
         </Typography>
 
-        <Button
-          size="lg"
-          variant="contained"
-          className={classes["hero-button"]}
-        >
-          Xem thực đơn
+        <Button size="large" variant="contained">
+          <Typography variant="h6">Xem thực đơn</Typography>
         </Button>
-      </div>
-    </div>
+      </HeroStack>
+    </HeroBackground>
   );
 };
 

@@ -1,33 +1,20 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { AppBar, Toolbar } from "@mui/material";
+import { useLocation } from "react-router-dom";
 
-import classes from "./index.module.scss";
-
-interface PageHeaderProps {
-  isOnMainPage: boolean;
-  children: React.ReactNode;
-}
-
-const PageHeader = ({ isOnMainPage, children }: PageHeaderProps) => {
-  const [bgColor, setBgColor] = useState("");
-  const [shadow, setShadow] = useState("");
-  const toolbarClasses = `${classes.toolbar} ${bgColor} ${shadow}`;
-
-  useEffect(() => {
-    if (isOnMainPage && !shadow) {
-      setBgColor("bg-clear");
-    } else {
-      setBgColor("bg-dark");
-    }
-  }, [isOnMainPage, shadow]);
+const PageHeader = ({ children }: { children: React.ReactNode }) => {
+  const { pathname } = useLocation();
+  const isMainPage = pathname === "/";
+  const [isOnTop, setIsOnTop] = useState(true);
 
   useEffect(() => {
     const onScroll = () => {
       const scrollTop = document.documentElement.scrollTop;
 
       if (scrollTop === 0) {
-        setShadow("");
+        setIsOnTop(true);
       } else {
-        setShadow("shadow");
+        setIsOnTop(false);
       }
     };
 
@@ -35,7 +22,18 @@ const PageHeader = ({ isOnMainPage, children }: PageHeaderProps) => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  return <div className={toolbarClasses}>{children}</div>;
+  return (
+    <AppBar
+      sx={{
+        backgroundColor:
+          isMainPage && isOnTop ? "transparent" : "secondary.main",
+        transition: "all 0.3s",
+      }}
+      elevation={isOnTop ? 0 : 3}
+    >
+      <Toolbar>{children}</Toolbar>
+    </AppBar>
+  );
 };
 
-export default React.memo(PageHeader);
+export default PageHeader;

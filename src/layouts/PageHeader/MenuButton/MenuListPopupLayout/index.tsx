@@ -1,6 +1,4 @@
-import { Menu } from "@mui/material";
-
-import classes from "./index.module.scss";
+import { Box, Container, Menu } from "@mui/material";
 
 interface MenuListPopupLayoutProps {
   anchorEl: HTMLElement | null;
@@ -32,9 +30,9 @@ const MenuListPopupLayout = ({
         },
       }}
     >
-      <div className={classes.wrapper}>
-        <div className={`${classes.container} container`}>{children}</div>
-      </div>
+      <Box sx={{ width: "100vw", py: 4 }}>
+        <Container>{children}</Container>
+      </Box>
     </Menu>
   );
 };

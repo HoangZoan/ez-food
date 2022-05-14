@@ -1,9 +1,7 @@
 import React from "react";
 import { useRecoilValue } from "recoil";
 import { menuState } from "states/menu";
-import { Typography } from "@mui/material";
-
-import classes from "./index.module.scss";
+import { ListItem, Typography } from "@mui/material";
 
 interface MenuListProps {
   activeItem: string;
@@ -18,14 +16,19 @@ interface ItemProps {
 }
 
 const Item = ({ id, content, active, handleHover }: ItemProps) => {
-  const listClasses = active ? classes["item-active"] : classes.item;
-
   return (
-    <li className={listClasses} onMouseOver={() => handleHover(id)}>
+    <ListItem
+      sx={{
+        padding: "1.6rem 0",
+        transition: "all 0.2s",
+        color: active ? "primary.main" : "black",
+      }}
+      onMouseOver={() => handleHover(id)}
+    >
       <Typography textTransform="uppercase" variant="h5">
         {content}
       </Typography>
-    </li>
+    </ListItem>
   );
 };
 
