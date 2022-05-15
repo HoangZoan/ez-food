@@ -22,3 +22,16 @@ export const headerCartState = selector({
     }));
   },
 });
+
+export const cartTotalPriceState = selector({
+  key: "cartTotalPriceState",
+  get: ({ get }) => {
+    const cart = get(cartState);
+
+    return cart.reduce((increment, current) => {
+      return increment + current.totalPrice;
+    }, 0);
+  },
+});
+
+export { useCart } from "./hooks/useCart";

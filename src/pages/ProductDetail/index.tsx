@@ -1,11 +1,10 @@
+import React from "react";
 import { Button, Container, Grid, Typography } from "@mui/material";
 import ProductDetailCard from "components/ProductDetailCard";
-import React from "react";
-import { useRecoilState } from "recoil";
 import { ORDER_KEY } from "shared/config";
 import { ProductDetailStateType, ProductDetailType } from "shared/types";
 import { createId } from "shared/utils";
-import { cartState } from "states/cart";
+import { useCart } from "states/cart";
 import PreviewProducts from "./PreviewProducts";
 import ProductImage from "./ProductImage";
 
@@ -25,8 +24,8 @@ const dummyData: ProductDetailType = {
     {
       name: "Nhân bánh",
       variants: [
-        { type: "Pate", price: 2000, selected: true },
-        { type: "Trứng", price: 0, selected: false },
+        { type: "Pate", price: 2000, selected: false },
+        { type: "Trứng", price: 0, selected: true },
       ],
     },
   ],
@@ -46,7 +45,7 @@ const SubmitButton = React.memo(() => {
 
 const ProductDetail = () => {
   const { title } = dummyData;
-  const [ordersState, setOrdersState] = useRecoilState(cartState);
+  const { addNewOrder } = useCart();
 
   const handleSubmit = (data: ProductDetailStateType) => {
     const orderId = createId(ORDER_KEY);
@@ -57,7 +56,7 @@ const ProductDetail = () => {
       date: new Date().toISOString(),
     };
 
-    setOrdersState([orderData, ...ordersState]);
+    addNewOrder(orderData);
   };
 
   return (

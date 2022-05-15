@@ -14,14 +14,6 @@ export interface NotificationListType {
   description: string;
 }
 
-// ORDER TYPE
-export interface ProductInCartType {
-  id: string;
-  title: string;
-  quantity: number;
-  total: number;
-}
-
 // PRODUCT DETAIL TYPE
 export interface OptionVariantType {
   type: string;
