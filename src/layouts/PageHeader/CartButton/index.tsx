@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import PopupMenuLayout from "../PopupMenuLayout";
 import { cartTotalPriceState, headerCartState } from "states/cart";
 import { useRecoilValue } from "recoil";
@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import LocalMallIcon from "@mui/icons-material/LocalMall";
 import { formatPriceText } from "shared/utils";
+import { Link } from "react-router-dom";
 
 const IconButton = ({ content }: { content: number }) => {
   return (
@@ -34,9 +35,17 @@ const IconButton = ({ content }: { content: number }) => {
 const CartButton = () => {
   const cart = useRecoilValue(headerCartState);
   const cartTotalPrice = useRecoilValue(cartTotalPriceState);
+  const [showPopup, setShowPopup] = useState(false);
+
+  const closePopup = () => {
+    setShowPopup(!showPopup);
+  };
 
   return (
-    <PopupMenuLayout icon={<IconButton content={cart.length} />}>
+    <PopupMenuLayout
+      icon={<IconButton content={cart.length} />}
+      isClose={showPopup}
+    >
       <Paper sx={{ backgroundColor: "white", minWidth: "48rem", py: 2 }}>
         {cart.length > 0 && (
           <>
@@ -59,7 +68,13 @@ const CartButton = () => {
                 Tổng: {formatPriceText(cartTotalPrice)}
               </Typography>
 
-              <Button variant="contained" sx={{ mb: 2 }}>
+              <Button
+                component={Link}
+                to="/check-out"
+                variant="contained"
+                sx={{ mb: 2 }}
+                onClick={closePopup}
+              >
                 <Typography variant="h6">Thanh toán</Typography>
               </Button>
             </Stack>
@@ -68,7 +83,7 @@ const CartButton = () => {
 
         {cart.length === 0 && (
           <Stack alignItems="center" sx={{ py: 3 }}>
-            <Typography variant="h5">Bạn chưa đặt món nào!</Typography>
+            <Typography variant="subtitle1">Bạn chưa đặt món nào!</Typography>
           </Stack>
         )}
       </Paper>

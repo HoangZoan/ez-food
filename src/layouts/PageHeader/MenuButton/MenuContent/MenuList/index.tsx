@@ -25,7 +25,7 @@ const Item = ({ id, content, active, handleHover }: ItemProps) => {
       }}
       onMouseOver={() => handleHover(id)}
     >
-      <Typography textTransform="uppercase" variant="h5">
+      <Typography textTransform="uppercase" variant="subtitle1">
         {content}
       </Typography>
     </ListItem>

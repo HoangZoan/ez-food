@@ -32,7 +32,12 @@ const ProductCard = ({ title, description, price }: ProductCardProps) => {
       ></Box>
       <div>
         <CardContent sx={{ px: 5 }}>
-          <Typography mb={3} textAlign="center" variant="h5" fontWeight={700}>
+          <Typography
+            mb={3}
+            textAlign="center"
+            variant="subtitle1"
+            fontWeight={700}
+          >
             {title}
           </Typography>
           <Typography variant="body1">{description}</Typography>

@@ -1,5 +1,6 @@
 import { createTheme, Components } from "@mui/material";
 import { createStyled } from "@mui/system";
+import { red } from "@mui/material/colors";
 
 declare module "@mui/material/styles" {
   interface Theme {
@@ -12,7 +13,7 @@ declare module "@mui/material/styles" {
       };
     };
   }
-  // allow configuration using `createTheme`
+
   interface ThemeOptions {
     colors?: {
       background?: {
@@ -30,11 +31,13 @@ const theme = createTheme({
   palette: {
     primary: {
       main: "#F0932B",
-      light: "#f3ab5b",
     },
     secondary: {
       main: "#2A1803",
       dark: "#1A0F02",
+    },
+    error: {
+      main: red[400],
     },
   },
   colors: {
@@ -51,6 +54,10 @@ const theme = createTheme({
   typography: {
     htmlFontSize: 10,
     fontSize: 12,
+    allVariants: {
+      letterSpacing: "1px",
+      lineHeight: 1.7,
+    },
     h1: {
       fontSize: "4.8rem",
       fontWeight: 700,
@@ -59,23 +66,22 @@ const theme = createTheme({
     h2: {
       fontSize: "3.2rem",
       fontWeight: 400,
-      letterSpacing: "1px",
     },
     h3: {
-      fontSize: "3.2rem",
-      fontWeight: 500,
+      fontSize: "3.6rem",
     },
-    h5: {
-      fontSize: "2rem",
+    h4: {
+      fontSize: "2.8rem",
       lineHeight: 2,
     },
-
+    h5: {
+      fontSize: "2.2rem",
+    },
     subtitle1: {
-      fontSize: "2.1rem",
+      fontSize: "2rem",
     },
     body1: {
       fontSize: "1.6rem",
-      lineHeight: 1.7,
     },
     body2: {
       fontSize: "1.3rem",
@@ -89,18 +95,22 @@ theme.components = {
       disableRipple: true,
     },
     styleOverrides: {
-      outlined: {
+      contained: {
+        boxShadow: "none",
+        ":hover": {
+          boxShadow: "none",
+        },
+      },
+      outlinedPrimary: {
         border: `1px solid ${theme.palette.primary.main}`,
         ":hover": {
           backgroundColor: theme.palette.primary.main,
           color: "white",
         },
       },
-      contained: {
+      containedPrimary: {
         color: "white",
-        boxShadow: "none",
         ":hover": {
-          boxShadow: "none",
           backgroundColor: theme.palette.primary.light,
         },
       },

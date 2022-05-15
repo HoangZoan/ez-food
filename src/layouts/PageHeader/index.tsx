@@ -15,7 +15,7 @@ const PageHeader = () => {
         >
           <MenuButton />
 
-          <Typography variant="h4" color="white" lineHeight={1.2}>
+          <Typography variant="h3" color="white" lineHeight={1.2}>
             LOGO
           </Typography>
 

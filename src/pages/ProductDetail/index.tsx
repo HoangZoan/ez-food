@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Container, Grid, Typography } from "@mui/material";
+import { Button, Container, Grid, Stack, Typography } from "@mui/material";
 import ProductDetailCard from "components/ProductDetailCard";
 import { ORDER_KEY } from "shared/config";
 import { ProductDetailStateType, ProductDetailType } from "shared/types";
@@ -61,9 +61,16 @@ const ProductDetail = () => {
 
   return (
     <Container sx={{ pt: 13 }}>
-      <Typography textAlign="center" color="primary" variant="h3">
-        {title}
-      </Typography>
+      <Stack alignItems="center">
+        <Typography
+          textAlign="center"
+          color="primary"
+          variant="h2"
+          sx={{ maxWidth: "56rem" }}
+        >
+          {title}
+        </Typography>
+      </Stack>
 
       <Grid columnSpacing={6} container sx={{ my: 7 }}>
         <Grid item xs={5}>

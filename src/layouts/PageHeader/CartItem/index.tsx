@@ -1,10 +1,11 @@
-import React from "react";
+import { useState } from "react";
 import MenuItem from "components/UI/MenuItem";
-import { Box, Button, Grid, Stack, Typography } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
+import { Box, Grid, Stack, Typography } from "@mui/material";
 import { formatPriceText } from "shared/utils";
 import { useCart } from "states/cart";
 import { styled } from "shared/theme";
+import CloseButton from "components/UI/CloseButton";
+import ConfirmationBox from "components/ConfirmationBox";
 
 interface CartItemProps {
   id: string;
@@ -13,7 +14,7 @@ interface CartItemProps {
   quantity: number;
 }
 
-const ConfirmationBoard = styled(Stack)({
+const ConfirmationBoxLayout = styled(Stack)({
   position: "absolute",
   top: 0,
   left: 0,
@@ -23,11 +24,24 @@ const ConfirmationBoard = styled(Stack)({
 
 const CartItem = ({ id, title, total, quantity }: CartItemProps) => {
   const { removeOrder } = useCart();
+  const [isRemoving, setIsRemoving] = useState(false);
+
+  const handleClickClose = () => {
+    setIsRemoving(true);
+  };
+
+  const handleClickCancel = () => {
+    setIsRemoving(false);
+  };
 
   return (
     <MenuItem>
       <Box position="relative" width={1} height={1}>
-        <Grid container spacing={3} sx={{ visibility: "hidden" }}>
+        <Grid
+          container
+          spacing={3}
+          sx={{ visibility: isRemoving ? "hidden" : "grid" }}
+        >
           <Grid
             item
             sx={{
@@ -70,31 +84,22 @@ const CartItem = ({ id, title, total, quantity }: CartItemProps) => {
           </Grid>
 
           <Grid item>
-            <CloseIcon
-              onClick={() => removeOrder(id)}
-              sx={{
-                cursor: "pointer",
-                transition: "all 0.2s",
-                "&:hover": {
-                  color: (theme) => theme.colors.common.grey,
-                },
-              }}
-            />
+            <CloseButton onClick={handleClickClose} />
           </Grid>
         </Grid>
 
-        <ConfirmationBoard alignItems="center" justifyContent="center">
-          <Typography variant="h6" sx={{ mb: 3 }}>
-            Bạn muốn xóa sản phẩm này?
-          </Typography>
-
-          <Stack direction="row" spacing={4}>
-            <Button variant="outlined">Hủy</Button>
-            <Button variant="contained" color="error">
-              Đồng ý
-            </Button>
-          </Stack>
-        </ConfirmationBoard>
+        <ConfirmationBoxLayout
+          display={isRemoving ? "flex" : "none"}
+          justifyContent="center"
+        >
+          <ConfirmationBox
+            title="Bạn muốn xóa sản phẩm này?"
+            actionLabel="Xóa"
+            cancelLabel="Hủy"
+            onAction={() => removeOrder(id)}
+            onCancel={handleClickCancel}
+          />
+        </ConfirmationBoxLayout>
       </Box>
     </MenuItem>
   );

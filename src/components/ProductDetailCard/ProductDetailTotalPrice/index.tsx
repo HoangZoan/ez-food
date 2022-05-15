@@ -11,7 +11,7 @@ const ProductDetailTotalPrice = () => {
     <Stack direction="row" spacing={4}>
       <Typography variant="h6">Tổng:</Typography>
       <Typography
-        variant="h5"
+        variant="subtitle1"
         sx={{
           lineHeight: 1.2,
           fontWeight: 700,

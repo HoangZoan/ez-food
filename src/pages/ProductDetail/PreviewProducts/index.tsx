@@ -65,7 +65,7 @@ const PreviewProducts = ({ sx }: PreviewProductsProps) => {
 
   return (
     <Box sx={{ ...sx }}>
-      <Typography variant="h4" sx={{ mb: 6 }} fontWeight={700}>
+      <Typography variant="h3" sx={{ mb: 6 }} fontWeight={700}>
         Combo
       </Typography>
 

@@ -21,7 +21,7 @@ const MenuButton = () => {
     <>
       <IconButton onClick={handleOnOpen} variant="contained" sx={{ px: 3 }}>
         <MenuIcon fontSize="large" sx={{ marginRight: "1.2rem" }} />
-        <Typography variant="h5">Thực đơn</Typography>
+        <Typography variant="subtitle1">Thực đơn</Typography>
       </IconButton>
 
       <MenuListPopupLayout

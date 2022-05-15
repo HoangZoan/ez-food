@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, ClickAwayListener, Grow } from "@mui/material";
 import { styled } from "shared/theme";
 import IconButton from "layouts/PageHeader/IconButton";
@@ -6,6 +6,7 @@ import IconButton from "layouts/PageHeader/IconButton";
 interface PopupMenuLayoutProps {
   children: React.ReactNode;
   icon: React.ReactNode;
+  isClose?: boolean;
 }
 
 const BoxArrow = styled(Box)({
@@ -19,16 +20,20 @@ const BoxArrow = styled(Box)({
   zIndex: "-1",
 });
 
-const PopupMenuLayout = ({ children, icon }: PopupMenuLayoutProps) => {
+const PopupMenuLayout = ({ children, icon, isClose }: PopupMenuLayoutProps) => {
   const [open, setOpen] = useState(false);
 
-  function handleOpenMenu(event: React.MouseEvent<HTMLButtonElement>) {
+  function handleOpenMenu() {
     setOpen(!open);
   }
 
   function handleCloseMenu() {
     setOpen(false);
   }
+
+  useEffect(() => {
+    setOpen(false);
+  }, [isClose]);
 
   return (
     <ClickAwayListener onClickAway={handleCloseMenu}>
