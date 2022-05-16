@@ -66,14 +66,14 @@ const CheckOutOrder = ({ item }: CheckOutOrderProps) => {
                 Tổng: {formatPriceText(totalPrice)}
               </Typography>
 
-              <Button variant="outlined" onClick={openModal}>
+              <Button variant="outlined">
                 Thay đổi
               </Button>
             </div>
           </Stack>
         </Grid>
         <Grid item>
-          <CloseButton onClick={() => removeOrder(orderId)} />
+          <CloseButton onClick={openModal} />
         </Grid>
       </Grid>
 
@@ -81,12 +81,14 @@ const CheckOutOrder = ({ item }: CheckOutOrderProps) => {
         <ModalBox
           sx={{
             backgroundColor: "white",
+            py: 4,
+            px: 6
           }}
         >
           <ConfirmationBox
-            title="modal"
-            onAction={() => {}}
-            onCancel={() => {}}
+            title={<Typography variant="subtitle1">Ban muon xoa san pham <strong>{title}</strong>?</Typography>}
+            onAction={() => removeOrder(orderId)}
+            onCancel={closeModal}
           />
         </ModalBox>
       </Modal>

@@ -27,7 +27,7 @@ declare module "@mui/material/styles" {
 }
 
 const theme = createTheme({
-  spacing: [0, 4, 8, 16, 24, 32, 48, 56, 64, 72, 86, 96, 120, 150, 180, 240],
+  spacing: [0, 4, 8, 16, 24, 32, 48, 56, 64, 72, 86, 96, 120, 150, 180, 240, 270, 320],
   palette: {
     primary: {
       main: "#F0932B",
