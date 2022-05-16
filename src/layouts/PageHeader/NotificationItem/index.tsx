@@ -11,7 +11,13 @@ const NotificationItem = ({
 }: NotificationListType) => {
   return (
     <MenuItem>
-      <Grid container columns={7} sx={{ width: "48rem", py: 2 }} spacing={4}>
+      <Grid
+        container
+        columns={7}
+        spacing={4}
+        alignItems="flex-start"
+        sx={{ width: "48rem", py: 2 }}
+      >
         <Grid
           xs={2}
           item

@@ -36,7 +36,7 @@ const CheckOutOrder = ({ item }: CheckOutOrderProps) => {
     <Box width={1}>
       <Divider sx={{ backgroundColor: "primary.main" }} />
 
-      <Grid container sx={{ py: 4, pr: 3 }} spacing={5}>
+      <Grid container sx={{ py: 4, pr: 3 }} columnSpacing={5}>
         <Grid item>
           <Box
             sx={{
@@ -66,9 +66,7 @@ const CheckOutOrder = ({ item }: CheckOutOrderProps) => {
                 Tổng: {formatPriceText(totalPrice)}
               </Typography>
 
-              <Button variant="outlined">
-                Thay đổi
-              </Button>
+              <Button variant="outlined">Thay đổi</Button>
             </div>
           </Stack>
         </Grid>
@@ -82,11 +80,15 @@ const CheckOutOrder = ({ item }: CheckOutOrderProps) => {
           sx={{
             backgroundColor: "white",
             py: 4,
-            px: 6
+            px: 6,
           }}
         >
           <ConfirmationBox
-            title={<Typography variant="subtitle1">Ban muon xoa san pham <strong>{title}</strong>?</Typography>}
+            title={
+              <Typography variant="h6">
+                Bạn muốn xóa <strong>{title}</strong> khỏi giỏ hàng?
+              </Typography>
+            }
             onAction={() => removeOrder(orderId)}
             onCancel={closeModal}
           />

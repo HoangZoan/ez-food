@@ -83,7 +83,7 @@ const CartButton = () => {
 
         {cart.length === 0 && (
           <Stack alignItems="center" sx={{ py: 3 }}>
-            <Typography variant="subtitle1">Bạn chưa đặt món nào!</Typography>
+            <Typography variant="h6">Bạn chưa đặt món nào!</Typography>
           </Stack>
         )}
       </Paper>

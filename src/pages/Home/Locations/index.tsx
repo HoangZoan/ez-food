@@ -25,14 +25,14 @@ const Locations = () => {
           ></Box>
         </Grid>
         <Grid xs item>
-          <Typography fontWeight={700} variant="subtitle1">
+          <Typography fontWeight={700} variant="h6">
             Các chi nhánh:
           </Typography>
           <Typography variant="body1">Số xx, đường ABC, Quận XYZ</Typography>
           <Typography variant="body1">Số xx, đường ABC, Quận XYZ</Typography>
           <Typography variant="body1">Số xx, đường ABC, Quận XYZ</Typography>
 
-          <Typography fontWeight={700} variant="subtitle1" sx={{ mt: 4 }}>
+          <Typography fontWeight={700} variant="h6" sx={{ mt: 4 }}>
             Thời gian phục vụ:
           </Typography>
           <Typography variant="body1">

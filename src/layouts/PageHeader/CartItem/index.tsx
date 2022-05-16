@@ -44,9 +44,9 @@ const CartItem = ({ id, title, total, quantity }: CartItemProps) => {
         >
           <Grid
             item
+            xs={4}
             sx={{
               aspectRatio: "1 / 1",
-              maxWidth: "14rem",
 
               "& img": {
                 width: 1,

@@ -7,9 +7,9 @@ const CheckOutOrdersList = () => {
   const orders = useRecoilValue(cartState);
 
   return (
-    <List>
+    <List sx={{ p: 0 }}>
       {orders.map((order) => (
-        <ListItem key={order.orderId}>
+        <ListItem key={order.orderId} sx={{ py: 0 }}>
           <CheckOutOrder item={order} />
         </ListItem>
       ))}

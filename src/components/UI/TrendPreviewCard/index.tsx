@@ -6,7 +6,7 @@ const TrendPreviewCard = ({ title }: { title: string }) => {
     <div>
       <Box sx={{ backgroundColor: "green", aspectRatio: "1 / 1" }}></Box>
 
-      <Typography variant="subtitle1" mt={3}>
+      <Typography variant="h6" mt={3}>
         {title}
       </Typography>
     </div>

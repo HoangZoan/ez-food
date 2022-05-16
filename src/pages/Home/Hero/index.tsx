@@ -32,7 +32,7 @@ const Hero = () => {
 
         <Typography
           textTransform="uppercase"
-          variant="subtitle1"
+          variant="h6"
           color="common.white"
           textAlign="center"
           mt={3}

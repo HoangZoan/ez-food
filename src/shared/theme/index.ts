@@ -1,4 +1,4 @@
-import { createTheme, Components } from "@mui/material";
+import { createTheme, Components, SxProps } from "@mui/material";
 import { createStyled } from "@mui/system";
 import { red } from "@mui/material/colors";
 
@@ -27,7 +27,9 @@ declare module "@mui/material/styles" {
 }
 
 const theme = createTheme({
-  spacing: [0, 4, 8, 16, 24, 32, 48, 56, 64, 72, 86, 96, 120, 150, 180, 240, 270, 320],
+  spacing: [
+    0, 4, 8, 16, 24, 32, 48, 56, 64, 72, 86, 96, 120, 150, 180, 240, 270, 320,
+  ],
   palette: {
     primary: {
       main: "#F0932B",
@@ -77,7 +79,7 @@ const theme = createTheme({
     h5: {
       fontSize: "2.2rem",
     },
-    subtitle1: {
+    h6: {
       fontSize: "2rem",
     },
     body1: {
@@ -113,6 +115,22 @@ theme.components = {
         ":hover": {
           backgroundColor: theme.palette.primary.light,
         },
+      },
+    },
+  },
+  MuiFormLabel: {
+    styleOverrides: {
+      root: {
+        color: "black",
+      },
+    },
+  },
+  MuiOutlinedInput: {
+    styleOverrides: {
+      root: {
+        "&:hover .MuiOutlinedInput-notchedOutline": {
+          borderColor: theme.palette.primary.light,
+        } as SxProps,
       },
     },
   },

@@ -18,7 +18,7 @@ const ContentBox = styled(Box)(({ theme }) => ({
 const AuthorQuote = ({ message, author }: AuthorQuoteProps) => {
   return (
     <ContentBox>
-      <Typography variant="subtitle1" fontWeight={300} sx={{ mb: 5 }}>
+      <Typography variant="h6" fontWeight={300} sx={{ mb: 5 }}>
         “{message}”
       </Typography>
       <Typography textAlign="right" variant="h6" fontWeight={700}>
