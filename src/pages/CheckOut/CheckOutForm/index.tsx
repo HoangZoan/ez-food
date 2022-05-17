@@ -1,53 +1,16 @@
-import {
-  Button,
-  Divider,
-  FormControl as MuiFormControl,
-  FormLabel as MuiFormLabel,
-  Stack,
-  TextField as MuiTextField,
-  Typography,
-  TextFieldProps,
-} from "@mui/material";
+import { Button, Divider, Modal, Stack, Typography } from "@mui/material";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import ModalBox from "components/UI/ModalBox";
 import BorderBoxLayout from "layouts/BorderBoxLayout";
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRecoilValue } from "recoil";
 import { SHIP_KEY } from "shared/config";
-import { createId, formatPriceText } from "shared/utils";
-import { cartState, cartTotalPriceState } from "states/cart";
-import { styled } from "../../../shared/theme";
-
-const FormControl = styled(MuiFormControl)({
-  display: "flex",
-  flexDirection: "row",
-  justifyContent: "space-between",
-  alignItems: "center",
-});
-
-const FormLabel = styled(MuiFormLabel)({
-  fontWeight: 700,
-  alignSelf: "flex-start",
-  lineHeight: "3.2rem",
-});
-
-const TextField = styled(MuiTextField)({
-  flex: 1,
-  maxWidth: "24rem",
-  "& input": {
-    paddingTop: "6px",
-    paddingBottom: "6px",
-    fontSize: "1.4rem",
-  },
-});
-
-const MultilineTextField = styled((props: TextFieldProps) => (
-  <TextField {...props} multiline minRows={2} maxRows={3} />
-))({
-  "& .MuiOutlinedInput-root": { padding: "0" },
-  "& #address": {
-    padding: "0.6rem 1.4rem",
-  },
-});
+import { createId } from "shared/utils";
+import { cartState, cartTotalPriceState, useCart } from "states/cart";
+import CheckoutInput from "../CheckOutInput";
+import PriceField from "../PriceField";
+import { useNavigate } from "react-router-dom";
 
 interface CustomerInfoType {
   fullName: string;
@@ -88,9 +51,18 @@ const CheckOutForm = () => {
   const fullNameHasError = Boolean(errors.fullName);
   const phoneNumberHasError = Boolean(errors.phoneNumber);
   const addressHasError = Boolean(errors.address);
+  const [showModal, setShowModal] = useState(false);
+  const navigate = useNavigate();
+  const { resetCart } = useCart();
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
 
   const onSunmit = (data: any) => {
     const { fullName, phoneNumber, address } = data as CustomerInfoType;
+
+    setShowModal(true);
 
     console.log({
       shipmentId: createId(SHIP_KEY),
@@ -106,84 +78,75 @@ const CheckOutForm = () => {
       phoneNumber: "",
       address: "",
     } as CustomerInfoType);
+
+    setTimeout(() => {
+      setShowModal(false);
+      navigate("/");
+      resetCart();
+    }, 2000);
   };
 
   return (
-    <Stack
-      component="form"
-      spacing={4}
-      onSubmit={handleSubmit(onSunmit)}
-      sx={{ position: "sticky", top: "10rem" }}
-    >
-      {/* Customer Info */}
-      <FormBoxLayout label="Thông tin khách hàng">
-        <Stack sx={{ mt: 4 }} spacing={2}>
-          <FormControl>
-            <FormLabel htmlFor="full-name">Họ tên:</FormLabel>
-            <TextField
+    <>
+      <Stack component="form" spacing={4} onSubmit={handleSubmit(onSunmit)}>
+        {/* Customer Info */}
+        <FormBoxLayout label="Thông tin khách hàng">
+          <Stack sx={{ mt: 4 }} spacing={2}>
+            <CheckoutInput
               id="full-name"
-              inputProps={{ ...register("fullName", { required: true }) }}
               error={fullNameHasError}
-              helperText={fullNameHasError && "Vui lòng điền thông tin họ tên"}
+              errorMessage="Vui lòng điền thông tin họ tên"
+              inputName="fullName"
+              label="Họ tên"
+              register={register}
             />
-          </FormControl>
-          <FormControl>
-            <FormLabel htmlFor="phone-number">Số điện thoại:</FormLabel>
-            <TextField
+            <CheckoutInput
               id="phone-number"
-              inputProps={{ ...register("phoneNumber", { required: true }) }}
               error={phoneNumberHasError}
-              helperText={
-                phoneNumberHasError && "Vui lòng điền thông tin số điện thoại"
-              }
+              errorMessage="Vui lòng điền thông tin số điện thoại"
+              inputName="phoneNumber"
+              label="Số điện thoại"
+              register={register}
             />
-          </FormControl>
-          <FormControl>
-            <FormLabel htmlFor="address">Địa chỉ:</FormLabel>
-            <MultilineTextField
+            <CheckoutInput
               id="address"
-              inputProps={{ ...register("address", { required: true }) }}
               error={addressHasError}
-              helperText={
-                addressHasError && "Vui lòng điền thông tin số địa chỉ"
-              }
+              errorMessage="Vui lòng điền thông tin số địa chỉ"
+              inputName="address"
+              label="Địa chỉ"
+              register={register}
+              multiline
             />
-          </FormControl>
-        </Stack>
-      </FormBoxLayout>
-
-      {/* Submit box */}
-      <FormBoxLayout label="Tổng hóa đơn">
-        <Stack alignItems="center">
-          <Stack sx={{ width: 1, my: 3 }} spacing={2}>
-            <Stack direction="row" justifyContent="space-between">
-              <Typography fontWeight={700}>Tạm tính:</Typography>
-              <Typography fontWeight={700}>
-                {formatPriceText(totalPrice)}
-              </Typography>
-            </Stack>
-            <Stack direction="row" justifyContent="space-between">
-              <Typography fontWeight={700}>Vận chuyển:</Typography>
-              <Typography fontWeight={700}>
-                {formatPriceText(shippingFee)}
-              </Typography>
-            </Stack>
-            <Stack direction="row" justifyContent="space-between">
-              <Typography fontWeight={700}>Thành tiền:</Typography>
-              <Typography fontWeight={700}>
-                {formatPriceText(totalPrice + shippingFee)}
-              </Typography>
-            </Stack>
           </Stack>
+        </FormBoxLayout>
 
-          <Button variant="contained" type="submit">
-            <Typography variant="body1" fontWeight={700}>
-              Thanh toán
-            </Typography>
-          </Button>
-        </Stack>
-      </FormBoxLayout>
-    </Stack>
+        {/* Submit box */}
+        <FormBoxLayout label="Tổng hóa đơn">
+          <Stack alignItems="center">
+            <Stack sx={{ width: 1, my: 3 }} spacing={2}>
+              <PriceField label="Tạm tính" price={totalPrice} />
+              <PriceField label="Vận chuyển" price={shippingFee} />
+              <PriceField label="Thành tiền" price={totalPrice + shippingFee} />
+            </Stack>
+
+            <Button variant="contained" type="submit">
+              <Typography variant="body1" fontWeight={700}>
+                Thanh toán
+              </Typography>
+            </Button>
+          </Stack>
+        </FormBoxLayout>
+      </Stack>
+
+      <Modal open={showModal} onClose={handleCloseModal} disableScrollLock>
+        <ModalBox sx={{ backgroundColor: "white", py: 5, px: 8 }}>
+          <Stack direction="row" alignItems="center" spacing={4}>
+            <Typography variant="h6">Đặt hàng thành công</Typography>
+            <CheckCircleIcon color="primary" sx={{ fontSize: "4.8rem" }} />
+          </Stack>
+        </ModalBox>
+      </Modal>
+    </>
   );
 };
 

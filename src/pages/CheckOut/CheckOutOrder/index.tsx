@@ -8,10 +8,11 @@ import {
   Typography,
 } from "@mui/material";
 import ConfirmationBox from "components/ConfirmationBox";
+import ProductDetailCard from "components/ProductDetailCard";
 import CloseButton from "components/UI/CloseButton";
 import ModalBox from "components/UI/ModalBox";
 import { useState } from "react";
-import { ProductOrderType } from "shared/types";
+import { ProductDetailType, ProductOrderType } from "shared/types";
 import { formatPriceText } from "shared/utils";
 import { useCart } from "states/cart";
 
@@ -21,15 +22,43 @@ interface CheckOutOrderProps {
 
 const CheckOutOrder = ({ item }: CheckOutOrderProps) => {
   const { removeOrder } = useCart();
-  const { orderId, title, totalPrice } = item;
+  const {
+    orderId,
+    title,
+    totalPrice,
+    availableSideDish,
+    id,
+    options,
+    price,
+    quantity,
+    selectedSideDish,
+  } = item;
   const [showModal, setShowModal] = useState(false);
+  const [isRemoving, setIsRemoving] = useState(false);
+  const [isChanging, setIsChanging] = useState(false);
 
-  const openModal = () => {
+  const openConfirmationModal = () => {
     setShowModal(true);
+    setIsRemoving(true);
   };
 
-  const closeModal = () => {
+  const closeConfirmationModal = () => {
     setShowModal(false);
+    setIsRemoving(false);
+  };
+
+  const openChangeModal = () => {
+    setShowModal(true);
+    setIsChanging(true);
+  };
+
+  const closeChangeModal = () => {
+    setShowModal(false);
+    setIsChanging(false);
+  };
+
+  const handleChangeProduct = (data: ProductDetailType) => {
+    console.log(data);
   };
 
   return (
@@ -66,32 +95,56 @@ const CheckOutOrder = ({ item }: CheckOutOrderProps) => {
                 Tổng: {formatPriceText(totalPrice)}
               </Typography>
 
-              <Button variant="outlined">Thay đổi</Button>
+              <Button variant="outlined" onClick={openChangeModal}>
+                Thay đổi
+              </Button>
             </div>
           </Stack>
         </Grid>
         <Grid item>
-          <CloseButton onClick={openModal} />
+          <CloseButton onClick={openConfirmationModal} />
         </Grid>
       </Grid>
 
-      <Modal open={showModal} onClose={closeModal} disableScrollLock>
+      <Modal
+        open={showModal}
+        onClose={isRemoving ? closeConfirmationModal : closeChangeModal}
+        disableScrollLock
+      >
         <ModalBox
           sx={{
             backgroundColor: "white",
-            py: 4,
-            px: 6,
           }}
         >
-          <ConfirmationBox
-            title={
-              <Typography variant="h6">
-                Bạn muốn xóa <strong>{title}</strong> khỏi giỏ hàng?
-              </Typography>
-            }
-            onAction={() => removeOrder(orderId)}
-            onCancel={closeModal}
-          />
+          {isRemoving && (
+            <ConfirmationBox
+              title={
+                <>
+                  Bạn muốn xóa <strong>{title}</strong> khỏi giỏ hàng?
+                </>
+              }
+              onAction={() => removeOrder(orderId)}
+              onCancel={closeConfirmationModal}
+              sx={{ py: 4, px: 6 }}
+            />
+          )}
+          {isChanging && (
+            <ProductDetailCard
+              item={{
+                id,
+                title,
+                options,
+                availableSideDish,
+                selectedSideDish,
+                price,
+                quantity,
+                totalPrice,
+              }}
+              actionButton={<Button>Thay Doi</Button>}
+              onSubmit={handleChangeProduct}
+              sx={{ minWidth: "54rem" }}
+            />
+          )}
         </ModalBox>
       </Modal>
     </Box>

@@ -1,12 +1,13 @@
-import { Button, Stack, Typography } from "@mui/material";
+import { Button, Stack, SxProps, Typography } from "@mui/material";
 import React from "react";
 
 interface ConfirmationBoxProps {
-  title: string | React.ReactNode
+  title: string | React.ReactNode;
   actionLabel?: string;
   cancelLabel?: string;
   onAction: () => void;
   onCancel: () => void;
+  sx?: SxProps;
 }
 
 const ConfirmationBox = ({
@@ -15,9 +16,10 @@ const ConfirmationBox = ({
   cancelLabel = "Trở lại",
   onAction,
   onCancel,
+  sx,
 }: ConfirmationBoxProps) => {
   return (
-    <Stack alignItems="center" justifyContent="center">
+    <Stack sx={sx} alignItems="center" justifyContent="center">
       <Typography variant="h6" sx={{ mb: 4 }}>
         {title}
       </Typography>

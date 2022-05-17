@@ -19,8 +19,13 @@ export const useCart = () => {
     setOrdersState(newOrders);
   };
 
+  const resetCart = () => {
+    setOrdersState([]);
+  };
+
   return {
     addNewOrder,
     removeOrder,
+    resetCart,
   };
 };

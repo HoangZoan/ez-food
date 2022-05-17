@@ -2,7 +2,7 @@ import React from "react";
 import { Button, Container, Grid, Stack, Typography } from "@mui/material";
 import ProductDetailCard from "components/ProductDetailCard";
 import { ORDER_KEY } from "shared/config";
-import { ProductDetailStateType, ProductDetailType } from "shared/types";
+import { ProductDetailType } from "shared/types";
 import { createId } from "shared/utils";
 import { useCart } from "states/cart";
 import PreviewProducts from "./PreviewProducts";
@@ -12,6 +12,8 @@ const dummyData: ProductDetailType = {
   id: "1",
   title: "Bánh mỳ cay",
   price: 20000,
+  totalPrice: 20000,
+  quantity: 1,
   options: [
     {
       name: "Cỡ",
@@ -29,10 +31,11 @@ const dummyData: ProductDetailType = {
       ],
     },
   ],
-  sideDish: [
+  availableSideDish: [
     { name: "Rau củ", price: 0 },
     { name: "Chả quế", price: 3000 },
   ],
+  selectedSideDish: [],
 };
 
 const SubmitButton = React.memo(() => {
@@ -47,7 +50,7 @@ const ProductDetail = () => {
   const { title } = dummyData;
   const { addNewOrder } = useCart();
 
-  const handleSubmit = (data: ProductDetailStateType) => {
+  const handleSubmit = (data: ProductDetailType) => {
     const orderId = createId(ORDER_KEY);
     const orderData = {
       ...data,

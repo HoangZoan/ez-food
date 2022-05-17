@@ -8,7 +8,7 @@ const ProductDetailTotalPrice = () => {
   const totalPrice = useRecoilValue(productTotalPriceState);
 
   return (
-    <Stack direction="row" spacing={4}>
+    <Stack direction="row" spacing={4} alignItems="center">
       <Typography variant="h6">Tổng:</Typography>
       <Typography
         variant="h6"

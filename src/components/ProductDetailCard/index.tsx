@@ -1,6 +1,6 @@
 import React, { FormEvent, useEffect } from "react";
-import { Stack } from "@mui/material";
-import { ProductDetailStateType, ProductDetailType } from "shared/types";
+import { Stack, SxProps } from "@mui/material";
+import { ProductDetailType } from "shared/types";
 import BorderBoxLayout from "layouts/BorderBoxLayout";
 import ProductCounter from "components/ProductDetailCard/ProductCounter";
 import ProductDetailTotalPrice from "components/ProductDetailCard/ProductDetailTotalPrice";
@@ -12,13 +12,15 @@ import SideDishOption from "./SideDishOption";
 interface ProductDetailCardProps {
   item: ProductDetailType;
   actionButton: React.ReactNode;
-  onSubmit: (data: ProductDetailStateType) => void;
+  onSubmit: (data: ProductDetailType) => void;
+  sx?: SxProps;
 }
 
 const ProductDetailCard = ({
   item,
   actionButton,
   onSubmit,
+  sx,
 }: ProductDetailCardProps) => {
   const productState = useRecoilValue(productDetailState);
   const setProductInitialState = useProductDetail();
@@ -36,7 +38,7 @@ const ProductDetailCard = ({
     <BorderBoxLayout
       component="form"
       onSubmit={handleSubmit}
-      sx={{ py: 4, px: 6 }}
+      sx={{ py: 4, px: 6, ...sx }}
     >
       <Stack spacing={4}>
         <ProductVariantOptionList />

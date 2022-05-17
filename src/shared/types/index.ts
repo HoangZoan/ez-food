@@ -31,16 +31,10 @@ export interface SideDistType {
   price: number;
 }
 
+// PRODUCT DETAIL STATE TYPE
 export interface ProductDetailType {
   id: string;
   title: string;
-  price: number;
-  options: OptionsType[];
-  sideDish: SideDistType[];
-}
-
-// PRODUCT DETAIL STATE TYPE
-export interface ProductDetailStateType {
   options: OptionsType[];
   availableSideDish: SideDistType[];
   selectedSideDish: SideDistType[];
@@ -50,7 +44,7 @@ export interface ProductDetailStateType {
 }
 
 // PRODUCT ORDER TYPE
-export interface ProductOrderType extends ProductDetailStateType {
+export interface ProductOrderType extends ProductDetailType {
   orderId: string;
   title: string;
   price: number;
