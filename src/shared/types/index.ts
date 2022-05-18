@@ -46,7 +46,6 @@ export interface ProductDetailType {
 // PRODUCT ORDER TYPE
 export interface ProductOrderType extends ProductDetailType {
   orderId: string;
-  title: string;
-  price: number;
   date: string;
+  title: string;
 }

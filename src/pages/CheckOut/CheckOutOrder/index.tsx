@@ -20,8 +20,21 @@ interface CheckOutOrderProps {
   item: ProductOrderType;
 }
 
+const ActionButtons = ({ onCancel }: { onCancel: () => void }) => {
+  return (
+    <Stack direction="row" spacing={4}>
+      <Button variant="outlined" onClick={onCancel}>
+        Trở lại
+      </Button>
+      <Button type="submit" variant="contained">
+        Thay đổi
+      </Button>
+    </Stack>
+  );
+};
+
 const CheckOutOrder = ({ item }: CheckOutOrderProps) => {
-  const { removeOrder } = useCart();
+  const { removeOrder, changeOrder } = useCart();
   const {
     orderId,
     title,
@@ -32,6 +45,7 @@ const CheckOutOrder = ({ item }: CheckOutOrderProps) => {
     price,
     quantity,
     selectedSideDish,
+    date,
   } = item;
   const [showModal, setShowModal] = useState(false);
   const [isRemoving, setIsRemoving] = useState(false);
@@ -58,7 +72,13 @@ const CheckOutOrder = ({ item }: CheckOutOrderProps) => {
   };
 
   const handleChangeProduct = (data: ProductDetailType) => {
-    console.log(data);
+    const changedData = {
+      ...data,
+      date,
+      orderId,
+      title,
+    } as ProductOrderType;
+    changeOrder(changedData);
   };
 
   return (
@@ -140,7 +160,7 @@ const CheckOutOrder = ({ item }: CheckOutOrderProps) => {
                 quantity,
                 totalPrice,
               }}
-              actionButton={<Button>Thay Doi</Button>}
+              actionButton={<ActionButtons onCancel={closeChangeModal} />}
               onSubmit={handleChangeProduct}
               sx={{ minWidth: "54rem" }}
             />

@@ -19,11 +19,13 @@ export const useProductDetail = () => {
   const setProductDetailInitialState = useCallback(
     (item: ProductDetailType) => {
       const { options, price, availableSideDish, selectedSideDish, id } = item;
-      const defaultTypePrice = options.map(() => 0);
+      const typePricesArr = options.map(
+        ({ variants }) => variants.find(({ selected }) => selected)!.price
+      );
 
       setProductIdState(id);
       setProductOptionState(options);
-      setProductTypePriceState(defaultTypePrice);
+      setProductTypePriceState(typePricesArr);
       setProductPriceState(price);
       setProductSideDishState({
         availableSideDish,

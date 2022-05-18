@@ -19,6 +19,19 @@ export const useCart = () => {
     setOrdersState(newOrders);
   };
 
+  const changeOrder = (order: ProductOrderType) => {
+    const orderIndex = ordersState.findIndex(
+      ({ orderId }) => orderId === order.orderId
+    );
+    const newOrders = [
+      ...ordersState.slice(0, orderIndex),
+      order,
+      ...ordersState.slice(orderIndex + 1),
+    ];
+
+    setOrdersState(newOrders);
+  };
+
   const resetCart = () => {
     setOrdersState([]);
   };
@@ -26,6 +39,7 @@ export const useCart = () => {
   return {
     addNewOrder,
     removeOrder,
+    changeOrder,
     resetCart,
   };
 };

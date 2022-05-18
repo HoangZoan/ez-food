@@ -58,7 +58,7 @@ export const productDetailState = selector({
     const quantity = get(productQuantityState);
     const totalPrice = get(productTotalPriceState);
 
-    return {
+    const state = {
       id,
       options,
       availableSideDish,
@@ -67,6 +67,8 @@ export const productDetailState = selector({
       quantity,
       totalPrice,
     } as ProductDetailType;
+
+    return state;
   },
 });
 
