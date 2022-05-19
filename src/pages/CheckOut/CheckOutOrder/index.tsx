@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import ConfirmationBox from "components/ConfirmationBox";
 import ProductDetailCard from "components/ProductDetailCard";
+import StatusSnackbar from "components/StatusSnackbar";
 import CloseButton from "components/UI/CloseButton";
 import ModalBox from "components/UI/ModalBox";
 import { useState } from "react";
@@ -50,6 +51,7 @@ const CheckOutOrder = ({ item }: CheckOutOrderProps) => {
   const [showModal, setShowModal] = useState(false);
   const [isRemoving, setIsRemoving] = useState(false);
   const [isChanging, setIsChanging] = useState(false);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
 
   const openConfirmationModal = () => {
     setShowModal(true);
@@ -79,6 +81,12 @@ const CheckOutOrder = ({ item }: CheckOutOrderProps) => {
       title,
     } as ProductOrderType;
     changeOrder(changedData);
+    closeChangeModal();
+    setOpenSnackbar(true);
+  };
+
+  const handleCloseSnackbar = () => {
+    setOpenSnackbar(false);
   };
 
   return (
@@ -167,6 +175,13 @@ const CheckOutOrder = ({ item }: CheckOutOrderProps) => {
           )}
         </ModalBox>
       </Modal>
+
+      <StatusSnackbar
+        open={openSnackbar}
+        onClose={handleCloseSnackbar}
+        severity="success"
+        title="Thay đổi thành công!"
+      />
     </Box>
   );
 };
