@@ -27,7 +27,7 @@ const PageHeader = ({ children }: { children: React.ReactNode }) => {
       sx={{
         backgroundColor:
           isMainPage && isOnTop ? "transparent" : "secondary.main",
-        transition: "all 0.3s",
+        transition: "background-color 0.3s box-shadow 0.3s",
       }}
       elevation={isOnTop ? 0 : 3}
     >

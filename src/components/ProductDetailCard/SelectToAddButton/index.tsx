@@ -1,38 +1,11 @@
 import React, { useState } from "react";
-import {
-  Button,
-  Menu as MuiMenu,
-  MenuItem,
-  MenuProps,
-  Stack,
-} from "@mui/material";
-import { styled } from "shared/theme";
+import { Button, Stack } from "@mui/material";
 import { formatPriceText } from "shared/utils";
 import { useRecoilValue } from "recoil";
 import { productSideDishState, useProductSideDish } from "states/productDetail";
 import SideDishChips from "../SideDishChips";
-
-const Menu = styled(({ children, ...props }: MenuProps) => {
-  return (
-    <MuiMenu
-      {...props}
-      anchorOrigin={{
-        vertical: "top",
-        horizontal: "left",
-      }}
-      elevation={3}
-    >
-      {children}
-    </MuiMenu>
-  );
-})(({ theme }) => ({
-  "& .MuiPaper-root": {
-    border: `1px solid ${theme.palette.primary.main}`,
-  },
-  "& .MuiList-root": {
-    padding: "0",
-  },
-}));
+import PopupItem from "components/UI/PopupMenuLayout/PopupItem";
+import PopupMenu from "components/UI/PopupMenuLayout/PopupMenu";
 
 interface SelectToAddButtonProps {
   content: string;
@@ -75,25 +48,26 @@ const SelectToAddButton = ({ content }: SelectToAddButtonProps) => {
             {content}
           </Button>
 
-          <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
+          <PopupMenu
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose}
+            anchorOrigin={{
+              vertical: "top",
+              horizontal: "left",
+            }}
+          >
             {availableSideDish.map(({ name, price }) => (
-              <MenuItem
+              <PopupItem
                 key={name}
                 onClick={() => handleAddSideDish(name)}
-                sx={{
-                  px: 4,
-                  transition: "all 0.2s",
-                  "&:hover": {
-                    backgroundColor: (theme) => theme.colors.background.primary,
-                    color: (theme) => theme.palette.primary.main,
-                  },
-                }}
+                sx={{ py: 3 }}
               >
                 {name} (
                 {price === 0 ? "Miễn phí" : "+" + formatPriceText(price)})
-              </MenuItem>
+              </PopupItem>
             ))}
-          </Menu>
+          </PopupMenu>
         </>
       )}
     </Stack>

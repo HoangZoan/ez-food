@@ -66,11 +66,11 @@ const theme = createTheme({
       letterSpacing: "2px",
     },
     h2: {
-      fontSize: "3.2rem",
+      fontSize: "3.6rem",
       fontWeight: 400,
     },
     h3: {
-      fontSize: "3.6rem",
+      fontSize: "3.2rem",
     },
     h4: {
       fontSize: "2.8rem",
@@ -92,6 +92,7 @@ const theme = createTheme({
 });
 
 theme.components = {
+  // BUTTON
   MuiButton: {
     defaultProps: {
       disableRipple: true,
@@ -101,6 +102,19 @@ theme.components = {
         boxShadow: "none",
         ":hover": {
           boxShadow: "none",
+        },
+        "&.MuiButton-containedError:hover": {
+          backgroundColor: theme.palette.error.light,
+        },
+        "&.MuiButton-containedSuccess:hover": {
+          backgroundColor: theme.palette.success.light,
+        },
+      },
+      outlined: {
+        backgroundColor: "white",
+        "&.MuiButton-outlinedError:hover": {
+          backgroundColor: theme.palette.error.main,
+          color: "white",
         },
       },
       outlinedPrimary: {
@@ -118,6 +132,8 @@ theme.components = {
       },
     },
   },
+
+  // FORM LABEL
   MuiFormLabel: {
     styleOverrides: {
       root: {
@@ -125,6 +141,8 @@ theme.components = {
       },
     },
   },
+
+  // OUTLINED INPUT
   MuiOutlinedInput: {
     styleOverrides: {
       root: {
