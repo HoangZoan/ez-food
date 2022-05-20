@@ -49,3 +49,9 @@ export interface ProductOrderType extends ProductDetailType {
   date: string;
   title: string;
 }
+
+// ADMIN PAGE
+export interface TableSortsType {
+  title: string;
+  value: string;
+}

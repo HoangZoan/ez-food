@@ -91,12 +91,29 @@ const theme = createTheme({
   },
 });
 
+declare module "@mui/material/Button" {
+  interface ButtonPropsVariantOverrides {
+    ["contained-disabled"]: true;
+  }
+}
+
 theme.components = {
   // BUTTON
   MuiButton: {
     defaultProps: {
       disableRipple: true,
     },
+    variants: [
+      {
+        props: { variant: "contained-disabled" },
+        style: {
+          backgroundColor: theme.colors.common.grey,
+          "&:hover": {
+            backgroundColor: theme.palette.grey[500],
+          },
+        },
+      },
+    ],
     styleOverrides: {
       contained: {
         boxShadow: "none",

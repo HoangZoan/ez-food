@@ -3,6 +3,8 @@ import { Container, Grid, Typography } from "@mui/material";
 import AdminNav from "./AdminNav";
 import { Route, Routes } from "react-router-dom";
 import OrdersTable from "./OrdersTable";
+import MenuTable from "./MenuTable";
+import NotificationsTable from "./NotificationsTable";
 
 const Admin = () => {
   return (
@@ -18,6 +20,8 @@ const Admin = () => {
         <Grid item xs={9}>
           <Routes>
             <Route path="orders" element={<OrdersTable />} />
+            <Route path="menu" element={<MenuTable />} />
+            <Route path="notifications" element={<NotificationsTable />} />
           </Routes>
         </Grid>
       </Grid>

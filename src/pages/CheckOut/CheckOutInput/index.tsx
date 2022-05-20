@@ -1,12 +1,10 @@
 import {
-  FormControl as MuiFormControl,
-  FormLabel as MuiFormLabel,
-  TextField as MuiTextField,
-  TextFieldProps,
-} from "@mui/material";
-import React from "react";
+  FormControl,
+  FormLabel,
+  MultilineTextField,
+  TextField,
+} from "components/UI/FormComponents";
 import { FieldValues, UseFormRegister } from "react-hook-form";
-import { styled } from "shared/theme";
 
 interface CheckoutInputProps {
   id: string;
@@ -17,38 +15,6 @@ interface CheckoutInputProps {
   register: UseFormRegister<FieldValues>;
   multiline?: boolean;
 }
-
-const FormControl = styled(MuiFormControl)({
-  display: "flex",
-  flexDirection: "row",
-  justifyContent: "space-between",
-  alignItems: "center",
-});
-
-const FormLabel = styled(MuiFormLabel)({
-  fontWeight: 700,
-  alignSelf: "flex-start",
-  lineHeight: "3.2rem",
-});
-
-const TextField = styled(MuiTextField)({
-  flex: 1,
-  maxWidth: "24rem",
-  "& input": {
-    paddingTop: "6px",
-    paddingBottom: "6px",
-    fontSize: "1.4rem",
-  },
-});
-
-const MultilineTextField = styled((props: TextFieldProps) => (
-  <TextField {...props} multiline minRows={2} maxRows={3} />
-))({
-  "& .MuiOutlinedInput-root": { padding: "0" },
-  "& #address": {
-    padding: "0.6rem 1.4rem",
-  },
-});
 
 const CheckoutInput = ({
   id,

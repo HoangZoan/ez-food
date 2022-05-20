@@ -3,26 +3,18 @@ import { Box, Button, Typography } from "@mui/material";
 import ExpandCircleDownIcon from "@mui/icons-material/ExpandCircleDown";
 import PopupItem from "components/UI/PopupMenuLayout/PopupItem";
 import PopupMenu from "components/UI/PopupMenuLayout/PopupMenu";
+import { TableSortsType } from "shared/types";
 
-type SortsTitleType = "Đơn đang đặt" | "Đơn đã giao" | "Đơn đã hủy";
-
-interface SortsType {
-  title: SortsTitleType;
-  value: "in-queue" | "delivered" | "canceled";
+interface SortButtonProps {
+  onChange: (value: string) => void;
+  sorts: TableSortsType[];
+  side?: "left" | "right";
 }
 
-const sorts: SortsType[] = [
-  { title: "Đơn đang đặt", value: "in-queue" },
-  { title: "Đơn đã giao", value: "delivered" },
-  { title: "Đơn đã hủy", value: "canceled" },
-];
-
-const SortButton = () => {
+const SortButton = ({ onChange, sorts, side = "right" }: SortButtonProps) => {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const showMenu = Boolean(anchorEl);
-  const [activeItem, setActiveItem] = useState<
-    "Đơn đang đặt" | "Đơn đã giao" | "Đơn đã hủy"
-  >("Đơn đang đặt");
+  const [activeItem, setActiveItem] = useState(sorts[0].title);
   const selects = sorts.filter(({ title }) => title !== activeItem);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -33,8 +25,9 @@ const SortButton = () => {
     setAnchorEl(null);
   };
 
-  const handleItemClick = (activeValue: SortsTitleType) => {
-    setActiveItem(activeValue);
+  const handleItemClick = (activeTitle: string, activeValue: string) => {
+    setActiveItem(activeTitle);
+    onChange(activeValue);
     handleClose();
   };
 
@@ -56,11 +49,11 @@ const SortButton = () => {
         onClose={handleClose}
         anchorOrigin={{
           vertical: "bottom",
-          horizontal: "right",
+          horizontal: side,
         }}
         transformOrigin={{
           vertical: "top",
-          horizontal: "right",
+          horizontal: side,
         }}
       >
         {selects.map(({ title, value }) => (
@@ -69,10 +62,9 @@ const SortButton = () => {
             sx={{
               fontSize: "1.6rem",
               py: 3,
-              paddingLeft: "1.5rem",
-              paddingRight: "5.4rem",
+              padding: "1rem 2.4rem",
             }}
-            onClick={() => handleItemClick(title)}
+            onClick={() => handleItemClick(title, value)}
           >
             {title}
           </PopupItem>

@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, Container, Grid, Stack, Typography } from "@mui/material";
 import ProductDetailCard from "components/ProductDetailCard";
-import { ORDER_KEY } from "shared/config";
+import { SELECT_KEY } from "shared/config";
 import { ProductDetailType } from "shared/types";
 import { createId } from "shared/utils";
 import { useCart } from "states/cart";
@@ -51,7 +51,7 @@ const ProductDetail = () => {
   const { addNewOrder } = useCart();
 
   const handleSubmit = (data: ProductDetailType) => {
-    const orderId = createId(ORDER_KEY);
+    const orderId = createId(SELECT_KEY);
     const orderData = {
       ...data,
       orderId,
