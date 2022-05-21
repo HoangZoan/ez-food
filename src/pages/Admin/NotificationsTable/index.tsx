@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Button,
   Modal,
@@ -8,19 +9,23 @@ import {
   TableRow,
 } from "@mui/material";
 import {
-  FormControl,
-  FormLabel,
-  MultilineTextField,
-  TextField,
-} from "components/UI/FormComponents";
-import {
   TableBodyRow,
   TableCell,
   TableCellHead,
 } from "components/UI/ManagingTable";
-import ModalBox from "components/UI/ModalBox";
+import NotificationsForm from "./NotificationsForm";
 
 const NotificationsTable = () => {
+  const [showForm, setShowForm] = useState(false);
+
+  const handleOpenForm = () => {
+    setShowForm(true);
+  };
+
+  const handleCloseForm = () => {
+    setShowForm(false);
+  };
+
   return (
     <>
       <Table>
@@ -28,7 +33,9 @@ const NotificationsTable = () => {
           <TableRow>
             <TableCellHead>Tiêu đề</TableCellHead>
             <TableCellHead align="right">
-              <Button variant="outlined">+ Thêm</Button>
+              <Button variant="outlined" onClick={handleOpenForm}>
+                + Thêm
+              </Button>
             </TableCellHead>
           </TableRow>
         </TableHead>
@@ -55,21 +62,8 @@ const NotificationsTable = () => {
         </TableBody>
       </Table>
 
-      <Modal open={true} disableAutoFocus>
-        <ModalBox
-          sx={{ backgroundColor: "white", px: 6, py: 5, minWidth: "54rem" }}
-        >
-          <Stack spacing={3}>
-            <FormControl sx={{ gridTemplateColumns: "1fr 3fr" }}>
-              <FormLabel>Tiêu đề:</FormLabel>
-              <TextField />
-            </FormControl>
-            <FormControl sx={{ gridTemplateColumns: "1fr 3fr" }}>
-              <FormLabel>Nội dung:</FormLabel>
-              <MultilineTextField minRows={3} />
-            </FormControl>
-          </Stack>
-        </ModalBox>
+      <Modal open={showForm} onClose={handleCloseForm} disableAutoFocus>
+        <NotificationsForm onClose={handleCloseForm} />
       </Modal>
     </>
   );
