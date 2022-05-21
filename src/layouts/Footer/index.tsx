@@ -4,7 +4,7 @@ import { AppBar, Toolbar, Container } from "@mui/material";
 const Footer = () => {
   return (
     <AppBar
-      sx={{ backgroundColor: "secondary.main" }}
+      sx={{ backgroundColor: "secondary.main", position: "fixed", bottom: 0 }}
       component="footer"
       position="relative"
     >

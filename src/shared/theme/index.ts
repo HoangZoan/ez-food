@@ -1,4 +1,4 @@
-import { createTheme, Components, SxProps } from "@mui/material";
+import { createTheme, Components } from "@mui/material";
 import { createStyled } from "@mui/system";
 import { red } from "@mui/material/colors";
 
@@ -163,9 +163,9 @@ theme.components = {
   MuiOutlinedInput: {
     styleOverrides: {
       root: {
-        "&:hover .MuiOutlinedInput-notchedOutline": {
+        "&:hover:not(.Mui-disabled) .MuiOutlinedInput-notchedOutline": {
           borderColor: theme.palette.primary.light,
-        } as SxProps,
+        },
       },
     },
   },

@@ -1,4 +1,3 @@
-import React from "react";
 import { Container, Grid, Typography } from "@mui/material";
 import AdminNav from "./AdminNav";
 import { Route, Routes } from "react-router-dom";

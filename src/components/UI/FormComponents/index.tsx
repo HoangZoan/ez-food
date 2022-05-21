@@ -14,15 +14,25 @@ export const FormControl = styled(MuiFormControl)({
 export const FormLabel = styled(MuiFormLabel)({
   fontWeight: 700,
   lineHeight: "3.2rem",
+  "&.Mui-focused": {
+    color: "inherit",
+  },
 });
 
-export const TextField = styled(MuiTextField)({
+export const TextField = styled(MuiTextField)(({ theme }) => ({
   "& input": {
     paddingTop: "6px",
     paddingBottom: "6px",
     fontSize: "1.4rem",
+    borderRadius: "9px",
   },
-});
+  "& input::placeholder": {
+    fontSize: "1.2rem",
+  },
+  "& input.Mui-disabled": {
+    backgroundColor: theme.palette.grey[200],
+  },
+}));
 
 export const MultilineTextField = styled((props: TextFieldProps) => (
   <TextField multiline minRows={2} maxRows={3} {...props} />
