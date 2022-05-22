@@ -1,45 +1,13 @@
-import {
-  Box,
-  Divider,
-  Grid,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-  Stack,
-  Typography,
-  FormControl as MuiFormControl,
-  FormLabel as MuiFormLabel,
-  Button,
-  Input,
-} from "@mui/material";
-import FileInputButton from "components/UI/FileInputButton";
-import {
-  FormControl,
-  FormLabel,
-  TextField,
-} from "components/UI/FormComponents";
+import { Divider, Stack, Button } from "@mui/material";
 import { useState } from "react";
-import { styled } from "shared/theme";
+import { useForm } from "react-hook-form";
+import { useRecoilValue } from "recoil";
 import { ProductDetailType } from "shared/types";
-
-const MenuFormControl = styled(FormControl)({
-  gridTemplateColumns: "1fr 3fr",
-  columnGap: "3.6rem",
-});
-
-const MenuFormSelect = styled(Select)({
-  minWidth: "12rem",
-  "& .MuiSelect-select": {
-    paddingTop: "0.6rem",
-    paddingBottom: "0.6rem",
-  },
-});
-
-const MenuOptionLabel = styled(MuiFormLabel)({
-  fontSize: "1.2rem",
-  marginBottom: "0.4rem",
-  fontWeight: 700,
-});
+import { productDetailState } from "states/productDetail";
+import FieldActions from "./FieldActions";
+import OptionsField from "./OptionsField";
+import ProductInfoField from "./ProductInfoField";
+import SideDishField from "./SideDishField";
 
 interface MenuFormProps {
   onClose: () => void;
@@ -47,100 +15,73 @@ interface MenuFormProps {
 }
 
 const MenuForm = ({ onClose, item }: MenuFormProps) => {
-  const [type, setType] = useState("single");
   const isAddingNew = !Boolean(item);
+  const { options } = useRecoilValue(productDetailState);
+  const [newOptionsLength, setNewOptionsLength] = useState(0);
+  const [newSideDishLength, setNewSideDishLength] = useState(0);
+  const generatedOptionsArr = Array.from(new Array(newOptionsLength).keys());
+  const generatedSideDishArr = Array.from(new Array(newSideDishLength).keys());
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm();
 
-  const handleChange = (event: SelectChangeEvent<unknown>) => {
-    setType(event.target.value as string);
+  const handleFormSubmit = (data: any) => {
+    console.log(data);
+  };
+
+  const handleAddNewOptionFields = () => {
+    setNewOptionsLength((oldState) => oldState + 1);
+  };
+
+  const handleRemoveNewOptionFields = () => {
+    setNewOptionsLength((oldState) => oldState - 1);
+  };
+
+  const handleAddNewSideDishFields = () => {
+    setNewSideDishLength((oldState) => oldState + 1);
+  };
+
+  const handleRemoveNewSideDishFields = () => {
+    setNewSideDishLength((oldState) => oldState - 1);
   };
 
   return (
-    <Stack spacing={3} sx={{ px: 6, py: 5 }} component="form">
-      {/* BASIC INFO */}
-      <MenuFormControl>
-        <FormLabel>Tên món:</FormLabel>
-        <TextField />
-      </MenuFormControl>
-      <MenuFormControl>
-        <FormLabel>Loại:</FormLabel>
-        <Box>
-          <MenuFormSelect value={type} onChange={handleChange}>
-            <MenuItem value={"single"}>Món đơn</MenuItem>
-            <MenuItem value={"combo"}>Combo</MenuItem>
-          </MenuFormSelect>
-        </Box>
-      </MenuFormControl>
-      <MenuFormControl>
-        <FormLabel>Hình ảnh:</FormLabel>
-        <Box>
-          <FileInputButton htmlFor="photo">Tải ảnh lên</FileInputButton>
-          <Input type="file" id="photo" sx={{ display: "none" }} />
-          {/* <FormHelperText></FormHelperText> */}
-        </Box>
-      </MenuFormControl>
-      <MenuFormControl>
-        <FormLabel>Giá:</FormLabel>
-        <Stack direction="row" spacing={3}>
-          <TextField type="number" sx={{ width: 1 / 4 }} />
-          <Typography>(nghìn VNĐ)</Typography>
-        </Stack>
-      </MenuFormControl>
+    <Stack
+      spacing={3}
+      sx={{ px: 6, py: 5 }}
+      component="form"
+      onSubmit={handleSubmit(handleFormSubmit)}
+    >
+      <ProductInfoField register={register} errors={errors} />
 
       <Divider />
 
-      {/* OPTIONS */}
-      <MenuFormControl>
-        <FormLabel>Tên lựa chọn:</FormLabel>
-        <TextField />
-      </MenuFormControl>
-      <MenuFormControl>
-        <FormLabel>Các lựa chọn:</FormLabel>
+      {/* <OptionsField /> */}
+      {options.length === 0 &&
+        generatedOptionsArr.map((key) => <OptionsField key={key} />)}
 
-        <Stack spacing={1}>
-          <Grid container>
-            <Grid item xs={8}>
-              <MuiFormControl>
-                <MenuOptionLabel>Lựa chọn</MenuOptionLabel>
-                <TextField />
-              </MuiFormControl>
-            </Grid>
-            <Grid item xs={4}>
-              <MuiFormControl>
-                <MenuOptionLabel>Tăng thêm</MenuOptionLabel>
-                <TextField type="number" placeholder="Nghìn VNĐ" disabled />
-              </MuiFormControl>
-            </Grid>
-          </Grid>
-
-          <Button sx={{ alignSelf: "flex-start", fontSize: "1.2rem" }}>
-            + Thêm lựa chọn
-          </Button>
-        </Stack>
-      </MenuFormControl>
-
-      <Button variant="outlined" sx={{ alignSelf: "flex-start" }}>
-        + Tùy chọn
-      </Button>
+      <FieldActions
+        addLabel="+ Tùy chọn"
+        onAdd={handleAddNewOptionFields}
+        onRemove={handleRemoveNewOptionFields}
+        showRemove={newOptionsLength > 0}
+      />
 
       <Divider />
 
-      {/* SIDE-DISH */}
-      <MenuFormControl>
-        <FormLabel>Đồ gọi thêm:</FormLabel>
-        <TextField />
-      </MenuFormControl>
-      <MenuFormControl>
-        <FormLabel>Giá:</FormLabel>
+      {/* <SideDishField /> */}
+      {generatedSideDishArr.map((key) => (
+        <SideDishField key={key} />
+      ))}
 
-        <Stack direction="row" spacing={3}>
-          <TextField type="number" sx={{ width: 1 / 4 }} />
-          <Typography>(nghìn VNĐ)</Typography>
-        </Stack>
-      </MenuFormControl>
-
-      <Button variant="outlined" sx={{ alignSelf: "flex-start" }}>
-        + Đồ gọi thêm
-      </Button>
+      <FieldActions
+        addLabel="+ Đồ gọi thêm"
+        onAdd={handleAddNewSideDishFields}
+        onRemove={handleRemoveNewSideDishFields}
+        showRemove={newSideDishLength > 0}
+      />
 
       <Stack direction="row" justifyContent="center" spacing={5} sx={{ pt: 5 }}>
         <Button variant="contained" type="submit">

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import MenuItem from "components/UI/MenuItem";
-import { Box, Grid, Stack, Typography } from "@mui/material";
+import { Box, ClickAwayListener, Grid, Stack, Typography } from "@mui/material";
 import { formatPriceText } from "shared/utils";
 import { useCart } from "states/cart";
 import { styled } from "shared/theme";
@@ -35,73 +35,75 @@ const CartItem = ({ id, title, total, quantity }: CartItemProps) => {
   };
 
   return (
-    <MenuItem>
-      <Box position="relative" width={1} height={1}>
-        <Grid
-          container
-          spacing={3}
-          sx={{ visibility: isRemoving ? "hidden" : "grid" }}
-        >
+    <ClickAwayListener onClickAway={handleClickCancel}>
+      <MenuItem>
+        <Box position="relative" width={1} height={1}>
           <Grid
-            item
-            xs={4}
-            sx={{
-              aspectRatio: "1 / 1",
-
-              "& img": {
-                width: 1,
-                height: 1,
-                objectFit: "cover",
-              },
-            }}
+            container
+            spacing={3}
+            sx={{ visibility: isRemoving ? "hidden" : "grid" }}
           >
-            <img
-              src="https://asianfoodnetwork.com/content/dam/afn/global/en/homepage/new-content-carousel/AFN_Food_Made_Good_HK_Awards_good_to_go_award_mobile.jpg.transform/desktop-img/img.jpg"
-              alt="Anh"
-            />
-          </Grid>
-
-          <Grid xs item>
-            <Typography
-              mb={2}
-              variant="h6"
+            <Grid
+              item
+              xs={4}
               sx={{
-                display: "-webkit-box",
-                WebkitLineClamp: "2",
-                WebkitBoxOrient: "vertical",
-                overflow: "hidden",
+                aspectRatio: "1 / 1",
+
+                "& img": {
+                  width: 1,
+                  height: 1,
+                  objectFit: "cover",
+                },
               }}
             >
-              {title}
-            </Typography>
+              <img
+                src="https://asianfoodnetwork.com/content/dam/afn/global/en/homepage/new-content-carousel/AFN_Food_Made_Good_HK_Awards_good_to_go_award_mobile.jpg.transform/desktop-img/img.jpg"
+                alt="Anh"
+              />
+            </Grid>
 
-            <Typography mb={1} variant="body1">
-              Số lượng: {quantity}
-            </Typography>
-            <Typography variant="body1">
-              Tổng: <strong>{formatPriceText(total)}</strong>
-            </Typography>
+            <Grid xs item>
+              <Typography
+                mb={2}
+                variant="h6"
+                sx={{
+                  display: "-webkit-box",
+                  WebkitLineClamp: "2",
+                  WebkitBoxOrient: "vertical",
+                  overflow: "hidden",
+                }}
+              >
+                {title}
+              </Typography>
+
+              <Typography mb={1} variant="body1">
+                Số lượng: {quantity}
+              </Typography>
+              <Typography variant="body1">
+                Tổng: <strong>{formatPriceText(total)}</strong>
+              </Typography>
+            </Grid>
+
+            <Grid item>
+              <CloseButton onClick={handleClickClose} />
+            </Grid>
           </Grid>
 
-          <Grid item>
-            <CloseButton onClick={handleClickClose} />
-          </Grid>
-        </Grid>
-
-        <ConfirmationBoxLayout
-          display={isRemoving ? "flex" : "none"}
-          justifyContent="center"
-        >
-          <ConfirmationBox
-            title="Bạn muốn xóa sản phẩm này?"
-            actionLabel="Xóa"
-            cancelLabel="Hủy"
-            onAction={() => removeOrder(id)}
-            onCancel={handleClickCancel}
-          />
-        </ConfirmationBoxLayout>
-      </Box>
-    </MenuItem>
+          <ConfirmationBoxLayout
+            display={isRemoving ? "flex" : "none"}
+            justifyContent="center"
+          >
+            <ConfirmationBox
+              title="Bạn muốn xóa sản phẩm này?"
+              actionLabel="Xóa"
+              cancelLabel="Hủy"
+              onAction={() => removeOrder(id)}
+              onCancel={handleClickCancel}
+            />
+          </ConfirmationBoxLayout>
+        </Box>
+      </MenuItem>
+    </ClickAwayListener>
   );
 };
 

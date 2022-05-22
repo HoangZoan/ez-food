@@ -1,9 +1,9 @@
 import {
   Box,
   Button,
+  Dialog,
   Divider,
   Grid,
-  Modal,
   Stack,
   Typography,
 } from "@mui/material";
@@ -11,7 +11,6 @@ import ConfirmationBox from "components/ConfirmationBox";
 import ProductDetailCard from "components/ProductDetailCard";
 import StatusSnackbar from "components/StatusSnackbar";
 import CloseButton from "components/UI/CloseButton";
-import ModalBox from "components/UI/ModalBox";
 import { useState } from "react";
 import { ProductDetailType, ProductOrderType } from "shared/types";
 import { formatPriceText } from "shared/utils";
@@ -134,47 +133,41 @@ const CheckOutOrder = ({ item }: CheckOutOrderProps) => {
         </Grid>
       </Grid>
 
-      <Modal
+      <Dialog
         open={showModal}
         onClose={isRemoving ? closeConfirmationModal : closeChangeModal}
         disableScrollLock
       >
-        <ModalBox
-          sx={{
-            backgroundColor: "white",
-          }}
-        >
-          {isRemoving && (
-            <ConfirmationBox
-              title={
-                <>
-                  Bạn muốn xóa <strong>{title}</strong> khỏi giỏ hàng?
-                </>
-              }
-              onAction={() => removeOrder(orderId)}
-              onCancel={closeConfirmationModal}
-              sx={{ py: 4, px: 6 }}
-            />
-          )}
-          {isChanging && (
-            <ProductDetailCard
-              item={{
-                id,
-                title,
-                options,
-                availableSideDish,
-                selectedSideDish,
-                price,
-                quantity,
-                totalPrice,
-              }}
-              actionButton={<ActionButtons onCancel={closeChangeModal} />}
-              onSubmit={handleChangeProduct}
-              sx={{ minWidth: "54rem" }}
-            />
-          )}
-        </ModalBox>
-      </Modal>
+        {isRemoving && (
+          <ConfirmationBox
+            title={
+              <>
+                Bạn muốn xóa <strong>{title}</strong> khỏi giỏ hàng?
+              </>
+            }
+            onAction={() => removeOrder(orderId)}
+            onCancel={closeConfirmationModal}
+            sx={{ py: 4, px: 6 }}
+          />
+        )}
+        {isChanging && (
+          <ProductDetailCard
+            item={{
+              id,
+              title,
+              options,
+              availableSideDish,
+              selectedSideDish,
+              price,
+              quantity,
+              totalPrice,
+            }}
+            actionButton={<ActionButtons onCancel={closeChangeModal} />}
+            onSubmit={handleChangeProduct}
+            sx={{ minWidth: "54rem" }}
+          />
+        )}
+      </Dialog>
 
       <StatusSnackbar
         open={openSnackbar}
