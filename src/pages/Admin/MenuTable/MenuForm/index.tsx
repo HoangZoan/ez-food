@@ -10,7 +10,9 @@ import {
   FormControl as MuiFormControl,
   FormLabel as MuiFormLabel,
   Button,
+  Input,
 } from "@mui/material";
+import FileInputButton from "components/UI/FileInputButton";
 import {
   FormControl,
   FormLabel,
@@ -18,6 +20,7 @@ import {
 } from "components/UI/FormComponents";
 import { useState } from "react";
 import { styled } from "shared/theme";
+import { ProductDetailType } from "shared/types";
 
 const MenuFormControl = styled(FormControl)({
   gridTemplateColumns: "1fr 3fr",
@@ -38,15 +41,21 @@ const MenuOptionLabel = styled(MuiFormLabel)({
   fontWeight: 700,
 });
 
-const MenuForm = () => {
+interface MenuFormProps {
+  onClose: () => void;
+  item?: ProductDetailType;
+}
+
+const MenuForm = ({ onClose, item }: MenuFormProps) => {
   const [type, setType] = useState("single");
+  const isAddingNew = !Boolean(item);
 
   const handleChange = (event: SelectChangeEvent<unknown>) => {
     setType(event.target.value as string);
   };
 
   return (
-    <Stack spacing={3}>
+    <Stack spacing={3} sx={{ px: 6, py: 5 }} component="form">
       {/* BASIC INFO */}
       <MenuFormControl>
         <FormLabel>Tên món:</FormLabel>
@@ -59,6 +68,14 @@ const MenuForm = () => {
             <MenuItem value={"single"}>Món đơn</MenuItem>
             <MenuItem value={"combo"}>Combo</MenuItem>
           </MenuFormSelect>
+        </Box>
+      </MenuFormControl>
+      <MenuFormControl>
+        <FormLabel>Hình ảnh:</FormLabel>
+        <Box>
+          <FileInputButton htmlFor="photo">Tải ảnh lên</FileInputButton>
+          <Input type="file" id="photo" sx={{ display: "none" }} />
+          {/* <FormHelperText></FormHelperText> */}
         </Box>
       </MenuFormControl>
       <MenuFormControl>
@@ -126,8 +143,12 @@ const MenuForm = () => {
       </Button>
 
       <Stack direction="row" justifyContent="center" spacing={5} sx={{ pt: 5 }}>
-        <Button variant="contained">Thêm mới</Button>
-        <Button variant="outlined">Trở lại</Button>
+        <Button variant="contained" type="submit">
+          {isAddingNew ? "Thêm mới" : "Cập nhật"}
+        </Button>
+        <Button variant="outlined" onClick={onClose}>
+          Trở lại
+        </Button>
       </Stack>
     </Stack>
   );

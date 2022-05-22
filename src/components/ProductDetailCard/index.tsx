@@ -23,11 +23,13 @@ const ProductDetailCard = ({
   sx,
 }: ProductDetailCardProps) => {
   const productState = useRecoilValue(productDetailState);
-  const setProductInitialState = useProductDetail();
+  const { setInitialState, clearState } = useProductDetail();
 
   useEffect(() => {
-    setProductInitialState(item);
-  }, [setProductInitialState, item]);
+    setInitialState(item);
+
+    return () => clearState();
+  }, [setInitialState, clearState, item]);
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();

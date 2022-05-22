@@ -52,5 +52,27 @@ export const useProductDetail = () => {
     ]
   );
 
-  return setProductDetailInitialState;
+  const clearProductState = useCallback(() => {
+    setProductIdState("");
+    setProductOptionState([]);
+    setProductTypePriceState([]);
+    setProductPriceState(0);
+    setProductQuantityState(1);
+    setProductSideDishState({
+      availableSideDish: [],
+      selectedSideDish: [],
+    });
+  }, [
+    setProductIdState,
+    setProductOptionState,
+    setProductTypePriceState,
+    setProductPriceState,
+    setProductQuantityState,
+    setProductSideDishState,
+  ]);
+
+  return {
+    setInitialState: setProductDetailInitialState,
+    clearState: clearProductState,
+  };
 };

@@ -7,7 +7,7 @@ import NotificationsTable from "./NotificationsTable";
 
 const Admin = () => {
   return (
-    <Container sx={{ mt: 13 }}>
+    <Container sx={{ mt: 13, minHeight: "48rem" }}>
       <Typography variant="h4" sx={{ fontWeight: 700, textAlign: "center" }}>
         Trang quản lý
       </Typography>

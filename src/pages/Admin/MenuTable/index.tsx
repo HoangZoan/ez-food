@@ -1,7 +1,7 @@
 import SortButton from "components/TableSortButton";
 import {
   Button,
-  Modal,
+  Dialog,
   Stack,
   Table,
   TableBody,
@@ -13,9 +13,8 @@ import {
   TableCell,
   TableCellHead,
 } from "components/UI/ManagingTable";
-import { TableSortsType } from "shared/types";
+import { ProductDetailType, TableSortsType } from "shared/types";
 import { useState } from "react";
-import ModalBox from "components/UI/ModalBox";
 import MenuForm from "./MenuForm";
 
 const sorts: TableSortsType[] = [
@@ -24,11 +23,12 @@ const sorts: TableSortsType[] = [
 ];
 
 const MenuTable = () => {
-  const [showForm, setShowForm] = useState(true);
+  const [activeItem, setActiveItem] = useState<ProductDetailType | undefined>();
+  const [showForm, setShowForm] = useState(false);
 
   const handleSortChange = (value: string) => {};
 
-  const handleOpenForm = () => {
+  const handleOpenNewForm = () => {
     setShowForm(true);
   };
 
@@ -49,7 +49,9 @@ const MenuTable = () => {
               />
             </TableCellHead>
             <TableCellHead align="right">
-              <Button variant="outlined">+ Thêm</Button>
+              <Button variant="outlined" onClick={handleOpenNewForm}>
+                + Thêm
+              </Button>
             </TableCellHead>
           </TableRow>
         </TableHead>
@@ -76,13 +78,9 @@ const MenuTable = () => {
         </TableBody>
       </Table>
 
-      <Modal open={showForm} onClose={handleCloseForm} disableAutoFocus>
-        <ModalBox
-          sx={{ backgroundColor: "white", px: 6, py: 5, minWidth: "50rem" }}
-        >
-          <MenuForm />
-        </ModalBox>
-      </Modal>
+      <Dialog open={showForm} onClose={handleCloseForm} scroll="body">
+        <MenuForm onClose={handleCloseForm} item={activeItem} />
+      </Dialog>
     </>
   );
 };
