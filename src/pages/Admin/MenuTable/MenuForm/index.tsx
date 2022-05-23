@@ -10,7 +10,7 @@ import FieldActions from "./FieldActions";
 import OptionsField from "./OptionsField";
 import ProductInfoField from "./ProductInfoField";
 import SideDishField from "./SideDishField";
-import { firestoreService } from "../../../../firebase/firestore";
+import { firestoreService } from "../../../../firebase/firestoreService";
 import { useSnackbar } from "states/snackbar/hooks/useSnackbar";
 
 interface MenuFormProps {
@@ -24,9 +24,11 @@ const MenuForm = ({ onClose, item, itemType }: MenuFormProps) => {
   const { options } = useRecoilValue(productDetailState);
   const [newOptionsLength, setNewOptionsLength] = useState(0);
   const [newSideDishLength, setNewSideDishLength] = useState(0);
+  const [imageUrls, setImageUrls] = useState<string[]>([]);
   const generatedOptionsArr = Array.from(new Array(newOptionsLength).keys());
   const generatedSideDishArr = Array.from(new Array(newSideDishLength).keys());
   const {
+    watch,
     register,
     formState: { errors },
     handleSubmit,
@@ -61,7 +63,7 @@ const MenuForm = ({ onClose, item, itemType }: MenuFormProps) => {
       itemType,
     });
 
-    uploadNewMenu(output);
+    // uploadNewMenu(output);
   };
 
   const handleAddNewOptionFields = () => {
@@ -87,7 +89,13 @@ const MenuForm = ({ onClose, item, itemType }: MenuFormProps) => {
       component="form"
       onSubmit={handleSubmit(handleFormSubmit)}
     >
-      <ProductInfoField register={register} errors={errors} />
+      <ProductInfoField
+        register={register}
+        watch={watch}
+        errors={errors}
+        imageUrls={imageUrls}
+        setImageUrls={setImageUrls}
+      />
 
       <Divider />
 

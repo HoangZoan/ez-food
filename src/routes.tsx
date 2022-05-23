@@ -8,6 +8,7 @@ import Products from "pages/Products";
 import { Routes, Route, Navigate } from "react-router-dom";
 import PageHeader from "./layouts/PageHeader";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
 import StatusSnackbar from "components/StatusSnackbar";
 
 const queryClient = new QueryClient();
@@ -30,6 +31,8 @@ function App() {
       <StatusSnackbar />
 
       <Footer />
+
+      <ReactQueryDevtools />
     </QueryClientProvider>
   );
 }

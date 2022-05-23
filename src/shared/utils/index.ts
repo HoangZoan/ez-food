@@ -1,6 +1,7 @@
 import { AtomEffect } from "recoil";
 import { PRODUCT_KEY } from "shared/config";
 import { MenuType, OptionsType, SideDistType } from "shared/types";
+import { v4 as uuidv4 } from "uuid";
 
 // LOCALSTORAGE FUNCTIONS
 export const localStorageEffect =
@@ -20,9 +21,9 @@ export const localStorageEffect =
 
 // UTILITY FUNCTIONS
 export const createId = (key: string) => {
-  const timeString = String(Date.now()).slice(-6);
+  const uuid = uuidv4();
 
-  return key + "-" + timeString;
+  return key + "-" + uuid;
 };
 
 export const formatPriceText = (price: number) => {

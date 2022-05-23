@@ -14,6 +14,14 @@ const FileInputButton = styled(FormLabel)(({ theme }) => ({
     backgroundColor: theme.palette.primary.main,
     color: "white",
   },
+  "&.Mui-disabled": {
+    color: theme.palette.primary.light,
+    borderColor: theme.palette.primary.light,
+  },
+  "&.Mui-disabled:hover": {
+    cursor: "auto",
+    backgroundColor: "transparent",
+  },
 }));
 
 export default FileInputButton;
