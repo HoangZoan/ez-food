@@ -1,25 +1,25 @@
-import { Alert, Snackbar, SnackbarProps, AlertColor } from "@mui/material";
+import { Alert, Snackbar } from "@mui/material";
+import { useEffect } from "react";
+import { useRecoilValue } from "recoil";
+import { snackbarState } from "states/snackbar";
+import { useSnackbar } from "states/snackbar/hooks/useSnackbar";
 
-interface StatusSnackbarProps extends SnackbarProps {
-  title: string;
-  severity: AlertColor;
-}
+const StatusSnackbar = () => {
+  const { show, title, type, SnackbarProps } = useRecoilValue(snackbarState);
+  const { closeToast, resetToastState } = useSnackbar();
 
-const StatusSnackbar = ({
-  title,
-  open,
-  onClose,
-  severity,
-  anchorOrigin,
-}: StatusSnackbarProps) => {
+  useEffect(() => {
+    return () => resetToastState();
+  }, [resetToastState]);
+
   return (
     <Snackbar
-      anchorOrigin={anchorOrigin}
-      open={open}
+      open={show}
       autoHideDuration={3000}
-      onClose={onClose}
+      onClose={closeToast}
+      {...SnackbarProps}
     >
-      <Alert severity={severity} sx={{ width: "100%" }}>
+      <Alert severity={type} sx={{ width: "100%" }}>
         {title}
       </Alert>
     </Snackbar>

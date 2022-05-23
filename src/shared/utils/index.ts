@@ -74,12 +74,13 @@ export const convertProductFormData = (data: { [key: string]: string }) => {
 interface createNewMenuParams {
   title: string;
   price: string;
+  itemType: string;
   menuType: string;
   options: OptionsType[];
   sideDish: SideDistType[];
 }
 
-type createNewMenuType = (params: createNewMenuParams) => void;
+type createNewMenuType = (params: createNewMenuParams) => MenuType;
 
 export const createNewMenu: createNewMenuType = ({
   title,
@@ -87,11 +88,13 @@ export const createNewMenu: createNewMenuType = ({
   menuType,
   options,
   sideDish,
+  itemType,
 }) => {
   return {
     id: createId(PRODUCT_KEY),
     title,
     price: Number(price),
+    itemType,
     menuType,
     options,
     availableSideDish: sideDish,
@@ -99,5 +102,5 @@ export const createNewMenu: createNewMenuType = ({
     quantity: 1,
     totalPrice: Number(price),
     isPublished: true,
-  } as MenuType;
+  };
 };

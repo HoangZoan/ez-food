@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -10,7 +10,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useForm } from "react-hook-form";
-import StatusSnackbar from "components/StatusSnackbar";
+import { useSnackbar } from "states/snackbar/hooks/useSnackbar";
 
 const Login = () => {
   const {
@@ -19,18 +19,27 @@ const Login = () => {
     handleSubmit,
   } = useForm();
   const [isSuccess, setIsSuccess] = useState(false);
-  const [showSnackbar, setShowSnackbar] = useState(false);
+  const { showToast } = useSnackbar();
 
   const handleFormSubmit = (data: any) => {
     console.log("submit");
-    setShowSnackbar(true);
     // Temporary
     setIsSuccess(true);
   };
 
-  const handleClose = () => {
-    setShowSnackbar(false);
-  };
+  useEffect(() => {
+    if (isSuccess) {
+      showToast({
+        title: isSuccess
+          ? "Đăng nhập thành công"
+          : "Đăng nhập không thành công",
+        type: isSuccess ? "success" : "error",
+        SnackbarProps: {
+          anchorOrigin: { vertical: "top", horizontal: "center" },
+        },
+      });
+    }
+  }, [isSuccess, showToast]);
 
   return (
     <>
@@ -108,7 +117,7 @@ const Login = () => {
         </Stack>
       </Box>
 
-      <StatusSnackbar
+      {/* <StatusSnackbar
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
         open={showSnackbar}
         onClose={handleClose}
@@ -116,7 +125,7 @@ const Login = () => {
           isSuccess ? "Đăng nhập thành công" : "Đăng nhập không thành công"
         }
         severity={isSuccess ? "success" : "error"}
-      />
+      /> */}
     </>
   );
 };

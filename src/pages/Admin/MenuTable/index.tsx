@@ -24,9 +24,12 @@ const sorts: TableSortsType[] = [
 
 const MenuTable = () => {
   const [activeItem, setActiveItem] = useState<ProductDetailType | undefined>();
+  const [tableType, setTableType] = useState("banh-my");
   const [showForm, setShowForm] = useState(false);
 
-  const handleSortChange = (value: string) => {};
+  const handleSortChange = (value: string) => {
+    setTableType(value);
+  };
 
   const handleOpenNewForm = () => {
     setShowForm(true);
@@ -79,7 +82,11 @@ const MenuTable = () => {
       </Table>
 
       <Dialog open={showForm} onClose={handleCloseForm} scroll="body">
-        <MenuForm onClose={handleCloseForm} item={activeItem} />
+        <MenuForm
+          onClose={handleCloseForm}
+          item={activeItem}
+          itemType={tableType}
+        />
       </Dialog>
     </>
   );

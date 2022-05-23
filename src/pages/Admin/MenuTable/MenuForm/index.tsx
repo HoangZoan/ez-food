@@ -1,21 +1,25 @@
-import { Divider, Stack, Button } from "@mui/material";
+import { Divider, Stack, Button, CircularProgress } from "@mui/material";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useMutation } from "react-query";
 import { useRecoilValue } from "recoil";
-import { ProductDetailType } from "shared/types";
+import { MenuType, ProductDetailType } from "shared/types";
 import { convertProductFormData, createNewMenu } from "shared/utils";
 import { productDetailState } from "states/productDetail";
 import FieldActions from "./FieldActions";
 import OptionsField from "./OptionsField";
 import ProductInfoField from "./ProductInfoField";
 import SideDishField from "./SideDishField";
+import { firestoreService } from "../../../../firebase/firestore";
+import { useSnackbar } from "states/snackbar/hooks/useSnackbar";
 
 interface MenuFormProps {
   onClose: () => void;
   item?: ProductDetailType;
+  itemType: string;
 }
 
-const MenuForm = ({ onClose, item }: MenuFormProps) => {
+const MenuForm = ({ onClose, item, itemType }: MenuFormProps) => {
   const isAddingNew = !Boolean(item);
   const { options } = useRecoilValue(productDetailState);
   const [newOptionsLength, setNewOptionsLength] = useState(0);
@@ -27,13 +31,37 @@ const MenuForm = ({ onClose, item }: MenuFormProps) => {
     formState: { errors },
     handleSubmit,
   } = useForm();
+  const { showToast } = useSnackbar();
+  const { mutate: uploadNewMenu, isLoading } = useMutation(
+    (data: MenuType) => firestoreService.createDocument("menu", data),
+    {
+      onSuccess: () => {
+        onClose();
+        showToast({
+          title: "Thêm sản phẩm mới thành công!",
+          type: "success",
+          SnackbarProps: {
+            anchorOrigin: { vertical: "bottom", horizontal: "right" },
+          },
+        });
+      },
+    }
+  );
 
   const handleFormSubmit = (data: { [key: string]: string }) => {
     const { title, price, menuType } = data;
     const { options, sideDish } = convertProductFormData(data);
 
-    const output = createNewMenu({ title, price, menuType, options, sideDish });
-    console.log(output);
+    const output = createNewMenu({
+      title,
+      price,
+      menuType,
+      options,
+      sideDish,
+      itemType,
+    });
+
+    uploadNewMenu(output);
   };
 
   const handleAddNewOptionFields = () => {
@@ -100,9 +128,15 @@ const MenuForm = ({ onClose, item }: MenuFormProps) => {
         showRemove={newSideDishLength > 0}
       />
 
-      <Stack direction="row" justifyContent="center" spacing={5} sx={{ pt: 5 }}>
-        <Button variant="contained" type="submit">
-          {isAddingNew ? "Thêm mới" : "Cập nhật"}
+      <Stack
+        direction="row"
+        justifyContent="center"
+        spacing={5}
+        sx={{ pt: 5, color: (theme) => theme.colors.background.primary }}
+      >
+        <Button variant="contained" type={isLoading ? "button" : "submit"}>
+          {!isLoading && (isAddingNew ? "Thêm mới" : "Cập nhật")}
+          {isLoading && <CircularProgress color="inherit" size="1.6rem" />}
         </Button>
         <Button variant="outlined" onClick={onClose}>
           Trở lại

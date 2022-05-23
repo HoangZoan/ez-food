@@ -7,10 +7,14 @@ import ProductDetail from "pages/ProductDetail";
 import Products from "pages/Products";
 import { Routes, Route, Navigate } from "react-router-dom";
 import PageHeader from "./layouts/PageHeader";
+import { QueryClient, QueryClientProvider } from "react-query";
+import StatusSnackbar from "components/StatusSnackbar";
+
+const queryClient = new QueryClient();
 
 function App() {
   return (
-    <>
+    <QueryClientProvider client={queryClient}>
       <PageHeader />
 
       <Routes>
@@ -23,8 +27,10 @@ function App() {
         <Route path="/admin/*" element={<Admin />} />
       </Routes>
 
+      <StatusSnackbar />
+
       <Footer />
-    </>
+    </QueryClientProvider>
   );
 }
 

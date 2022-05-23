@@ -9,12 +9,12 @@ import {
 } from "@mui/material";
 import ConfirmationBox from "components/ConfirmationBox";
 import ProductDetailCard from "components/ProductDetailCard";
-import StatusSnackbar from "components/StatusSnackbar";
 import CloseButton from "components/UI/CloseButton";
 import { useState } from "react";
 import { ProductDetailType, ProductOrderType } from "shared/types";
 import { formatPriceText } from "shared/utils";
 import { useCart } from "states/cart";
+import { useSnackbar } from "states/snackbar/hooks/useSnackbar";
 
 interface CheckOutOrderProps {
   item: ProductOrderType;
@@ -50,7 +50,7 @@ const CheckOutOrder = ({ item }: CheckOutOrderProps) => {
   const [showModal, setShowModal] = useState(false);
   const [isRemoving, setIsRemoving] = useState(false);
   const [isChanging, setIsChanging] = useState(false);
-  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const { showToast } = useSnackbar();
 
   const openConfirmationModal = () => {
     setShowModal(true);
@@ -79,13 +79,10 @@ const CheckOutOrder = ({ item }: CheckOutOrderProps) => {
       orderId,
       title,
     } as ProductOrderType;
+
     changeOrder(changedData);
     closeChangeModal();
-    setOpenSnackbar(true);
-  };
-
-  const handleCloseSnackbar = () => {
-    setOpenSnackbar(false);
+    showToast({ title: "Thay đổi thành công!", type: "success" });
   };
 
   return (
@@ -168,13 +165,6 @@ const CheckOutOrder = ({ item }: CheckOutOrderProps) => {
           />
         )}
       </Dialog>
-
-      <StatusSnackbar
-        open={openSnackbar}
-        onClose={handleCloseSnackbar}
-        severity="success"
-        title="Thay đổi thành công!"
-      />
     </Box>
   );
 };
