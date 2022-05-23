@@ -55,3 +55,7 @@ export interface TableSortsType {
   title: string;
   value: string;
 }
+
+export interface MenuType extends ProductDetailType {
+  isPublished: boolean;
+}

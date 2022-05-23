@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRecoilValue } from "recoil";
 import { ProductDetailType } from "shared/types";
+import { convertProductFormData, createNewMenu } from "shared/utils";
 import { productDetailState } from "states/productDetail";
 import FieldActions from "./FieldActions";
 import OptionsField from "./OptionsField";
@@ -27,8 +28,12 @@ const MenuForm = ({ onClose, item }: MenuFormProps) => {
     handleSubmit,
   } = useForm();
 
-  const handleFormSubmit = (data: any) => {
-    console.log(data);
+  const handleFormSubmit = (data: { [key: string]: string }) => {
+    const { title, price, menuType } = data;
+    const { options, sideDish } = convertProductFormData(data);
+
+    const output = createNewMenu({ title, price, menuType, options, sideDish });
+    console.log(output);
   };
 
   const handleAddNewOptionFields = () => {
@@ -60,7 +65,14 @@ const MenuForm = ({ onClose, item }: MenuFormProps) => {
 
       {/* <OptionsField /> */}
       {options.length === 0 &&
-        generatedOptionsArr.map((key) => <OptionsField key={key} />)}
+        generatedOptionsArr.map((key) => (
+          <OptionsField
+            key={key}
+            index={key}
+            register={register}
+            errors={errors}
+          />
+        ))}
 
       <FieldActions
         addLabel="+ Tùy chọn"
@@ -73,7 +85,12 @@ const MenuForm = ({ onClose, item }: MenuFormProps) => {
 
       {/* <SideDishField /> */}
       {generatedSideDishArr.map((key) => (
-        <SideDishField key={key} />
+        <SideDishField
+          key={key}
+          index={key}
+          register={register}
+          errors={errors}
+        />
       ))}
 
       <FieldActions

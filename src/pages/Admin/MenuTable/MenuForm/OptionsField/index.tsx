@@ -3,6 +3,15 @@ import { FormLabel, TextField } from "components/UI/FormComponents";
 import React, { useState } from "react";
 import { styled } from "shared/theme";
 import MenuFormControl from "../MenuFormControl";
+import { UseFormRegister, FieldValues } from "react-hook-form";
+
+interface OptionsFieldProps {
+  register: UseFormRegister<FieldValues>;
+  index: number;
+  errors: {
+    [x: string]: any;
+  };
+}
 
 const MenuOptionLabel = styled(FormLabel)({
   fontSize: "1.2rem",
@@ -10,7 +19,7 @@ const MenuOptionLabel = styled(FormLabel)({
   fontWeight: 700,
 });
 
-const OptionsField = () => {
+const OptionsField = ({ register, index, errors }: OptionsFieldProps) => {
   const [newSelectLength, setNewSelectLength] = useState(2);
   const generatedSelectArr = Array.from(new Array(newSelectLength).keys());
 
@@ -26,7 +35,16 @@ const OptionsField = () => {
     <>
       <MenuFormControl>
         <FormLabel>Tên lựa chọn:</FormLabel>
-        <TextField />
+        <TextField
+          error={Boolean(errors[`select-${index}`])}
+          {...register(`select-${index}`, {
+            required: {
+              value: true,
+              message: "Thông tin này không được bỏ trống",
+            },
+          })}
+          helperText={errors[`select-${index}`]?.message}
+        />
       </MenuFormControl>
       <MenuFormControl>
         <FormLabel>Các lựa chọn:</FormLabel>
@@ -35,17 +53,37 @@ const OptionsField = () => {
             <Grid container key={key}>
               <Grid item xs={8}>
                 <FormControl>
-                  <MenuOptionLabel>Lựa chọn</MenuOptionLabel>
-                  <TextField />
+                  <MenuOptionLabel>
+                    Lựa chọn {key === 0 ? "(Mặc định)" : ""}
+                  </MenuOptionLabel>
+                  <TextField
+                    error={Boolean(errors[`select-${index}`])}
+                    {...register(`variant-${index}-${key}`, {
+                      required: {
+                        value: true,
+                        message: "Thông tin này không được bỏ trống",
+                      },
+                    })}
+                    helperText={errors[`variant-${index}-${key}`]?.message}
+                  />
                 </FormControl>
               </Grid>
               <Grid item xs={4}>
                 <FormControl>
                   <MenuOptionLabel>Tăng thêm</MenuOptionLabel>
                   <TextField
+                    inputProps={{ readOnly: key === 0 }}
                     defaultValue={0}
                     type="number"
                     placeholder="Nghìn VNĐ"
+                    error={Boolean(errors[`var-price-${index}-${key}`])}
+                    {...register(`var-price-${index}-${key}`, {
+                      required: {
+                        value: true,
+                        message: "Đang bỏ trống",
+                      },
+                    })}
+                    helperText={errors[`var-price-${index}-${key}`]?.message}
                   />
                   <Typography variant="subtitle2">(nghìn VNĐ)</Typography>
                 </FormControl>
