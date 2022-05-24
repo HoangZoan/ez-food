@@ -36,30 +36,39 @@ export const convertProductFormData = (data: { [key: string]: string }) => {
   const keys = Object.keys(data) as string[];
 
   // Handle option select
-  const selectsArr = keys.filter((key) => key.match("select"));
+  const selectsArr = keys.filter(
+    (key) => Boolean(data[key]) && key.match("select")
+  );
 
   // Handle variants
-  const variantsArr = keys.filter((key) => key.match("variant"));
+  const variantsArr = keys.filter(
+    (key) => Boolean(data[key]) && key.match("variant")
+  );
   let optionVariantsArr = selectsArr.map(() => [] as string[]);
-  variantsArr.forEach((string) => {
-    const variantArr = string.split("-");
-    const targetVariantIndex = Number(variantArr[1]);
 
-    optionVariantsArr[targetVariantIndex].push(string);
-  });
+  if (variantsArr.length > 0) {
+    variantsArr.forEach((string) => {
+      const variantArr = string.split("-");
+      const targetVariantIndex = Number(variantArr[1]);
+
+      optionVariantsArr[targetVariantIndex].push(string);
+    });
+  }
 
   // Generate output options
   const options: OptionsType[] = selectsArr.map((select, i) => ({
     name: data[select],
     variants: optionVariantsArr[i].map((type, j) => ({
       type: data[type],
-      price: Number(data[`var-price-${i}-${j}`]) * 1000,
+      price: Number(data[`varPrice-${i}-${j}`]) * 1000,
       selected: j === 0,
     })),
   }));
 
   // Handle side dish
-  const sideDishArr = keys.filter((key) => key.match("sideDish"));
+  const sideDishArr = keys.filter(
+    (key) => Boolean(data[key]) && key.match("sideDish")
+  );
 
   // Generate output side dish
   const sideDish: SideDistType[] = sideDishArr.map((dish, i) => ({

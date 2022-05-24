@@ -22,12 +22,8 @@ export const useSnackbar = () => {
   );
 
   const closeToast = () => {
-    setState((oldState) => ({ ...oldState, show: false }));
+    setState(defaultSnackbarState);
   };
 
-  const resetToastState = useCallback(() => {
-    setState(defaultSnackbarState);
-  }, [setState]);
-
-  return { showToast, closeToast, resetToastState };
+  return { showToast, closeToast };
 };

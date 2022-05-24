@@ -13,6 +13,9 @@ import SideDishField from "./SideDishField";
 import { FirestoreService } from "../../../../firebase/firestoreService";
 import { useSnackbar } from "states/snackbar/hooks/useSnackbar";
 import { menuItemImageState } from "states/menu";
+import { IMAGE_KEY } from "shared/config";
+import { v4 as uuidv4 } from "uuid";
+import { StorageService } from "../../../../firebase/storageService";
 
 interface MenuFormProps {
   onClose: () => void;
@@ -23,7 +26,7 @@ interface MenuFormProps {
 const MenuForm = ({ onClose, item, itemType }: MenuFormProps) => {
   const isAddingNew = !Boolean(item);
   const { options } = useRecoilValue(productDetailState);
-  const imageUrl = useRecoilValue(menuItemImageState);
+  const imageFile = useRecoilValue(menuItemImageState);
   const [newOptionsLength, setNewOptionsLength] = useState(0);
   const [newSideDishLength, setNewSideDishLength] = useState(0);
   const generatedOptionsArr = Array.from(new Array(newOptionsLength).keys());
@@ -34,11 +37,14 @@ const MenuForm = ({ onClose, item, itemType }: MenuFormProps) => {
     register,
     formState: { errors },
     handleSubmit,
+    getValues,
+    resetField,
   } = useForm();
   const { showToast } = useSnackbar();
+  const formKeys = Object.keys(getValues());
   const {
     mutate: uploadNewMenu,
-    isLoading,
+    isLoading: isSubmiting,
     isSuccess: submitIsSuccess,
   } = useMutation(
     (data: MenuType) =>
@@ -57,10 +63,32 @@ const MenuForm = ({ onClose, item, itemType }: MenuFormProps) => {
       },
     }
   );
+  const { mutateAsync: uploadImage, isLoading: isUploading } = useMutation(
+    async () => {
+      const imageName = IMAGE_KEY + uuidv4();
 
-  const handleFormSubmit = (data: { [key: string]: string }) => {
+      const imageDownloadUrl = (await StorageService.uploadFile(
+        imageFile,
+        `products/${imageName}`
+      )) as string;
+
+      return imageDownloadUrl;
+    }
+  );
+
+  // const { mutate: clearImages, isLoading: isClearing } = useMutation(
+  //   async () => {
+  //     await StorageService.deleteFile(imageUrl);
+  //     setImageUrl("");
+  //   }
+  // );
+
+  const isLoading = isUploading || isSubmiting;
+
+  const handleFormSubmit = async (data: { [key: string]: string }) => {
     const { title, price, menuType } = data;
     const { options, sideDish } = convertProductFormData(data);
+    const imageUrl = await uploadImage();
 
     const submitData = {
       title,
@@ -82,6 +110,15 @@ const MenuForm = ({ onClose, item, itemType }: MenuFormProps) => {
 
   const handleRemoveNewOptionFields = () => {
     setNewOptionsLength((oldState) => oldState - 1);
+
+    const targetArr = formKeys.filter(
+      (key) =>
+        key.match(`select-${newOptionsLength - 1}`) ||
+        key.match(`variant-${newOptionsLength - 1}`) ||
+        key.match(`varPrice-${newOptionsLength - 1}`)
+    );
+
+    targetArr.forEach((tarKey) => resetField(tarKey));
   };
 
   const handleAddNewSideDishFields = () => {
@@ -90,6 +127,14 @@ const MenuForm = ({ onClose, item, itemType }: MenuFormProps) => {
 
   const handleRemoveNewSideDishFields = () => {
     setNewSideDishLength((oldState) => oldState - 1);
+
+    const targetArr = formKeys.filter(
+      (key) =>
+        key.match(`sideDish-${newSideDishLength - 1}`) ||
+        key.match(`side-price-${newSideDishLength - 1}`)
+    );
+
+    targetArr.forEach((tarKey) => resetField(tarKey));
   };
 
   return (

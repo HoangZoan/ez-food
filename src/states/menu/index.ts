@@ -18,5 +18,5 @@ export const menuState = atom({
 
 export const menuItemImageState = atom({
   key: "menuItemImage",
-  default: "",
+  default: null as any,
 });

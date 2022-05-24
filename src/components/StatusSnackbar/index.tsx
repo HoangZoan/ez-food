@@ -1,16 +1,11 @@
 import { Alert, Snackbar } from "@mui/material";
-import { useEffect } from "react";
 import { useRecoilValue } from "recoil";
 import { snackbarState } from "states/snackbar";
 import { useSnackbar } from "states/snackbar/hooks/useSnackbar";
 
 const StatusSnackbar = () => {
   const { show, title, type, SnackbarProps } = useRecoilValue(snackbarState);
-  const { closeToast, resetToastState } = useSnackbar();
-
-  useEffect(() => {
-    return () => resetToastState();
-  }, [resetToastState]);
+  const { closeToast } = useSnackbar();
 
   return (
     <Snackbar

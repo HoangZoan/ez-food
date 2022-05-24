@@ -8,27 +8,9 @@ import {
 
 const storage = firebase.storage;
 
-const uploadFile = async (
-  file: any,
-  fullFilePath: string
-  // progressCallback: any
-) => {
+const uploadFile = async (file: any, fullFilePath: string) => {
   const uploadRef = ref(storage, fullFilePath);
   const uploadTask = uploadBytesResumable(uploadRef, file);
-
-  // uploadTask.on(
-  //   "state_changed",
-  //   (snapshot) => {
-  //     const progress = Math.round(
-  //       (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-  //     );
-
-  //     progressCallback(progress);
-  //   },
-  //   (error) => {
-  //     throw error;
-  //   }
-  // );
 
   return uploadTask.then(async () => {
     const downloadUrl = await getDownloadURL(uploadTask.snapshot.ref);

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   FormHelperText,
@@ -13,11 +13,7 @@ import { FormLabel, TextField } from "components/UI/FormComponents";
 import { FieldValues, UseFormRegister, UseFormWatch } from "react-hook-form";
 import { styled } from "shared/theme";
 import MenuFormControl from "../MenuFormControl";
-import { IMAGE_KEY } from "../../../../../shared/config";
-import { StorageService } from "../../../../../firebase/storageService";
-import { v4 as uuidv4 } from "uuid";
-import { useMutation } from "react-query";
-import { useRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import { menuItemImageState } from "states/menu";
 
 interface ProductInfoFieldProps {
@@ -51,41 +47,36 @@ const ProductInfoField = ({
   register,
   errors,
   watch,
-  submitIsSuccess,
 }: ProductInfoFieldProps) => {
-  const [imageUrl, setImageUrl] = useRecoilState(menuItemImageState);
+  const setImageFile = useSetRecoilState(menuItemImageState);
+  const [imageUrl, setImageUrl] = useState("");
   const watchImage = watch("image");
-  const { mutate: uploadImages, isLoading: isUploading } = useMutation(
-    async () => {
-      const file = watchImage[0];
-      const imageName = IMAGE_KEY + uuidv4();
+  // const { mutate: uploadImage, isLoading: isUploading } = useMutation(
+  //   async () => {
+  //     const file = watchImage[0];
+  //     const imageName = IMAGE_KEY + uuidv4();
 
-      const imageDownloadUrl = (await StorageService.uploadFile(
-        file,
-        `products/${imageName}`
-      )) as string;
+  //     const imageDownloadUrl = (await StorageService.uploadFile(
+  //       file,
+  //       `products/${imageName}`
+  //     )) as string;
 
-      setImageUrl(imageDownloadUrl);
-    }
-  );
-  const { mutate: clearImages, isLoading: isClearing } = useMutation(
-    async () => {
-      await StorageService.deleteFile(imageUrl);
-      setImageUrl("");
-    }
-  );
-  const loading = isUploading || isClearing;
+  //     setImageUrl(imageDownloadUrl);
+  //   }
+  // );
+  // const { mutate: clearImages, isLoading: isClearing } = useMutation(
+  //   async () => {
+  //     await StorageService.deleteFile(imageUrl);
+  //     setImageUrl("");
+  //   }
+  // );
 
   useEffect(() => {
-    if (!watchImage || watchImage.length === 0) return;
+    if (!watchImage || watchImage?.length === 0) return;
 
-    uploadImages();
-
-    return () => {
-      if (watchImage.length === 0 || submitIsSuccess) return;
-      clearImages();
-    };
-  }, [watchImage, uploadImages, clearImages, submitIsSuccess]);
+    setImageUrl(URL.createObjectURL(watchImage[0]));
+    setImageFile(watchImage[0]);
+  }, [watchImage, setImageUrl, setImageFile]);
 
   return (
     <>
@@ -113,13 +104,10 @@ const ProductInfoField = ({
       <MenuFormControl>
         <FormLabel>Hình ảnh:</FormLabel>
         <Stack alignItems="flex-start" spacing={3}>
-          <FileInputButton disabled={loading} htmlFor={loading ? "" : "photo"}>
-            {loading
-              ? "Đang tải..."
-              : imageUrl.length > 0
-              ? "Thay đổi ảnh"
-              : "Tải ảnh lên"}
+          <FileInputButton htmlFor="photo" focused={false}>
+            Thay đổi ảnh
           </FileInputButton>
+
           {imageUrl.length > 0 && (
             <ImageContainer>
               <img src={imageUrl} alt="Anh" />

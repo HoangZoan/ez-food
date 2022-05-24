@@ -76,14 +76,14 @@ const OptionsField = ({ register, index, errors }: OptionsFieldProps) => {
                     defaultValue={0}
                     type="number"
                     placeholder="Nghìn VNĐ"
-                    error={Boolean(errors[`var-price-${index}-${key}`])}
-                    {...register(`var-price-${index}-${key}`, {
+                    error={Boolean(errors[`varPrice-${index}-${key}`])}
+                    {...register(`varPrice-${index}-${key}`, {
                       required: {
                         value: true,
                         message: "Đang bỏ trống",
                       },
                     })}
-                    helperText={errors[`var-price-${index}-${key}`]?.message}
+                    helperText={errors[`varPrice-${index}-${key}`]?.message}
                   />
                   <Typography variant="subtitle2">(nghìn VNĐ)</Typography>
                 </FormControl>

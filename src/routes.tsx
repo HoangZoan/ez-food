@@ -11,6 +11,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import StatusSnackbar from "components/StatusSnackbar";
 import ConfirmationDialog from "components/ConfirmationDialog";
+import { useEffect } from "react";
 
 const queryClient = new QueryClient({
   defaultOptions: {
