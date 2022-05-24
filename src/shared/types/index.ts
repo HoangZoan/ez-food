@@ -31,31 +31,35 @@ export interface SideDistType {
   price: number;
 }
 
-// PRODUCT DETAIL STATE TYPE
-export interface ProductDetailType {
+interface ProductInfoType {
   id: string;
   title: string;
   options: OptionsType[];
+  price: number;
+}
+
+export interface ProductDetailType extends ProductInfoType {
   availableSideDish: SideDistType[];
   selectedSideDish: SideDistType[];
-  price: number;
   quantity: number;
   totalPrice: number;
 }
 
-// PRODUCT ORDER TYPE
 export interface ProductOrderType extends ProductDetailType {
   orderId: string;
   date: string;
   title: string;
 }
 
-// ADMIN PAGE
 export interface TableSortsType {
   title: string;
   value: string;
 }
 
-export interface MenuType extends ProductDetailType {
+export interface MenuType extends ProductInfoType {
   isPublished: boolean;
+  itemType: string;
+  menuType: string;
+  sideDish: SideDistType[];
+  imageUrl: string;
 }

@@ -1,7 +1,7 @@
 import { Divider, Stack, Button, CircularProgress } from "@mui/material";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import { useRecoilValue } from "recoil";
 import { MenuType, ProductDetailType } from "shared/types";
 import { convertProductFormData, createNewMenu } from "shared/utils";
@@ -10,8 +10,9 @@ import FieldActions from "./FieldActions";
 import OptionsField from "./OptionsField";
 import ProductInfoField from "./ProductInfoField";
 import SideDishField from "./SideDishField";
-import { firestoreService } from "../../../../firebase/firestoreService";
+import { FirestoreService } from "../../../../firebase/firestoreService";
 import { useSnackbar } from "states/snackbar/hooks/useSnackbar";
+import { menuItemImageState } from "states/menu";
 
 interface MenuFormProps {
   onClose: () => void;
@@ -22,11 +23,12 @@ interface MenuFormProps {
 const MenuForm = ({ onClose, item, itemType }: MenuFormProps) => {
   const isAddingNew = !Boolean(item);
   const { options } = useRecoilValue(productDetailState);
+  const imageUrl = useRecoilValue(menuItemImageState);
   const [newOptionsLength, setNewOptionsLength] = useState(0);
   const [newSideDishLength, setNewSideDishLength] = useState(0);
-  const [imageUrls, setImageUrls] = useState<string[]>([]);
   const generatedOptionsArr = Array.from(new Array(newOptionsLength).keys());
   const generatedSideDishArr = Array.from(new Array(newSideDishLength).keys());
+  const queryClient = useQueryClient();
   const {
     watch,
     register,
@@ -34,10 +36,16 @@ const MenuForm = ({ onClose, item, itemType }: MenuFormProps) => {
     handleSubmit,
   } = useForm();
   const { showToast } = useSnackbar();
-  const { mutate: uploadNewMenu, isLoading } = useMutation(
-    (data: MenuType) => firestoreService.createDocument("menu", data),
+  const {
+    mutate: uploadNewMenu,
+    isLoading,
+    isSuccess: submitIsSuccess,
+  } = useMutation(
+    (data: MenuType) =>
+      FirestoreService.createDocument(`menu/products/${itemType}`, data),
     {
       onSuccess: () => {
+        queryClient.invalidateQueries(["menu", itemType]);
         onClose();
         showToast({
           title: "Thêm sản phẩm mới thành công!",
@@ -54,16 +62,17 @@ const MenuForm = ({ onClose, item, itemType }: MenuFormProps) => {
     const { title, price, menuType } = data;
     const { options, sideDish } = convertProductFormData(data);
 
-    const output = createNewMenu({
+    const submitData = createNewMenu({
       title,
       price,
       menuType,
       options,
       sideDish,
       itemType,
+      imageUrl,
     });
 
-    // uploadNewMenu(output);
+    uploadNewMenu(submitData);
   };
 
   const handleAddNewOptionFields = () => {
@@ -93,8 +102,7 @@ const MenuForm = ({ onClose, item, itemType }: MenuFormProps) => {
         register={register}
         watch={watch}
         errors={errors}
-        imageUrls={imageUrls}
-        setImageUrls={setImageUrls}
+        submitIsSuccess={submitIsSuccess}
       />
 
       <Divider />

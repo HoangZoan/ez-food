@@ -15,3 +15,8 @@ export const menuState = atom({
   key: "nav-menu",
   default: menuData as menuItemType[],
 });
+
+export const menuItemImageState = atom({
+  key: "menuItemImage",
+  default: "",
+});

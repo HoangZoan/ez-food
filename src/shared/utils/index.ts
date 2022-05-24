@@ -79,6 +79,7 @@ interface createNewMenuParams {
   menuType: string;
   options: OptionsType[];
   sideDish: SideDistType[];
+  imageUrl: string;
 }
 
 type createNewMenuType = (params: createNewMenuParams) => MenuType;
@@ -90,6 +91,7 @@ export const createNewMenu: createNewMenuType = ({
   options,
   sideDish,
   itemType,
+  imageUrl,
 }) => {
   return {
     id: createId(PRODUCT_KEY),
@@ -98,10 +100,8 @@ export const createNewMenu: createNewMenuType = ({
     itemType,
     menuType,
     options,
-    availableSideDish: sideDish,
-    selectedSideDish: [],
-    quantity: 1,
-    totalPrice: Number(price),
+    sideDish,
     isPublished: true,
+    imageUrl,
   };
 };

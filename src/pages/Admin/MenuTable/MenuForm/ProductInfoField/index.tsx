@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect } from "react";
 import {
   Box,
   FormHelperText,
@@ -15,8 +15,10 @@ import { styled } from "shared/theme";
 import MenuFormControl from "../MenuFormControl";
 import { IMAGE_KEY } from "../../../../../shared/config";
 import { StorageService } from "../../../../../firebase/storageService";
-import { v4 as uuid4 } from "uuid";
+import { v4 as uuidv4 } from "uuid";
 import { useMutation } from "react-query";
+import { useRecoilState } from "recoil";
+import { menuItemImageState } from "states/menu";
 
 interface ProductInfoFieldProps {
   watch: UseFormWatch<FieldValues>;
@@ -24,8 +26,7 @@ interface ProductInfoFieldProps {
   errors: {
     [x: string]: any;
   };
-  imageUrls: string[];
-  setImageUrls: React.Dispatch<React.SetStateAction<string[]>>;
+  submitIsSuccess: boolean;
 }
 
 const MenuFormSelect = styled(Select)({
@@ -36,49 +37,55 @@ const MenuFormSelect = styled(Select)({
   },
 });
 
+const ImageContainer = styled(Box)({
+  width: "9.6rem",
+  height: "9.6rem",
+  "& img": {
+    objectFit: "cover",
+    width: "100%",
+    height: "100%",
+  },
+});
+
 const ProductInfoField = ({
   register,
   errors,
   watch,
-  imageUrls: imageUrlsState,
-  setImageUrls,
+  submitIsSuccess,
 }: ProductInfoFieldProps) => {
+  const [imageUrl, setImageUrl] = useRecoilState(menuItemImageState);
   const watchImage = watch("image");
-  const imageFolder = useMemo(() => IMAGE_KEY + "-" + uuid4(), []);
   const { mutate: uploadImages, isLoading: isUploading } = useMutation(
     async () => {
-      const callingPromises = Array.from(watchImage).map((file) => {
-        const imageName = uuid4();
+      const file = watchImage[0];
+      const imageName = IMAGE_KEY + uuidv4();
 
-        return StorageService.uploadFile(
-          file,
-          `products/${imageFolder}/${imageName}`
-        );
-      });
+      const imageDownloadUrl = (await StorageService.uploadFile(
+        file,
+        `products/${imageName}`
+      )) as string;
 
-      const imageUrls = (await Promise.all([...callingPromises])) as string[];
-
-      setImageUrls(imageUrls);
+      setImageUrl(imageDownloadUrl);
     }
   );
   const { mutate: clearImages, isLoading: isClearing } = useMutation(
     async () => {
-      const callingPromises = imageUrlsState.map((url) =>
-        StorageService.deleteFile(url)
-      );
-
-      await Promise.all([...callingPromises]);
+      await StorageService.deleteFile(imageUrl);
+      setImageUrl("");
     }
   );
   const loading = isUploading || isClearing;
 
   useEffect(() => {
-    if (!watchImage) return;
+    if (!watchImage || watchImage.length === 0) return;
 
     uploadImages();
 
-    return () => clearImages();
-  }, [watchImage, uploadImages, clearImages]);
+    return () => {
+      if (watchImage.length === 0 || submitIsSuccess) return;
+      clearImages();
+    };
+  }, [watchImage, uploadImages, clearImages, submitIsSuccess]);
 
   return (
     <>
@@ -105,16 +112,24 @@ const ProductInfoField = ({
 
       <MenuFormControl>
         <FormLabel>Hình ảnh:</FormLabel>
-        <Box>
+        <Stack alignItems="flex-start" spacing={3}>
           <FileInputButton disabled={loading} htmlFor={loading ? "" : "photo"}>
-            {loading ? "Đang tải..." : "Tải ảnh lên"}
+            {loading
+              ? "Đang tải..."
+              : imageUrl.length > 0
+              ? "Thay đổi ảnh"
+              : "Tải ảnh lên"}
           </FileInputButton>
+          {imageUrl.length > 0 && (
+            <ImageContainer>
+              <img src={imageUrl} alt="Anh" />
+            </ImageContainer>
+          )}
 
           <Input
             type="file"
             id="photo"
-            inputProps={{ multiple: true }}
-            sx={{ display: "none" }}
+            sx={{ pointerEvents: "none", position: "absolute", opacity: 0 }}
             {...register("image", {
               required: { value: true, message: "Sản phẩm đang chưa có ảnh" },
             })}
@@ -122,7 +137,7 @@ const ProductInfoField = ({
           <FormHelperText error={Boolean(errors.image)}>
             {errors.image?.message}
           </FormHelperText>
-        </Box>
+        </Stack>
       </MenuFormControl>
 
       <MenuFormControl>

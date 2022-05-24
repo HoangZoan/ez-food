@@ -8,7 +8,7 @@ const FileInputButton = styled(FormLabel)(({ theme }) => ({
   fontSize: "1.2rem",
   fontWeight: 400,
   color: theme.palette.primary.main,
-  padding: "0.6rem 1.2rem",
+  padding: "0 1.2rem",
   transition: "all 0.2s",
   "&:hover": {
     backgroundColor: theme.palette.primary.main,
