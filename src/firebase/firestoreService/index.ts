@@ -1,6 +1,8 @@
 import {
   addDoc,
   collection as firestoreCollection,
+  deleteDoc,
+  doc,
   getDocs,
 } from "firebase/firestore/lite";
 import firebase from "../config";
@@ -17,7 +19,12 @@ const readDocuments = async (collection: string) => {
   return getDocs(collectionRef);
 };
 
+const deleteDocument = (collection: string, id: string) => {
+  return deleteDoc(doc(firestoreCollection(firestore, collection), id));
+};
+
 export const FirestoreService = {
   createDocument,
   readDocuments,
+  deleteDocument,
 };

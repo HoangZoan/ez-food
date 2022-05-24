@@ -1,6 +1,5 @@
 import { AtomEffect } from "recoil";
-import { PRODUCT_KEY } from "shared/config";
-import { MenuType, OptionsType, SideDistType } from "shared/types";
+import { OptionsType, SideDistType } from "shared/types";
 import { v4 as uuidv4 } from "uuid";
 
 // LOCALSTORAGE FUNCTIONS
@@ -69,39 +68,4 @@ export const convertProductFormData = (data: { [key: string]: string }) => {
   }));
 
   return { options, sideDish };
-};
-
-// CREATE NEW MENU FUNCTION
-interface createNewMenuParams {
-  title: string;
-  price: string;
-  itemType: string;
-  menuType: string;
-  options: OptionsType[];
-  sideDish: SideDistType[];
-  imageUrl: string;
-}
-
-type createNewMenuType = (params: createNewMenuParams) => MenuType;
-
-export const createNewMenu: createNewMenuType = ({
-  title,
-  price,
-  menuType,
-  options,
-  sideDish,
-  itemType,
-  imageUrl,
-}) => {
-  return {
-    id: createId(PRODUCT_KEY),
-    title,
-    price: Number(price),
-    itemType,
-    menuType,
-    options,
-    sideDish,
-    isPublished: true,
-    imageUrl,
-  };
 };

@@ -5,7 +5,7 @@ import { formatPriceText } from "shared/utils";
 import { useCart } from "states/cart";
 import { styled } from "shared/theme";
 import CloseButton from "components/UI/CloseButton";
-import ConfirmationBox from "components/ConfirmationBox";
+import ConfirmationBox from "layouts/PageHeader/CartItem/ConfirmationBox";
 
 interface CartItemProps {
   id: string;
@@ -95,8 +95,6 @@ const CartItem = ({ id, title, total, quantity }: CartItemProps) => {
           >
             <ConfirmationBox
               title="Bạn muốn xóa sản phẩm này?"
-              actionLabel="Xóa"
-              cancelLabel="Hủy"
               onAction={() => removeOrder(id)}
               onCancel={handleClickCancel}
             />

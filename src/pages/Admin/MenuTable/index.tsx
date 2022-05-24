@@ -13,11 +13,11 @@ import {
   TableCell,
   TableCellHead,
 } from "components/UI/ManagingTable";
-import { MenuType, ProductDetailType, TableSortsType } from "shared/types";
+import { ProductDetailType, TableSortsType } from "shared/types";
 import { useState } from "react";
 import MenuForm from "./MenuForm";
-import { useQuery } from "react-query";
-import { FirestoreService } from "../../../firebase/firestoreService";
+import { useMutation, useQuery } from "react-query";
+import { deleteMenuItem, fetchAllMenuItems } from "api/menu";
 
 const sorts: TableSortsType[] = [
   { title: "Bánh mỳ", value: "banhMy" },
@@ -29,21 +29,27 @@ const MenuTable = () => {
   const [tableType, setTableType] = useState(sorts[0].value);
   const [showForm, setShowForm] = useState(false);
 
-  const { data: fetchedProducts } = useQuery(
+  const { data: fetchedProducts, isLoading: isGettingData } = useQuery(
     ["menu", tableType],
-    async () => {
-      const response = await FirestoreService.readDocuments(
-        `menu/products/${tableType}`
-      );
-
-      const fetchedItems = response.docs.map((recipeDoc) => recipeDoc.data());
-
-      return fetchedItems as MenuType[];
-    },
+    () => fetchAllMenuItems(tableType),
     {
-      refetchOnWindowFocus: false,
       staleTime: 15 * 60000,
       cacheTime: 20 * 60000,
+    }
+  );
+  const { mutate: removeMenuItem, isLoading: deletingItem } = useMutation(
+    (id: string) => deleteMenuItem(tableType, id),
+    {
+      onSuccess: () => {
+        // queryClient.invalidateQueries(["menu", itemType]);
+        // showToast({
+        //   title: "Thêm sản phẩm mới thành công!",
+        //   type: "success",
+        //   SnackbarProps: {
+        //     anchorOrigin: { vertical: "bottom", horizontal: "right" },
+        //   },
+        // });
+      },
     }
   );
 
@@ -100,10 +106,12 @@ const MenuTable = () => {
               </TableCell>
             </TableBodyRow>
           ))}
-          {!fetchedProducts && (
+          {(!fetchedProducts || fetchedProducts.length === 0) && (
             <TableBodyRow>
               <TableCell>
-                Chưa có sản phẩm nào. Hãy thêm sản phẩm mới.
+                {isGettingData
+                  ? "Đang tải..."
+                  : "Chưa có sản phẩm nào. Hãy thêm sản phẩm mới."}
               </TableCell>
             </TableBodyRow>
           )}

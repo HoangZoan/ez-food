@@ -7,13 +7,13 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import ConfirmationBox from "components/ConfirmationBox";
 import ProductDetailCard from "components/ProductDetailCard";
 import CloseButton from "components/UI/CloseButton";
 import { useState } from "react";
 import { ProductDetailType, ProductOrderType } from "shared/types";
 import { formatPriceText } from "shared/utils";
 import { useCart } from "states/cart";
+import { useConfirmationDialog } from "states/confirmationDialog/hooks";
 import { useSnackbar } from "states/snackbar/hooks/useSnackbar";
 
 interface CheckOutOrderProps {
@@ -35,6 +35,7 @@ const ActionButtons = ({ onCancel }: { onCancel: () => void }) => {
 
 const CheckOutOrder = ({ item }: CheckOutOrderProps) => {
   const { removeOrder, changeOrder } = useCart();
+  const { openDialog } = useConfirmationDialog();
   const {
     orderId,
     title,
@@ -47,29 +48,26 @@ const CheckOutOrder = ({ item }: CheckOutOrderProps) => {
     selectedSideDish,
     date,
   } = item;
-  const [showModal, setShowModal] = useState(false);
-  const [isRemoving, setIsRemoving] = useState(false);
   const [isChanging, setIsChanging] = useState(false);
   const { showToast } = useSnackbar();
 
-  const openConfirmationModal = () => {
-    setShowModal(true);
-    setIsRemoving(true);
-  };
-
-  const closeConfirmationModal = () => {
-    setShowModal(false);
-    setIsRemoving(false);
-  };
-
   const openChangeModal = () => {
-    setShowModal(true);
     setIsChanging(true);
   };
 
   const closeChangeModal = () => {
-    setShowModal(false);
     setIsChanging(false);
+  };
+
+  const handleRemoveItem = () => {
+    openDialog({
+      content: (
+        <>
+          Bạn muốn xóa <strong>{title}</strong> khỏi giỏ hàng?
+        </>
+      ),
+      onConfirm: () => removeOrder(orderId),
+    });
   };
 
   const handleChangeProduct = (data: ProductDetailType) => {
@@ -126,44 +124,26 @@ const CheckOutOrder = ({ item }: CheckOutOrderProps) => {
           </Stack>
         </Grid>
         <Grid item>
-          <CloseButton onClick={openConfirmationModal} />
+          <CloseButton onClick={handleRemoveItem} />
         </Grid>
       </Grid>
 
-      <Dialog
-        open={showModal}
-        onClose={isRemoving ? closeConfirmationModal : closeChangeModal}
-        disableScrollLock
-      >
-        {isRemoving && (
-          <ConfirmationBox
-            title={
-              <>
-                Bạn muốn xóa <strong>{title}</strong> khỏi giỏ hàng?
-              </>
-            }
-            onAction={() => removeOrder(orderId)}
-            onCancel={closeConfirmationModal}
-            sx={{ py: 4, px: 6 }}
-          />
-        )}
-        {isChanging && (
-          <ProductDetailCard
-            item={{
-              id,
-              title,
-              options,
-              availableSideDish,
-              selectedSideDish,
-              price,
-              quantity,
-              totalPrice,
-            }}
-            actionButton={<ActionButtons onCancel={closeChangeModal} />}
-            onSubmit={handleChangeProduct}
-            sx={{ minWidth: "54rem" }}
-          />
-        )}
+      <Dialog open={isChanging} onClose={closeChangeModal} disableScrollLock>
+        <ProductDetailCard
+          item={{
+            id,
+            title,
+            options,
+            availableSideDish,
+            selectedSideDish,
+            price,
+            quantity,
+            totalPrice,
+          }}
+          actionButton={<ActionButtons onCancel={closeChangeModal} />}
+          onSubmit={handleChangeProduct}
+          sx={{ minWidth: "54rem" }}
+        />
       </Dialog>
     </Box>
   );

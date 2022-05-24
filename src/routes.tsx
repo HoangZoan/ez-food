@@ -10,6 +10,7 @@ import PageHeader from "./layouts/PageHeader";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import StatusSnackbar from "components/StatusSnackbar";
+import ConfirmationDialog from "components/ConfirmationDialog";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -34,6 +35,7 @@ function App() {
         <Route path="/admin/*" element={<Admin />} />
       </Routes>
 
+      <ConfirmationDialog />
       <StatusSnackbar />
 
       <Footer />

@@ -32,7 +32,7 @@ export interface SideDistType {
 }
 
 interface ProductInfoType {
-  id: string;
+  id?: string;
   title: string;
   options: OptionsType[];
   price: number;

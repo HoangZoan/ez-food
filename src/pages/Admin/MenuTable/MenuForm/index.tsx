@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "react-query";
 import { useRecoilValue } from "recoil";
 import { MenuType, ProductDetailType } from "shared/types";
-import { convertProductFormData, createNewMenu } from "shared/utils";
+import { convertProductFormData } from "shared/utils";
 import { productDetailState } from "states/productDetail";
 import FieldActions from "./FieldActions";
 import OptionsField from "./OptionsField";
@@ -62,15 +62,16 @@ const MenuForm = ({ onClose, item, itemType }: MenuFormProps) => {
     const { title, price, menuType } = data;
     const { options, sideDish } = convertProductFormData(data);
 
-    const submitData = createNewMenu({
+    const submitData = {
       title,
-      price,
+      price: Number(price) * 1000,
       menuType,
       options,
       sideDish,
       itemType,
       imageUrl,
-    });
+      isPublished: true,
+    };
 
     uploadNewMenu(submitData);
   };
