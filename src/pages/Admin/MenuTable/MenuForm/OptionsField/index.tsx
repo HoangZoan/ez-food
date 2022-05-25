@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { styled } from "shared/theme";
 import MenuFormControl from "../MenuFormControl";
 import { UseFormRegister, FieldValues } from "react-hook-form";
+import { OptionsType } from "shared/types";
 
 interface OptionsFieldProps {
   register: UseFormRegister<FieldValues>;
@@ -11,6 +12,7 @@ interface OptionsFieldProps {
   errors: {
     [x: string]: any;
   };
+  option?: OptionsType;
 }
 
 const MenuOptionLabel = styled(FormLabel)({
@@ -19,7 +21,12 @@ const MenuOptionLabel = styled(FormLabel)({
   fontWeight: 700,
 });
 
-const OptionsField = ({ register, index, errors }: OptionsFieldProps) => {
+const OptionsField = ({
+  register,
+  index,
+  errors,
+  option,
+}: OptionsFieldProps) => {
   const [newSelectLength, setNewSelectLength] = useState(2);
   const generatedSelectArr = Array.from(new Array(newSelectLength).keys());
 
@@ -36,6 +43,7 @@ const OptionsField = ({ register, index, errors }: OptionsFieldProps) => {
       <MenuFormControl>
         <FormLabel>Tên lựa chọn:</FormLabel>
         <TextField
+          defaultValue={option && option.name}
           error={Boolean(errors[`select-${index}`])}
           {...register(`select-${index}`, {
             required: {

@@ -35,6 +35,7 @@ const SideDishField = ({ index, register, errors }: SideDishFieldProps) => {
           <TextField
             defaultValue={0}
             type="number"
+            inputProps={{ min: 0 }}
             sx={{ width: 1 / 4 }}
             error={Boolean(errors[`side-price-${index}`])}
             {...register(`side-price-${index}`, {

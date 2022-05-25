@@ -1,6 +1,7 @@
 import SortButton from "components/TableSortButton";
 import {
   Button,
+  CircularProgress,
   Dialog,
   Stack,
   Table,
@@ -13,11 +14,14 @@ import {
   TableCell,
   TableCellHead,
 } from "components/UI/ManagingTable";
-import { ProductDetailType, TableSortsType } from "shared/types";
+import { MenuType, TableSortsType } from "shared/types";
 import { useState } from "react";
 import MenuForm from "./MenuForm";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { deleteMenuItem, fetchAllMenuItems } from "api/menu";
+import { useSnackbar } from "states/snackbar/hooks/useSnackbar";
+import { StorageService } from "../../../firebase/storageService";
+import { useConfirmationDialog } from "states/confirmationDialog/hooks";
 
 const sorts: TableSortsType[] = [
   { title: "Bánh mỳ", value: "banhMy" },
@@ -25,7 +29,12 @@ const sorts: TableSortsType[] = [
 ];
 
 const MenuTable = () => {
-  const [activeItem, setActiveItem] = useState<ProductDetailType | undefined>();
+  const queryClient = useQueryClient();
+  const { showToast } = useSnackbar();
+  const { openDialog } = useConfirmationDialog();
+  const [activeItem, setActiveItem] = useState<MenuType | Partial<MenuType>>(
+    {}
+  );
   const [tableType, setTableType] = useState(sorts[0].value);
   const [showForm, setShowForm] = useState(false);
 
@@ -37,18 +46,23 @@ const MenuTable = () => {
       cacheTime: 20 * 60000,
     }
   );
+
   const { mutate: removeMenuItem, isLoading: deletingItem } = useMutation(
-    (id: string) => deleteMenuItem(tableType, id),
+    async ({ id, imageUrl }: { id: string; imageUrl: string }) => {
+      await StorageService.deleteFile(imageUrl);
+
+      return deleteMenuItem(tableType, id);
+    },
     {
       onSuccess: () => {
-        // queryClient.invalidateQueries(["menu", itemType]);
-        // showToast({
-        //   title: "Thêm sản phẩm mới thành công!",
-        //   type: "success",
-        //   SnackbarProps: {
-        //     anchorOrigin: { vertical: "bottom", horizontal: "right" },
-        //   },
-        // });
+        queryClient.invalidateQueries(["menu", tableType]);
+        showToast({
+          title: "Xóa sản phẩm thành công!",
+          type: "success",
+          SnackbarProps: {
+            anchorOrigin: { vertical: "bottom", horizontal: "right" },
+          },
+        });
       },
     }
   );
@@ -63,6 +77,32 @@ const MenuTable = () => {
 
   const handleCloseForm = () => {
     setShowForm(false);
+
+    if (activeItem) {
+      setActiveItem({});
+    }
+  };
+
+  const handleUpdateItem = (id: string) => {
+    const updatingItem =
+      fetchedProducts!.find((product) => product.id === id) || {};
+    setActiveItem(updatingItem);
+    setShowForm(true);
+  };
+
+  const openConfirmationDialog = (
+    id: string,
+    imageUrl: string,
+    title: string
+  ) => {
+    openDialog({
+      content: (
+        <>
+          Bạn chắc chắn muốn xóa <strong>{title}</strong>?
+        </>
+      ),
+      onConfirm: () => removeMenuItem({ id, imageUrl }),
+    });
   };
 
   return (
@@ -85,12 +125,17 @@ const MenuTable = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {fetchedProducts?.map(({ id, title, isPublished }) => (
+          {fetchedProducts?.map(({ id, title, isPublished, imageUrl }) => (
             <TableBodyRow key={id}>
               <TableCell sx={{ fontWeight: 700 }}>{title}</TableCell>
               <TableCell>
                 <Stack direction="row" justifyContent="flex-end" spacing={3}>
-                  <Button variant="contained">Cập nhật</Button>
+                  <Button
+                    variant="contained"
+                    onClick={() => handleUpdateItem(id!)}
+                  >
+                    Cập nhật
+                  </Button>
                   {isPublished && (
                     <Button variant="contained" color="success">
                       Hiện
@@ -99,8 +144,14 @@ const MenuTable = () => {
                   {!isPublished && (
                     <Button variant="contained-disabled">Ẩn</Button>
                   )}
-                  <Button variant="outlined" color="error">
-                    Xóa
+                  <Button
+                    variant="outlined"
+                    color="error"
+                    disabled={deletingItem}
+                    onClick={() => openConfirmationDialog(id!, imageUrl, title)}
+                  >
+                    {!deletingItem && "Xóa"}
+                    {deletingItem && <CircularProgress size={16} />}
                   </Button>
                 </Stack>
               </TableCell>
@@ -122,7 +173,7 @@ const MenuTable = () => {
         <MenuForm
           onClose={handleCloseForm}
           item={activeItem}
-          itemType={tableType}
+          tableType={tableType}
         />
       </Dialog>
     </>

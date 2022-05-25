@@ -3,9 +3,8 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "react-query";
 import { useRecoilValue } from "recoil";
-import { MenuType, ProductDetailType } from "shared/types";
+import { MenuType } from "shared/types";
 import { convertProductFormData } from "shared/utils";
-import { productDetailState } from "states/productDetail";
 import FieldActions from "./FieldActions";
 import OptionsField from "./OptionsField";
 import ProductInfoField from "./ProductInfoField";
@@ -19,13 +18,13 @@ import { StorageService } from "../../../../firebase/storageService";
 
 interface MenuFormProps {
   onClose: () => void;
-  item?: ProductDetailType;
-  itemType: string;
+  item: MenuType | Partial<MenuType>;
+  tableType: string;
 }
 
-const MenuForm = ({ onClose, item, itemType }: MenuFormProps) => {
-  const isAddingNew = !Boolean(item);
-  const { options } = useRecoilValue(productDetailState);
+const MenuForm = ({ onClose, item, tableType }: MenuFormProps) => {
+  const { title, menuType, imageUrl, price, options } = item;
+  const isAddingNew = !Boolean(item.id);
   const imageFile = useRecoilValue(menuItemImageState);
   const [newOptionsLength, setNewOptionsLength] = useState(0);
   const [newSideDishLength, setNewSideDishLength] = useState(0);
@@ -48,10 +47,10 @@ const MenuForm = ({ onClose, item, itemType }: MenuFormProps) => {
     isSuccess: submitIsSuccess,
   } = useMutation(
     (data: MenuType) =>
-      FirestoreService.createDocument(`menu/products/${itemType}`, data),
+      FirestoreService.createDocument(`menu/products/${tableType}`, data),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(["menu", itemType]);
+        queryClient.invalidateQueries(["menu", tableType]);
         onClose();
         showToast({
           title: "Thêm sản phẩm mới thành công!",
@@ -96,7 +95,7 @@ const MenuForm = ({ onClose, item, itemType }: MenuFormProps) => {
       menuType,
       options,
       sideDish,
-      itemType,
+      itemType: tableType,
       imageUrl,
       isPublished: true,
     };
@@ -149,12 +148,21 @@ const MenuForm = ({ onClose, item, itemType }: MenuFormProps) => {
         watch={watch}
         errors={errors}
         submitIsSuccess={submitIsSuccess}
+        defaultValues={{ title, menuType, imageUrl, price }}
       />
 
       <Divider />
 
-      {/* <OptionsField /> */}
-      {options.length === 0 &&
+      {options?.map((option, key) => (
+        <OptionsField
+          key={key}
+          index={key}
+          register={register}
+          errors={errors}
+          option={option}
+        />
+      ))}
+      {isAddingNew &&
         generatedOptionsArr.map((key) => (
           <OptionsField
             key={key}

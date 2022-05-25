@@ -23,6 +23,12 @@ interface ProductInfoFieldProps {
     [x: string]: any;
   };
   submitIsSuccess: boolean;
+  defaultValues: {
+    title?: string;
+    menuType?: string;
+    imageUrl?: string;
+    price?: number;
+  };
 }
 
 const MenuFormSelect = styled(Select)({
@@ -47,29 +53,18 @@ const ProductInfoField = ({
   register,
   errors,
   watch,
+  defaultValues,
 }: ProductInfoFieldProps) => {
+  const { title, menuType, imageUrl: fetchedImageUrl, price } = defaultValues;
   const setImageFile = useSetRecoilState(menuItemImageState);
   const [imageUrl, setImageUrl] = useState("");
   const watchImage = watch("image");
-  // const { mutate: uploadImage, isLoading: isUploading } = useMutation(
-  //   async () => {
-  //     const file = watchImage[0];
-  //     const imageName = IMAGE_KEY + uuidv4();
 
-  //     const imageDownloadUrl = (await StorageService.uploadFile(
-  //       file,
-  //       `products/${imageName}`
-  //     )) as string;
-
-  //     setImageUrl(imageDownloadUrl);
-  //   }
-  // );
-  // const { mutate: clearImages, isLoading: isClearing } = useMutation(
-  //   async () => {
-  //     await StorageService.deleteFile(imageUrl);
-  //     setImageUrl("");
-  //   }
-  // );
+  useEffect(() => {
+    if (imageUrl === "" && fetchedImageUrl) {
+      setImageUrl(fetchedImageUrl);
+    }
+  }, [imageUrl, fetchedImageUrl]);
 
   useEffect(() => {
     if (!watchImage || watchImage?.length === 0) return;
@@ -83,6 +78,7 @@ const ProductInfoField = ({
       <MenuFormControl>
         <FormLabel>Tên món:</FormLabel>
         <TextField
+          defaultValue={title}
           error={Boolean(errors.title)}
           {...register("title", {
             required: { value: true, message: "Tên món không được bỏ trống" },
@@ -94,7 +90,10 @@ const ProductInfoField = ({
       <MenuFormControl>
         <FormLabel>Loại:</FormLabel>
         <Box>
-          <MenuFormSelect defaultValue="single" {...register("menuType")}>
+          <MenuFormSelect
+            defaultValue={menuType || "single"}
+            {...register("menuType")}
+          >
             <MenuItem value={"single"}>Món đơn</MenuItem>
             <MenuItem value={"combo"}>Combo</MenuItem>
           </MenuFormSelect>
@@ -110,7 +109,10 @@ const ProductInfoField = ({
 
           {imageUrl.length > 0 && (
             <ImageContainer>
-              <img src={imageUrl} alt="Anh" />
+              <img
+                src={imageUrl !== "" ? imageUrl : fetchedImageUrl}
+                alt="Anh"
+              />
             </ImageContainer>
           )}
 
@@ -134,6 +136,7 @@ const ProductInfoField = ({
           <Stack direction="row" spacing={3}>
             <TextField
               type="number"
+              defaultValue={price ? price / 1000 : ""}
               inputProps={{ min: 1 }}
               error={Boolean(errors.price)}
               sx={{ width: 1 / 4 }}
