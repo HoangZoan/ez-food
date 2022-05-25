@@ -13,7 +13,7 @@ const FieldActions = ({
   addLabel,
   showRemove,
   onRemove,
-  removeLabel = "Xóa bớt",
+  removeLabel = "Xóa",
 }: FieldActionsProps) => {
   return (
     <Stack direction="row" spacing={5}>

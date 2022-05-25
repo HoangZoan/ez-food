@@ -1,7 +1,7 @@
 import { Stack, Typography } from "@mui/material";
 import { FormLabel, TextField } from "components/UI/FormComponents";
-import React from "react";
 import { FieldValues, UseFormRegister } from "react-hook-form";
+import { SideDistType } from "shared/types";
 import MenuFormControl from "../MenuFormControl";
 
 interface SideDishFieldProps {
@@ -10,14 +10,21 @@ interface SideDishFieldProps {
   errors: {
     [x: string]: any;
   };
+  item?: SideDistType;
 }
 
-const SideDishField = ({ index, register, errors }: SideDishFieldProps) => {
+const SideDishField = ({
+  index,
+  register,
+  errors,
+  item,
+}: SideDishFieldProps) => {
   return (
     <>
       <MenuFormControl>
         <FormLabel>Đồ gọi thêm:</FormLabel>
         <TextField
+          defaultValue={item && item.name}
           error={Boolean(errors[`sideDish-${index}`])}
           {...register(`sideDish-${index}`, {
             required: {
@@ -33,7 +40,7 @@ const SideDishField = ({ index, register, errors }: SideDishFieldProps) => {
 
         <Stack direction="row" spacing={3}>
           <TextField
-            defaultValue={0}
+            defaultValue={item ? item.price / 1000 : 0}
             type="number"
             inputProps={{ min: 0 }}
             sx={{ width: 1 / 4 }}

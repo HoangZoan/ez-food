@@ -1,10 +1,10 @@
-import { Button, FormControl, Grid, Stack, Typography } from "@mui/material";
-import { FormLabel, TextField } from "components/UI/FormComponents";
 import React, { useState } from "react";
-import { styled } from "shared/theme";
+import { Button, Stack } from "@mui/material";
+import { FormLabel, TextField } from "components/UI/FormComponents";
 import MenuFormControl from "../MenuFormControl";
 import { UseFormRegister, FieldValues } from "react-hook-form";
 import { OptionsType } from "shared/types";
+import VariantField from "../VariantField";
 
 interface OptionsFieldProps {
   register: UseFormRegister<FieldValues>;
@@ -14,12 +14,6 @@ interface OptionsFieldProps {
   };
   option?: OptionsType;
 }
-
-const MenuOptionLabel = styled(FormLabel)({
-  fontSize: "1.2rem",
-  marginBottom: "0.4rem",
-  fontWeight: 700,
-});
 
 const OptionsField = ({
   register,
@@ -57,47 +51,27 @@ const OptionsField = ({
       <MenuFormControl>
         <FormLabel>Các lựa chọn:</FormLabel>
         <Stack spacing={1}>
-          {generatedSelectArr.map((key) => (
-            <Grid container key={key}>
-              <Grid item xs={8}>
-                <FormControl>
-                  <MenuOptionLabel>
-                    Lựa chọn {key === 0 ? "(Mặc định)" : ""}
-                  </MenuOptionLabel>
-                  <TextField
-                    error={Boolean(errors[`select-${index}`])}
-                    {...register(`variant-${index}-${key}`, {
-                      required: {
-                        value: true,
-                        message: "Thông tin này không được bỏ trống",
-                      },
-                    })}
-                    helperText={errors[`variant-${index}-${key}`]?.message}
-                  />
-                </FormControl>
-              </Grid>
-              <Grid item xs={4}>
-                <FormControl>
-                  <MenuOptionLabel>Tăng thêm</MenuOptionLabel>
-                  <TextField
-                    inputProps={{ readOnly: key === 0 }}
-                    defaultValue={0}
-                    type="number"
-                    placeholder="Nghìn VNĐ"
-                    error={Boolean(errors[`varPrice-${index}-${key}`])}
-                    {...register(`varPrice-${index}-${key}`, {
-                      required: {
-                        value: true,
-                        message: "Đang bỏ trống",
-                      },
-                    })}
-                    helperText={errors[`varPrice-${index}-${key}`]?.message}
-                  />
-                  <Typography variant="subtitle2">(nghìn VNĐ)</Typography>
-                </FormControl>
-              </Grid>
-            </Grid>
-          ))}
+          {option &&
+            option.variants.map((variant, i) => (
+              <VariantField
+                key={i}
+                variantKey={i}
+                optionIndex={index}
+                register={register}
+                errors={errors}
+                variant={variant}
+              />
+            ))}
+          {!option &&
+            generatedSelectArr.map((key) => (
+              <VariantField
+                key={key}
+                variantKey={key}
+                optionIndex={index}
+                register={register}
+                errors={errors}
+              />
+            ))}
 
           <Stack direction="row" justifyContent="space-between">
             <Button

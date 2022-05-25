@@ -18,9 +18,8 @@ import { MenuType, TableSortsType } from "shared/types";
 import { useState } from "react";
 import MenuForm from "./MenuForm";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { deleteMenuItem, fetchAllMenuItems } from "api/menu";
+import { menuApi } from "api/menu";
 import { useSnackbar } from "states/snackbar/hooks/useSnackbar";
-import { StorageService } from "../../../firebase/storageService";
 import { useConfirmationDialog } from "states/confirmationDialog/hooks";
 
 const sorts: TableSortsType[] = [
@@ -37,35 +36,33 @@ const MenuTable = () => {
   );
   const [tableType, setTableType] = useState(sorts[0].value);
   const [showForm, setShowForm] = useState(false);
+  const [deletingId, setDeletingId] = useState("");
 
   const { data: fetchedProducts, isLoading: isGettingData } = useQuery(
     ["menu", tableType],
-    () => fetchAllMenuItems(tableType),
+    () => menuApi.fetchAllMenuItems(tableType),
     {
-      staleTime: 15 * 60000,
-      cacheTime: 20 * 60000,
+      staleTime: 10 * 60000,
+      cacheTime: 15 * 60000,
     }
   );
 
-  const { mutate: removeMenuItem, isLoading: deletingItem } = useMutation(
-    async ({ id, imageUrl }: { id: string; imageUrl: string }) => {
-      await StorageService.deleteFile(imageUrl);
-
-      return deleteMenuItem(tableType, id);
+  const { mutate: removeMenuItem } = useMutation(menuApi.deleteMenuItem, {
+    onMutate: (data: { id: string }) => {
+      setDeletingId(data.id);
     },
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(["menu", tableType]);
-        showToast({
-          title: "Xóa sản phẩm thành công!",
-          type: "success",
-          SnackbarProps: {
-            anchorOrigin: { vertical: "bottom", horizontal: "right" },
-          },
-        });
-      },
-    }
-  );
+    onSuccess: () => {
+      setDeletingId("");
+      queryClient.invalidateQueries(["menu", tableType]);
+      showToast({
+        title: "Xóa sản phẩm thành công!",
+        type: "success",
+        SnackbarProps: {
+          anchorOrigin: { vertical: "bottom", horizontal: "right" },
+        },
+      });
+    },
+  });
 
   const handleSortChange = (value: string) => {
     setTableType(value);
@@ -101,7 +98,7 @@ const MenuTable = () => {
           Bạn chắc chắn muốn xóa <strong>{title}</strong>?
         </>
       ),
-      onConfirm: () => removeMenuItem({ id, imageUrl }),
+      onConfirm: () => removeMenuItem({ id, imageUrl, tableType }),
     });
   };
 
@@ -147,11 +144,11 @@ const MenuTable = () => {
                   <Button
                     variant="outlined"
                     color="error"
-                    disabled={deletingItem}
+                    disabled={id === deletingId}
                     onClick={() => openConfirmationDialog(id!, imageUrl, title)}
                   >
-                    {!deletingItem && "Xóa"}
-                    {deletingItem && <CircularProgress size={16} />}
+                    {id !== deletingId && "Xóa"}
+                    {id === deletingId && <CircularProgress size={16} />}
                   </Button>
                 </Stack>
               </TableCell>

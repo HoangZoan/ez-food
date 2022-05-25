@@ -121,7 +121,10 @@ const ProductInfoField = ({
             id="photo"
             sx={{ pointerEvents: "none", position: "absolute", opacity: 0 }}
             {...register("image", {
-              required: { value: true, message: "Sản phẩm đang chưa có ảnh" },
+              required: {
+                value: !fetchedImageUrl && imageUrl === "",
+                message: "Sản phẩm đang chưa có ảnh",
+              },
             })}
           />
           <FormHelperText error={Boolean(errors.image)}>

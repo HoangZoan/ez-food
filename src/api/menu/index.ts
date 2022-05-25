@@ -1,7 +1,10 @@
 import { FirestoreService } from "../../firebase/firestoreService";
+import { StorageService } from "../../firebase/storageService";
 import { MenuType } from "../../shared/types";
+import { IMAGE_KEY } from "../../shared/config";
+import { v4 as uuidv4 } from "uuid";
 
-export const fetchAllMenuItems = async (tableType: string) => {
+const fetchAllMenuItems = async (tableType: string) => {
   const response = await FirestoreService.readDocuments(
     `menu/products/${tableType}`
   );
@@ -16,6 +19,42 @@ export const fetchAllMenuItems = async (tableType: string) => {
   return fetchedItems as MenuType[];
 };
 
-export const deleteMenuItem = (itemType: string, id: string) => {
-  return FirestoreService.deleteDocument(`menu/products/${itemType}`, id);
+const createNewMenu = (tableType: string, data: MenuType) => {
+  return FirestoreService.createDocument(`menu/products/${tableType}`, data);
+};
+
+const createMenuImageUrl = async (imageFile: any) => {
+  const imageName = IMAGE_KEY + uuidv4();
+
+  const imageDownloadUrl = (await StorageService.uploadFile(
+    imageFile,
+    `products/${imageName}`
+  )) as string;
+
+  return imageDownloadUrl;
+};
+
+const deleteMenuImage = (imageUrl: string) =>
+  StorageService.deleteFile(imageUrl);
+
+const deleteMenuItem = async ({
+  id,
+  imageUrl,
+  tableType,
+}: {
+  id: string;
+  imageUrl: string;
+  tableType: string;
+}) => {
+  await StorageService.deleteFile(imageUrl);
+
+  return FirestoreService.deleteDocument(`menu/products/${tableType}`, id);
+};
+
+export const menuApi = {
+  fetchAllMenuItems,
+  createNewMenu,
+  createMenuImageUrl,
+  deleteMenuImage,
+  deleteMenuItem,
 };
