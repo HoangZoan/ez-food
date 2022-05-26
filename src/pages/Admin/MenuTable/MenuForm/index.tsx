@@ -1,7 +1,6 @@
 import { Divider, Stack, Button, CircularProgress } from "@mui/material";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useMutation, useQueryClient } from "react-query";
 import { useRecoilValue } from "recoil";
 import { MenuType } from "shared/types";
 import { convertProductFormData } from "shared/utils";
@@ -9,9 +8,13 @@ import FieldActions from "./FieldActions";
 import OptionsField from "./OptionsField";
 import ProductInfoField from "./ProductInfoField";
 import SideDishField from "./SideDishField";
-import { useSnackbar } from "states/snackbar/hooks/useSnackbar";
 import { menuItemImageState } from "states/menu";
-import { menuApi } from "api/menu";
+import {
+  useClearImage,
+  useUpdateMenu,
+  useUploadImage,
+  useUploadNewMenu,
+} from "api/menu/hooks";
 
 interface MenuFormProps {
   onClose: () => void;
@@ -21,6 +24,7 @@ interface MenuFormProps {
 
 const MenuForm = ({ onClose, item, tableType }: MenuFormProps) => {
   const {
+    id: itemId,
     title,
     menuType,
     imageUrl: fetchedImageUrl,
@@ -35,7 +39,6 @@ const MenuForm = ({ onClose, item, tableType }: MenuFormProps) => {
   const [newSideDishLength, setNewSideDishLength] = useState(0);
   const generatedOptionsArr = Array.from(new Array(newOptionsLength).keys());
   const generatedSideDishArr = Array.from(new Array(newSideDishLength).keys());
-  const queryClient = useQueryClient();
   const {
     watch,
     register,
@@ -44,40 +47,22 @@ const MenuForm = ({ onClose, item, tableType }: MenuFormProps) => {
     getValues,
     resetField,
   } = useForm();
-  const { showToast } = useSnackbar();
-  const {
-    mutate: uploadNewMenu,
-    isLoading: isSubmiting,
-    isSuccess: submitIsSuccess,
-  } = useMutation((data: MenuType) => menuApi.createNewMenu(tableType, data), {
-    onSuccess: () => {
-      queryClient.invalidateQueries(["menu", tableType]);
-      onClose();
-      showToast({
-        title: "Thêm sản phẩm mới thành công!",
-        type: "success",
-        SnackbarProps: {
-          anchorOrigin: { vertical: "bottom", horizontal: "right" },
-        },
-      });
-    },
-  });
-  const { mutateAsync: uploadImage, isLoading: isUploading } = useMutation(
-    menuApi.createMenuImageUrl
-  );
-  const { mutateAsync: clearImage } = useMutation(menuApi.deleteMenuImage);
-  const isLoading = isUploading || isSubmiting;
+  const { isSubmiting, uploadNewMenu } = useUploadNewMenu(tableType, onClose);
+  const { isUpdating, updateMenu } = useUpdateMenu(tableType, onClose);
+  const { isUploadingImage, uploadImage } = useUploadImage(isAddingNew);
+  const { clearImage } = useClearImage();
+  const isLoading = isUploadingImage || isSubmiting || isUpdating;
 
   const handleFormSubmit = async (data: { [key: string]: string }) => {
     const { title, price, menuType } = data;
     const { options, sideDish } = convertProductFormData(data);
-    // const imageUrl = imageFile
-    //   ? await uploadImage(imageFile)
-    //   : fetchedImageUrl!;
+    const imageUrl = imageFile
+      ? await uploadImage(imageFile)
+      : fetchedImageUrl!;
 
-    // if (imageFile && fetchedImageUrl) {
-    //   await clearImage(fetchedImageUrl);
-    // }
+    if (imageFile && fetchedImageUrl) {
+      await clearImage(fetchedImageUrl);
+    }
 
     const submitData = {
       title,
@@ -86,13 +71,15 @@ const MenuForm = ({ onClose, item, tableType }: MenuFormProps) => {
       options,
       sideDish,
       itemType: tableType,
-      // imageUrl,
+      imageUrl,
       isPublished: true,
     };
 
-    console.log(data);
-
-    // uploadNewMenu(submitData);
+    if (isAddingNew) {
+      uploadNewMenu(submitData);
+    } else {
+      updateMenu({ tableType, id: itemId!, data: submitData });
+    }
   };
 
   const handleAddNewOptionFields = () => {
@@ -148,7 +135,6 @@ const MenuForm = ({ onClose, item, tableType }: MenuFormProps) => {
         register={register}
         watch={watch}
         errors={errors}
-        submitIsSuccess={submitIsSuccess}
         defaultValues={{ title, menuType, imageUrl: fetchedImageUrl, price }}
       />
 

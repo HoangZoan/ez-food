@@ -22,7 +22,6 @@ interface ProductInfoFieldProps {
   errors: {
     [x: string]: any;
   };
-  submitIsSuccess: boolean;
   defaultValues: {
     title?: string;
     menuType?: string;

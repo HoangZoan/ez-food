@@ -5,8 +5,7 @@ import BorderBoxLayout from "layouts/BorderBoxLayout";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRecoilValue } from "recoil";
-import { IN_QUEUE_STATUS, ORDER_KEY } from "shared/config";
-import { createId } from "shared/utils";
+import { IN_QUEUE_STATUS } from "shared/config";
 import { cartState, cartTotalPriceState, useCart } from "states/cart";
 import CheckoutInput from "../CheckOutInput";
 import PriceField from "../PriceField";
@@ -65,7 +64,6 @@ const CheckOutForm = () => {
     setShowModal(true);
 
     console.log({
-      shipmentId: createId(ORDER_KEY),
       fullName,
       phoneNumber,
       address,

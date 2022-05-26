@@ -17,10 +17,8 @@ import {
 import { MenuType, TableSortsType } from "shared/types";
 import { useState } from "react";
 import MenuForm from "./MenuForm";
-import { useMutation, useQuery, useQueryClient } from "react-query";
-import { menuApi } from "api/menu";
-import { useSnackbar } from "states/snackbar/hooks/useSnackbar";
 import { useConfirmationDialog } from "states/confirmationDialog/hooks";
+import { useFetchedMenu, useRemoveMenuItem } from "../../../api/menu/hooks";
 
 const sorts: TableSortsType[] = [
   { title: "Bánh mỳ", value: "banhMy" },
@@ -28,41 +26,14 @@ const sorts: TableSortsType[] = [
 ];
 
 const MenuTable = () => {
-  const queryClient = useQueryClient();
-  const { showToast } = useSnackbar();
   const { openDialog } = useConfirmationDialog();
   const [activeItem, setActiveItem] = useState<MenuType | Partial<MenuType>>(
     {}
   );
   const [tableType, setTableType] = useState(sorts[0].value);
   const [showForm, setShowForm] = useState(false);
-  const [deletingId, setDeletingId] = useState("");
-
-  const { data: fetchedProducts, isLoading: isGettingData } = useQuery(
-    ["menu", tableType],
-    () => menuApi.fetchAllMenuItems(tableType),
-    {
-      staleTime: 10 * 60000,
-      cacheTime: 15 * 60000,
-    }
-  );
-
-  const { mutate: removeMenuItem } = useMutation(menuApi.deleteMenuItem, {
-    onMutate: (data: { id: string }) => {
-      setDeletingId(data.id);
-    },
-    onSuccess: () => {
-      setDeletingId("");
-      queryClient.invalidateQueries(["menu", tableType]);
-      showToast({
-        title: "Xóa sản phẩm thành công!",
-        type: "success",
-        SnackbarProps: {
-          anchorOrigin: { vertical: "bottom", horizontal: "right" },
-        },
-      });
-    },
-  });
+  const { fetchedMenu, isGettingData } = useFetchedMenu(tableType);
+  const { deletingId, removeMenuItem } = useRemoveMenuItem(tableType);
 
   const handleSortChange = (value: string) => {
     setTableType(value);
@@ -82,7 +53,7 @@ const MenuTable = () => {
 
   const handleUpdateItem = (id: string) => {
     const updatingItem =
-      fetchedProducts!.find((product) => product.id === id) || {};
+      fetchedMenu!.find((product) => product.id === id) || {};
     setActiveItem(updatingItem);
     setShowForm(true);
   };
@@ -122,7 +93,7 @@ const MenuTable = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {fetchedProducts?.map(({ id, title, isPublished, imageUrl }) => (
+          {fetchedMenu?.map(({ id, title, isPublished, imageUrl }) => (
             <TableBodyRow key={id}>
               <TableCell sx={{ fontWeight: 700 }}>{title}</TableCell>
               <TableCell>
@@ -154,7 +125,7 @@ const MenuTable = () => {
               </TableCell>
             </TableBodyRow>
           ))}
-          {(!fetchedProducts || fetchedProducts.length === 0) && (
+          {(!fetchedMenu || fetchedMenu.length === 0) && (
             <TableBodyRow>
               <TableCell>
                 {isGettingData

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import {
   Button,
-  Modal,
+  Dialog,
   Stack,
   Table,
   TableBody,
@@ -62,9 +62,9 @@ const NotificationsTable = () => {
         </TableBody>
       </Table>
 
-      <Modal open={showForm} onClose={handleCloseForm} disableAutoFocus>
+      <Dialog open={showForm} onClose={handleCloseForm} disableAutoFocus>
         <NotificationsForm onClose={handleCloseForm} />
-      </Modal>
+      </Dialog>
     </>
   );
 };

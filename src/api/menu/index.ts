@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from "uuid";
 
 const fetchAllMenuItems = async (tableType: string) => {
   const response = await FirestoreService.readDocuments(
-    `menu/products/${tableType}`
+    `app/menu/${tableType}`
   );
 
   const fetchedItems = response.docs.map((recipeDoc) => {
@@ -20,7 +20,7 @@ const fetchAllMenuItems = async (tableType: string) => {
 };
 
 const createNewMenu = (tableType: string, data: MenuType) => {
-  return FirestoreService.createDocument(`menu/products/${tableType}`, data);
+  return FirestoreService.createDocument(`app/menu/${tableType}`, data);
 };
 
 const createMenuImageUrl = async (imageFile: any) => {
@@ -34,8 +34,21 @@ const createMenuImageUrl = async (imageFile: any) => {
   return imageDownloadUrl;
 };
 
-const deleteMenuImage = (imageUrl: string) =>
-  StorageService.deleteFile(imageUrl);
+const updateMenu = ({
+  tableType,
+  id,
+  data,
+}: {
+  tableType: string;
+  id: string;
+  data: MenuType;
+}) => {
+  return FirestoreService.updateDocument(`app/menu/${tableType}`, id, data);
+};
+
+const deleteMenuImage = (imageUrl: string) => {
+  return StorageService.deleteFile(imageUrl);
+};
 
 const deleteMenuItem = async ({
   id,
@@ -48,13 +61,14 @@ const deleteMenuItem = async ({
 }) => {
   await StorageService.deleteFile(imageUrl);
 
-  return FirestoreService.deleteDocument(`menu/products/${tableType}`, id);
+  return FirestoreService.deleteDocument(`app/menu/${tableType}`, id);
 };
 
 export const menuApi = {
   fetchAllMenuItems,
   createNewMenu,
   createMenuImageUrl,
+  updateMenu,
   deleteMenuImage,
   deleteMenuItem,
 };
