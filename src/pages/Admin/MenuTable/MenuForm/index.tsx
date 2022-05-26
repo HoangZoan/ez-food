@@ -71,13 +71,13 @@ const MenuForm = ({ onClose, item, tableType }: MenuFormProps) => {
   const handleFormSubmit = async (data: { [key: string]: string }) => {
     const { title, price, menuType } = data;
     const { options, sideDish } = convertProductFormData(data);
-    const imageUrl = imageFile
-      ? await uploadImage(imageFile)
-      : fetchedImageUrl!;
+    // const imageUrl = imageFile
+    //   ? await uploadImage(imageFile)
+    //   : fetchedImageUrl!;
 
-    if (imageFile && fetchedImageUrl) {
-      await clearImage(fetchedImageUrl);
-    }
+    // if (imageFile && fetchedImageUrl) {
+    //   await clearImage(fetchedImageUrl);
+    // }
 
     const submitData = {
       title,
@@ -86,18 +86,20 @@ const MenuForm = ({ onClose, item, tableType }: MenuFormProps) => {
       options,
       sideDish,
       itemType: tableType,
-      imageUrl,
+      // imageUrl,
       isPublished: true,
     };
 
-    uploadNewMenu(submitData);
+    console.log(data);
+
+    // uploadNewMenu(submitData);
   };
 
   const handleAddNewOptionFields = () => {
     setNewOptionsLength((oldState) => oldState + 1);
   };
 
-  const handleRemoveNewOptionFields = () => {
+  const handleRemoveOptionFields = () => {
     const resetRemovedFields = (optionLength: number) => {
       const formKeys = Object.keys(getValues());
       const targetArr = formKeys.filter(
@@ -160,6 +162,8 @@ const MenuForm = ({ onClose, item, tableType }: MenuFormProps) => {
           register={register}
           errors={errors}
           option={option}
+          getValues={getValues}
+          resetField={resetField}
         />
       ))}
 
@@ -170,13 +174,15 @@ const MenuForm = ({ onClose, item, tableType }: MenuFormProps) => {
           index={options ? options.length + key : key}
           register={register}
           errors={errors}
+          getValues={getValues}
+          resetField={resetField}
         />
       ))}
 
       <FieldActions
         addLabel="+ Tùy chọn"
         onAdd={handleAddNewOptionFields}
-        onRemove={handleRemoveNewOptionFields}
+        onRemove={handleRemoveOptionFields}
         showRemove={
           newOptionsLength > 0 ||
           (Boolean(optionsState) && optionsState!.length > 0)

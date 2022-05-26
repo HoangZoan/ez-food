@@ -36,7 +36,7 @@ const VariantField = ({
           </MenuOptionLabel>
           <TextField
             defaultValue={variant && variant.type}
-            error={Boolean(errors[`select-${optionIndex}`])}
+            error={Boolean(errors[`variant-${optionIndex}-${variantKey}`])}
             {...register(`variant-${optionIndex}-${variantKey}`, {
               required: {
                 value: true,
