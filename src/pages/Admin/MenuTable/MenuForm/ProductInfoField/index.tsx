@@ -15,6 +15,7 @@ import { styled } from "shared/theme";
 import MenuFormControl from "../MenuFormControl";
 import { useSetRecoilState } from "recoil";
 import { menuItemImageState } from "states/menu";
+import ImageInputContainer from "components/UI/ImageInputContainer";
 
 interface ProductInfoFieldProps {
   watch: UseFormWatch<FieldValues>;
@@ -35,16 +36,6 @@ const MenuFormSelect = styled(Select)({
   "& .MuiSelect-select": {
     paddingTop: "0.6rem",
     paddingBottom: "0.6rem",
-  },
-});
-
-const ImageContainer = styled(Box)({
-  width: "9.6rem",
-  height: "9.6rem",
-  "& img": {
-    objectFit: "cover",
-    width: "100%",
-    height: "100%",
   },
 });
 
@@ -107,12 +98,12 @@ const ProductInfoField = ({
           </FileInputButton>
 
           {imageUrl.length > 0 && (
-            <ImageContainer>
+            <ImageInputContainer>
               <img
                 src={imageUrl !== "" ? imageUrl : fetchedImageUrl}
                 alt="Anh"
               />
-            </ImageContainer>
+            </ImageInputContainer>
           )}
 
           <Input

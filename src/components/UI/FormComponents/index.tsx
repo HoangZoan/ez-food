@@ -4,6 +4,7 @@ import {
   TextField as MuiTextField,
   TextFieldProps,
 } from "@mui/material";
+import React from "react";
 import { styled } from "shared/theme";
 
 export const FormControl = styled(MuiFormControl)({
@@ -34,9 +35,11 @@ export const TextField = styled(MuiTextField)(({ theme }) => ({
   },
 }));
 
-export const MultilineTextField = styled((props: TextFieldProps) => (
-  <TextField multiline minRows={2} maxRows={3} {...props} />
-))({
+export const MultilineTextField = styled(
+  React.forwardRef<HTMLDivElement | null, TextFieldProps>((props, ref) => (
+    <TextField multiline minRows={2} ref={ref} maxRows={3} {...props} />
+  ))
+)({
   "& .MuiOutlinedInput-root": { padding: "0" },
   "& textarea[aria-invalid]": {
     padding: "0.6rem 1.4rem",

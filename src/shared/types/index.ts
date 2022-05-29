@@ -8,10 +8,11 @@ export interface ProductType {
 
 // NOTIFICATION TYPE
 export interface NotificationListType {
-  id: string;
-  image: string;
+  id?: string;
+  imageUrl: string;
   title: string;
   description: string;
+  isPublished: boolean;
 }
 
 // PRODUCT DETAIL TYPE
