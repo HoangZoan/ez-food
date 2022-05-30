@@ -13,6 +13,7 @@ export interface NotificationListType {
   title: string;
   description: string;
   isPublished: boolean;
+  url: string;
 }
 
 // PRODUCT DETAIL TYPE

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import {
   Button,
+  CircularProgress,
   Dialog,
   Stack,
   Table,
@@ -14,8 +15,12 @@ import {
   TableCellHead,
 } from "components/UI/ManagingTable";
 import NotificationsForm from "./NotificationsForm";
-import { useFetchedNotifications } from "api/notifications/hooks";
+import {
+  useFetchedNotifications,
+  useRemoveNotification,
+} from "api/notifications/hooks";
 import { NotificationListType } from "shared/types";
+import { useConfirmationDialog } from "states/confirmationDialog/hooks";
 
 const NotificationsTable = () => {
   const [showForm, setShowForm] = useState(false);
@@ -23,6 +28,8 @@ const NotificationsTable = () => {
     NotificationListType | Partial<NotificationListType>
   >({});
   const { fetchedNotifications, isGettingData } = useFetchedNotifications();
+  const { deletingId, removeNotification } = useRemoveNotification();
+  const { openDialog } = useConfirmationDialog();
 
   const handleOpenForm = () => {
     setShowForm(true);
@@ -38,6 +45,13 @@ const NotificationsTable = () => {
       {};
     setActiveNotification(updatingItem);
     setShowForm(true);
+  };
+
+  const openConfirmationDialog = (id: string, imageUrl: string) => {
+    openDialog({
+      content: "Bạn chắc chắn muốn xóa thông báo này?",
+      onConfirm: () => removeNotification({ id, imageUrl }),
+    });
   };
 
   return (
@@ -64,7 +78,7 @@ const NotificationsTable = () => {
             </TableBodyRow>
           )}
 
-          {fetchedNotifications?.map(({ id, title }) => (
+          {fetchedNotifications?.map(({ id, title, imageUrl, isPublished }) => (
             <TableBodyRow key={id}>
               <TableCell sx={{ fontWeight: 700 }}>{title}</TableCell>
               <TableCell>
@@ -72,16 +86,22 @@ const NotificationsTable = () => {
                   <Button variant="contained" onClick={() => handleUpdate(id!)}>
                     Cập nhật
                   </Button>
-                  <Button variant="contained" color="success">
-                    Hiện
-                  </Button>
-                  {/* <Button
-                variant="contained-disabled"
-              >
-                Ẩn
-              </Button> */}
-                  <Button variant="outlined" color="error">
-                    Xóa
+                  {isPublished && (
+                    <Button variant="contained" color="success">
+                      Hiện
+                    </Button>
+                  )}
+                  {!isPublished && (
+                    <Button variant="contained-disabled">Ẩn</Button>
+                  )}
+                  <Button
+                    variant="outlined"
+                    color="error"
+                    disabled={id === deletingId}
+                    onClick={() => openConfirmationDialog(id!, imageUrl)}
+                  >
+                    {id !== deletingId && "Xóa"}
+                    {id === deletingId && <CircularProgress size={16} />}
                   </Button>
                 </Stack>
               </TableCell>

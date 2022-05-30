@@ -4,7 +4,10 @@ import {
   deleteDoc,
   doc,
   getDocs,
+  query,
   updateDoc,
+  where,
+  WhereFilterOp,
 } from "firebase/firestore/lite";
 import firebase from "../config";
 
@@ -14,10 +17,33 @@ const createDocument = <T>(collection: string, document: T) => {
   return addDoc(firestoreCollection(firestore, collection), document);
 };
 
-const readDocuments = async (collection: string) => {
-  const collectionRef = firestoreCollection(firestore, collection);
+interface Queries<T> {
+  field: string;
+  condition: WhereFilterOp;
+  value: T;
+}
 
-  return getDocs(collectionRef);
+interface ReadDocumentsParams<T> {
+  collection: string;
+  queries?: Queries<T>[];
+}
+
+const readDocuments = async <T>({
+  collection,
+  queries,
+}: ReadDocumentsParams<T>) => {
+  const collectionRef = firestoreCollection(firestore, collection);
+  let queryConstraints = [];
+
+  if (queries && queries.length > 0) {
+    for (const query of queries) {
+      queryConstraints.push(where(query.field, query.condition, query.value));
+    }
+  }
+
+  const firestoreQuery = query(collectionRef, ...queryConstraints);
+
+  return getDocs(firestoreQuery);
 };
 
 const updateDocument = <T>(collection: string, id: string, document: T) => {

@@ -97,7 +97,7 @@ const ProductInfoField = ({
             Thay đổi ảnh
           </FileInputButton>
 
-          {imageUrl.length > 0 && (
+          {!!imageUrl && (
             <ImageInputContainer>
               <img
                 src={imageUrl !== "" ? imageUrl : fetchedImageUrl}

@@ -149,9 +149,8 @@ export const useUploadNotificationImage = (isAddingNew: boolean) => {
 
 export const useClearNotificationImage = () => {
   const { showToast } = useSnackbar();
-  const { mutateAsync: clearNotificationImage } = useMutation(
-    notificationsApi.deleteNotificationImage,
-    {
+  const { mutateAsync: clearNotificationImage, isLoading: isRemovingImg } =
+    useMutation(notificationsApi.deleteNotificationImage, {
       onError: () => {
         showToast({
           title: "Cập nhật thông báo không thành công!",
@@ -161,10 +160,10 @@ export const useClearNotificationImage = () => {
           },
         });
       },
-    }
-  );
+    });
 
   return {
     clearNotificationImage,
+    isRemovingImg,
   };
 };

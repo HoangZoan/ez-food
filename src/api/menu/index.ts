@@ -5,9 +5,10 @@ import { IMAGE_KEY } from "../../shared/config";
 import { v4 as uuidv4 } from "uuid";
 
 const fetchAllMenuItems = async (tableType: string) => {
-  const response = await FirestoreService.readDocuments(
-    `app/menu/${tableType}`
-  );
+  const response = await FirestoreService.readDocuments({
+    collection: `app/menu/${tableType}`,
+    queries: [{ field: "isPublished", condition: "==", value: true }],
+  });
 
   const fetchedItems = response.docs.map((recipeDoc) => {
     const id = recipeDoc.id;

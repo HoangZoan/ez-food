@@ -4,19 +4,21 @@ import { NotificationListType } from "shared/types";
 import MenuItem from "components/UI/MenuItem";
 
 const NotificationItem = ({
-  id,
-  image,
+  imageUrl,
   title,
   description,
-}: NotificationListType) => {
+  url,
+}: Omit<NotificationListType, "isPublished">) => {
   return (
     <MenuItem>
       <Grid
+        component="a"
+        href={url}
         container
         columns={7}
         spacing={4}
         alignItems="flex-start"
-        sx={{ width: "48rem", py: 2 }}
+        sx={{ width: "48rem", py: 2, color: "inherit" }}
       >
         <Grid
           xs={2}
@@ -26,10 +28,7 @@ const NotificationItem = ({
             "& img": { width: 1, height: 1, objectFit: "cover" },
           }}
         >
-          <img
-            src="https://asianfoodnetwork.com/content/dam/afn/global/en/homepage/new-content-carousel/AFN_Food_Made_Good_HK_Awards_good_to_go_award_mobile.jpg.transform/desktop-img/img.jpg"
-            alt="JPG"
-          />
+          <img src={imageUrl} alt="JPG" />
         </Grid>
 
         <Grid xs={5} item>

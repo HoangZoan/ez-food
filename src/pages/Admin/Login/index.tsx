@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   Box,
   Button,
@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { useSnackbar } from "states/snackbar/hooks/useSnackbar";
+import { FirebaseAuthService } from "../../../firebase/authService";
 
 const Login = () => {
   const {
@@ -18,28 +19,34 @@ const Login = () => {
     formState: { errors },
     handleSubmit,
   } = useForm();
-  const [isSuccess, setIsSuccess] = useState(false);
   const { showToast } = useSnackbar();
 
-  const handleFormSubmit = (data: any) => {
-    console.log("submit");
-    // Temporary
-    setIsSuccess(true);
-  };
+  const handleFormSubmit = async ({
+    email,
+    password,
+  }: {
+    [key: string]: string;
+  }) => {
+    try {
+      await FirebaseAuthService.loginUser(email, password);
 
-  useEffect(() => {
-    if (isSuccess) {
       showToast({
-        title: isSuccess
-          ? "Đăng nhập thành công"
-          : "Đăng nhập không thành công",
-        type: isSuccess ? "success" : "error",
+        title: "Đăng nhập thành công",
+        type: "success",
+        SnackbarProps: {
+          anchorOrigin: { vertical: "top", horizontal: "center" },
+        },
+      });
+    } catch (error: any) {
+      showToast({
+        title: "Đăng nhập không thành công",
+        type: "error",
         SnackbarProps: {
           anchorOrigin: { vertical: "top", horizontal: "center" },
         },
       });
     }
-  }, [isSuccess, showToast]);
+  };
 
   return (
     <>
@@ -66,18 +73,18 @@ const Login = () => {
             <Stack spacing={3}>
               <FormControl>
                 <FormLabel htmlFor="login-id" sx={{ mb: 2 }}>
-                  Tên đăng nhập:
+                  Email:
                 </FormLabel>
                 <TextField
                   id="login-id"
                   InputProps={{ sx: { minWidth: "27rem" } }}
                   inputProps={{ sx: { py: 2 } }}
-                  error={Boolean(errors.id)}
-                  helperText={errors.id && errors.id.message}
-                  {...register("id", {
+                  error={Boolean(errors.email)}
+                  helperText={errors.email && errors.email.message}
+                  {...register("email", {
                     required: {
                       value: true,
-                      message: "Tên đăng nhập không được bỏ trống",
+                      message: "Email không được bỏ trống",
                     },
                   })}
                 />
@@ -116,16 +123,6 @@ const Login = () => {
           </Paper>
         </Stack>
       </Box>
-
-      {/* <StatusSnackbar
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
-        open={showSnackbar}
-        onClose={handleClose}
-        title={
-          isSuccess ? "Đăng nhập thành công" : "Đăng nhập không thành công"
-        }
-        severity={isSuccess ? "success" : "error"}
-      /> */}
     </>
   );
 };

@@ -12,7 +12,7 @@ interface PopupMenuLayoutProps {
 const BoxArrow = styled(Box)({
   position: "absolute",
   top: "-3px",
-  right: "2rem",
+  right: "2.2rem",
   width: "2.4rem",
   height: "2.4rem",
   backgroundColor: "white",
