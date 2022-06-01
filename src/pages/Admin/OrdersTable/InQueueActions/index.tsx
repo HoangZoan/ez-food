@@ -1,10 +1,16 @@
 import { Button } from "@mui/material";
 import React from "react";
 
-const InQueueActions = () => {
+interface InQueueActionsProps {
+  onShowDetail: () => void;
+}
+
+const InQueueActions = ({ onShowDetail }: InQueueActionsProps) => {
   return (
     <>
-      <Button variant="contained">Chi tiết</Button>
+      <Button variant="contained" onClick={onShowDetail}>
+        Chi tiết
+      </Button>
       <Button variant="contained" color="success">
         Xong
       </Button>

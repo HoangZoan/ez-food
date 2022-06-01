@@ -30,7 +30,7 @@ export interface OptionsType {
   variants: OptionVariantType[];
 }
 
-export interface SideDistType {
+export interface SideDishType {
   name: string;
   price: number;
 }
@@ -40,11 +40,12 @@ interface ProductInfoType {
   title: string;
   options: OptionsType[];
   price: number;
+  description: string;
 }
 
 export interface ProductDetailType extends ProductInfoType {
-  availableSideDish: SideDistType[];
-  selectedSideDish: SideDistType[];
+  availableSideDish: SideDishType[];
+  selectedSideDish: SideDishType[];
   quantity: number;
   totalPrice: number;
 }
@@ -64,9 +65,23 @@ export interface MenuType extends ProductInfoType {
   isPublished: boolean;
   itemType: string;
   menuType: string;
-  sideDish: SideDistType[];
+  sideDish: SideDishType[];
   imageUrl: string;
 }
+
+// ORDER TYPE
+export interface OrderType {
+  orderAt: string;
+  fullName: string;
+  phoneNumber: string;
+  address: string;
+  orders: ProductOrderType[];
+  totalPrice: number;
+  status: string;
+}
+
+// ADMIN
+export type OrderStatusType = "in-queue" | "delivered" | "canceled";
 
 // FIREBASE
 export interface FirebaseQuery<T> {

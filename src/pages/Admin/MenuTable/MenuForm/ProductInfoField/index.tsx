@@ -9,7 +9,11 @@ import {
   Typography,
 } from "@mui/material";
 import FileInputButton from "components/UI/FileInputButton";
-import { FormLabel, TextField } from "components/UI/FormComponents";
+import {
+  FormLabel,
+  MultilineTextField,
+  TextField,
+} from "components/UI/FormComponents";
 import { FieldValues, UseFormRegister, UseFormWatch } from "react-hook-form";
 import { styled } from "shared/theme";
 import MenuFormControl from "../MenuFormControl";
@@ -28,6 +32,7 @@ interface ProductInfoFieldProps {
     menuType?: string;
     imageUrl?: string;
     price?: number;
+    description?: string;
   };
 }
 
@@ -45,7 +50,13 @@ const ProductInfoField = ({
   watch,
   defaultValues,
 }: ProductInfoFieldProps) => {
-  const { title, menuType, imageUrl: fetchedImageUrl, price } = defaultValues;
+  const {
+    title,
+    menuType,
+    imageUrl: fetchedImageUrl,
+    price,
+    description,
+  } = defaultValues;
   const setImageFile = useSetRecoilState(menuItemImageState);
   const [imageUrl, setImageUrl] = useState("");
   const watchImage = watch("image");
@@ -142,6 +153,18 @@ const ProductInfoField = ({
 
           <FormHelperText error>{errors.price?.message}</FormHelperText>
         </Stack>
+      </MenuFormControl>
+
+      <MenuFormControl>
+        <FormLabel>Mô tả:</FormLabel>
+        <MultilineTextField
+          defaultValue={description}
+          error={Boolean(errors.description)}
+          {...register("description", {
+            required: { value: true, message: "Mô tả không được bỏ trống" },
+          })}
+          helperText={errors.description?.message}
+        />
       </MenuFormControl>
     </>
   );

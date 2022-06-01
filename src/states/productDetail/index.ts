@@ -1,5 +1,5 @@
 import { atom, selector } from "recoil";
-import { OptionsType, ProductDetailType, SideDistType } from "shared/types";
+import { OptionsType, ProductDetailType, SideDishType } from "shared/types";
 
 export const productIdState = atom({
   key: "productId",
@@ -14,8 +14,8 @@ export const productOptionsState = atom({
 export const productSideDishState = atom({
   key: "productSideDish",
   default: {
-    availableSideDish: [] as SideDistType[],
-    selectedSideDish: [] as SideDistType[],
+    availableSideDish: [] as SideDishType[],
+    selectedSideDish: [] as SideDishType[],
   },
 });
 

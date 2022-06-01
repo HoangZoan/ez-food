@@ -1,7 +1,7 @@
 import { Stack, Typography } from "@mui/material";
 import { FormLabel, TextField } from "components/UI/FormComponents";
 import { FieldValues, UseFormRegister } from "react-hook-form";
-import { SideDistType } from "shared/types";
+import { SideDishType } from "shared/types";
 import MenuFormControl from "../MenuFormControl";
 
 interface SideDishFieldProps {
@@ -10,7 +10,7 @@ interface SideDishFieldProps {
   errors: {
     [x: string]: any;
   };
-  item?: SideDistType;
+  item?: SideDishType;
 }
 
 const SideDishField = ({

@@ -97,10 +97,14 @@ export const useUpdateMenu = (tableType: string, closeForm?: () => void) => {
   const { updateMenu: updateMenuApi } = menuApi;
   const queryClient = useQueryClient();
   const { showToast } = useSnackbar();
+  const [updatingId, setUpdatingId] = useState("");
 
   const { mutate: updateMenu, isLoading: isUpdating } = useMutation(
     updateMenuApi,
     {
+      onMutate: ({ id }) => {
+        setUpdatingId(id);
+      },
       onSuccess: () => {
         queryClient.invalidateQueries(["menu", tableType]);
         if (closeForm) {
@@ -123,10 +127,13 @@ export const useUpdateMenu = (tableType: string, closeForm?: () => void) => {
           },
         });
       },
+      onSettled: () => {
+        setUpdatingId("");
+      },
     }
   );
 
-  return { updateMenu, isUpdating };
+  return { updateMenu, updatingId, isUpdating };
 };
 
 export const useUploadImage = (isAddingNew: boolean) => {

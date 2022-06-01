@@ -1,4 +1,11 @@
-import { Button, Divider, Modal, Stack, Typography } from "@mui/material";
+import {
+  Button,
+  CircularProgress,
+  Divider,
+  Modal,
+  Stack,
+  Typography,
+} from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import ModalBox from "components/UI/ModalBox";
 import BorderBoxLayout from "layouts/BorderBoxLayout";
@@ -9,6 +16,7 @@ import { IN_QUEUE_STATUS } from "shared/config";
 import { cartState, cartTotalPriceState, useCart } from "states/cart";
 import CheckoutInput from "../CheckOutInput";
 import PriceField from "../PriceField";
+import { useCreateOrder } from "api/order/hooks";
 import { useNavigate } from "react-router-dom";
 
 interface CustomerInfoType {
@@ -38,6 +46,7 @@ const FormBoxLayout = ({
 };
 
 const CheckOutForm = () => {
+  const navigate = useNavigate();
   const cart = useRecoilValue(cartState);
   const totalPrice = useRecoilValue(cartTotalPriceState);
   const shippingFee = 25000;
@@ -51,8 +60,24 @@ const CheckOutForm = () => {
   const phoneNumberHasError = Boolean(errors.phoneNumber);
   const addressHasError = Boolean(errors.address);
   const [showModal, setShowModal] = useState(false);
-  const navigate = useNavigate();
+
   const { resetCart } = useCart();
+  const handleSubmitSuccess = () => {
+    setShowModal(true);
+
+    setTimeout(() => {
+      resetCart();
+      reset({
+        fullName: "",
+        phoneNumber: "",
+        address: "",
+      } as CustomerInfoType);
+      navigate("/");
+    }, 2000);
+  };
+  const { isCreating, createOrder } = useCreateOrder({
+    handleSuccess: handleSubmitSuccess,
+  });
 
   const handleCloseModal = () => {
     setShowModal(false);
@@ -61,9 +86,8 @@ const CheckOutForm = () => {
   const onSunmit = (data: any) => {
     const { fullName, phoneNumber, address } = data as CustomerInfoType;
 
-    setShowModal(true);
-
-    console.log({
+    createOrder({
+      orderAt: new Date().toISOString(),
       fullName,
       phoneNumber,
       address,
@@ -71,18 +95,6 @@ const CheckOutForm = () => {
       totalPrice: totalPrice + shippingFee,
       status: IN_QUEUE_STATUS,
     });
-
-    reset({
-      fullName: "",
-      phoneNumber: "",
-      address: "",
-    } as CustomerInfoType);
-
-    setTimeout(() => {
-      setShowModal(false);
-      navigate("/");
-      resetCart();
-    }, 2000);
   };
 
   return (
@@ -128,10 +140,11 @@ const CheckOutForm = () => {
               <PriceField label="Thành tiền" price={totalPrice + shippingFee} />
             </Stack>
 
-            <Button variant="contained" type="submit">
+            <Button variant="contained" type="submit" disabled={isCreating}>
               <Typography variant="body1" fontWeight={700}>
                 Thanh toán
               </Typography>
+              {isCreating && <CircularProgress size={24} sx={{ ml: 3 }} />}
             </Button>
           </Stack>
         </FormBoxLayout>

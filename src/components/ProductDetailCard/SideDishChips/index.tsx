@@ -1,12 +1,12 @@
 import React from "react";
 import { Chip, Stack } from "@mui/material";
-import { SideDistType } from "shared/types";
+import { SideDishType } from "shared/types";
 import CloseIcon from "@mui/icons-material/Close";
 import { styled } from "shared/theme";
 import { Box } from "@mui/system";
 
 interface SideDishChipsProps {
-  items: SideDistType[];
+  items: SideDishType[];
   onDelete: (itemName: string) => void;
 }
 

@@ -1,6 +1,7 @@
 import { AtomEffect } from "recoil";
-import { OptionsType, SideDistType } from "shared/types";
+import { OptionsType, SideDishType } from "shared/types";
 import { v4 as uuidv4 } from "uuid";
+import moment from "moment";
 
 // LOCALSTORAGE FUNCTIONS
 export const localStorageEffect =
@@ -29,6 +30,10 @@ export const formatPriceText = (price: number) => {
   const currency = Intl.NumberFormat("vi-VI");
 
   return currency.format(price) + "đ";
+};
+
+export const convertDateTime = (date: string) => {
+  return moment("2022-06-01T15:30:02.417Z").format("h:mm");
 };
 
 // FORM DATA CONVERT FUNCTION
@@ -71,7 +76,7 @@ export const convertProductFormData = (data: { [key: string]: string }) => {
   );
 
   // Generate output side dish
-  const sideDish: SideDistType[] = sideDishArr.map((dish, i) => ({
+  const sideDish: SideDishType[] = sideDishArr.map((dish, i) => ({
     name: data[dish],
     price: Number(data[`side-price-${i}`]) * 1000,
   }));

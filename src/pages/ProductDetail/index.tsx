@@ -36,6 +36,7 @@ const dummyData: ProductDetailType = {
     { name: "Chả quế", price: 3000 },
   ],
   selectedSideDish: [],
+  description: "abc",
 };
 
 const SubmitButton = React.memo(() => {

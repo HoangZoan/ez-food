@@ -38,7 +38,7 @@ const MenuTable = () => {
   const [showForm, setShowForm] = useState(false);
   const { fetchedMenu, isGettingData } = useFetchedMenu(tableType);
   const { deletingId, removeMenuItem } = useRemoveMenuItem(tableType);
-  const { isUpdating, updateMenu } = useUpdateMenu(tableType);
+  const { updatingId, updateMenu } = useUpdateMenu(tableType);
 
   const handleSortChange = (value: string) => {
     setTableType(value);
@@ -117,23 +117,16 @@ const MenuTable = () => {
                   >
                     Cập nhật
                   </Button>
-                  {isPublished && (
-                    <Button
-                      variant="contained"
-                      color="success"
-                      onClick={() => toggleItemVisibility(id!)}
-                    >
-                      Hiện
-                    </Button>
-                  )}
-                  {!isPublished && (
-                    <Button
-                      variant="contained-disabled"
-                      onClick={() => toggleItemVisibility(id!)}
-                    >
-                      Ẩn
-                    </Button>
-                  )}
+                  <Button
+                    variant={isPublished ? "contained" : "contained-disabled"}
+                    color={isPublished ? "success" : "inherit"}
+                    onClick={() => toggleItemVisibility(id!)}
+                  >
+                    {id !== updatingId && (isPublished ? "Hiện" : "Ẩn")}
+                    {id === updatingId && (
+                      <CircularProgress size={16} color="inherit" />
+                    )}
+                  </Button>
                   <Button
                     variant="outlined"
                     color="error"

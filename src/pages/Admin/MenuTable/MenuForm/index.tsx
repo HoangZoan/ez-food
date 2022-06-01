@@ -31,6 +31,7 @@ const MenuForm = ({ onClose, item, tableType }: MenuFormProps) => {
     price,
     options,
     sideDish,
+    description,
   } = item;
   const isAddingNew = !Boolean(item.id);
   const imageFile = useRecoilValue(menuItemImageState);
@@ -54,7 +55,7 @@ const MenuForm = ({ onClose, item, tableType }: MenuFormProps) => {
   const isLoading = isUploadingImage || isSubmiting || isUpdating;
 
   const handleFormSubmit = async (data: { [key: string]: string }) => {
-    const { title, price, menuType } = data;
+    const { title, price, menuType, description } = data;
     const { options, sideDish } = convertProductFormData(data);
     const imageUrl = imageFile
       ? await uploadImage(imageFile)
@@ -73,6 +74,7 @@ const MenuForm = ({ onClose, item, tableType }: MenuFormProps) => {
       itemType: tableType,
       imageUrl,
       isPublished: true,
+      description,
     };
 
     if (isAddingNew) {
@@ -135,7 +137,13 @@ const MenuForm = ({ onClose, item, tableType }: MenuFormProps) => {
         register={register}
         watch={watch}
         errors={errors}
-        defaultValues={{ title, menuType, imageUrl: fetchedImageUrl, price }}
+        defaultValues={{
+          title,
+          menuType,
+          imageUrl: fetchedImageUrl,
+          price,
+          description,
+        }}
       />
 
       <Divider />
