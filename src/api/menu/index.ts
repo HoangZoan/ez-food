@@ -1,13 +1,16 @@
 import { FirestoreService } from "../../firebase/firestoreService";
 import { StorageService } from "../../firebase/storageService";
-import { MenuType } from "../../shared/types";
+import { FirebaseQuery, MenuType } from "../../shared/types";
 import { IMAGE_KEY } from "../../shared/config";
 import { v4 as uuidv4 } from "uuid";
 
-const fetchAllMenuItems = async (tableType: string) => {
+const fetchAllMenuItems = async <T>(
+  tableType: string,
+  queries: FirebaseQuery<T>[]
+) => {
   const response = await FirestoreService.readDocuments({
     collection: `app/menu/${tableType}`,
-    queries: [{ field: "isPublished", condition: "==", value: true }],
+    queries,
   });
 
   const fetchedItems = response.docs.map((recipeDoc) => {

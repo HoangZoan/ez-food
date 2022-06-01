@@ -3,8 +3,13 @@ import MenuButton from "./MenuButton";
 import { Container, Stack, Typography } from "@mui/material";
 import CartButton from "./CartButton";
 import NotificationsButton from "./NotificationsButton";
+import LogoutButton from "./LogoutButton";
+import { useRecoilValue } from "recoil";
+import { adminLoginState } from "states/admin";
 
 const PageHeader = () => {
+  const adminState = useRecoilValue(adminLoginState);
+
   return (
     <PageHeaderLayout>
       <Container>
@@ -20,8 +25,13 @@ const PageHeader = () => {
           </Typography>
 
           <Stack direction="row" spacing={3}>
-            <CartButton />
-            <NotificationsButton />
+            {!adminState && (
+              <>
+                <CartButton />
+                <NotificationsButton />
+              </>
+            )}
+            {adminState && <LogoutButton />}
           </Stack>
         </Stack>
       </Container>

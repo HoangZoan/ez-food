@@ -11,7 +11,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import StatusSnackbar from "components/StatusSnackbar";
 import ConfirmationDialog from "components/ConfirmationDialog";
-import { useEffect } from "react";
+import AuthGuard from "hoc/AuthGuard";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -25,15 +25,17 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <PageHeader />
-
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/products" element={<Products />} />
         <Route path="/products/:productId" element={<ProductDetail />} />
         <Route path="/check-out" element={<CheckOut />} />
-        <Route path="/admin" element={<Login />} />
-        {/* <Route path="/admin" element={<Navigate to="/admin/orders" />} /> */}
-        <Route path="/admin/*" element={<Admin />} />
+        <Route path="/login" element={<Login />} />
+        <Route
+          path="/admin"
+          element={AuthGuard(<Navigate to="/admin/orders" />)}
+        />
+        <Route path="/admin/*" element={AuthGuard(<Admin />)} />
       </Routes>
 
       <ConfirmationDialog />

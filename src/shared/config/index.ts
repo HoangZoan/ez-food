@@ -6,3 +6,5 @@ export const IMAGE_KEY = "IMAGE";
 export const IN_QUEUE_STATUS = "in-queue";
 export const DELIVERED_STATUS = "delivered";
 export const CANCELED_STATUS = "canceled";
+
+export const ADMIN = "admin";

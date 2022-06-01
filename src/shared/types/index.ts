@@ -1,3 +1,5 @@
+import { WhereFilterOp } from "firebase/firestore/lite";
+
 // PRODUCT TYPE
 export interface ProductType {
   id: string;
@@ -64,4 +66,11 @@ export interface MenuType extends ProductInfoType {
   menuType: string;
   sideDish: SideDistType[];
   imageUrl: string;
+}
+
+// FIREBASE
+export interface FirebaseQuery<T> {
+  field: string;
+  condition: WhereFilterOp;
+  value: T;
 }

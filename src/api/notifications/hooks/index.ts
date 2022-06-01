@@ -1,13 +1,19 @@
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { NotificationListType } from "shared/types";
+import { useRecoilValue } from "recoil";
+import { FirebaseQuery, NotificationListType } from "shared/types";
+import { adminLoginState } from "states/admin";
 import { useSnackbar } from "states/snackbar/hooks/useSnackbar";
 import { notificationsApi } from "..";
 
 export const useFetchedNotifications = () => {
+  const adminState = useRecoilValue(adminLoginState);
+  const queries: FirebaseQuery<boolean>[] = !adminState
+    ? [{ field: "isPublished", condition: "==", value: true }]
+    : [];
   const { data: fetchedNotifications, isLoading: isGettingData } = useQuery(
     "menu",
-    () => notificationsApi.fetchAllNotifications()
+    () => notificationsApi.fetchAllNotifications(queries)
   );
 
   return { fetchedNotifications, isGettingData };

@@ -1,13 +1,13 @@
 import { FirestoreService } from "../../firebase/firestoreService";
 import { StorageService } from "../../firebase/storageService";
-import { NotificationListType } from "../../shared/types";
+import { FirebaseQuery, NotificationListType } from "../../shared/types";
 import { IMAGE_KEY } from "../../shared/config";
 import { v4 as uuidv4 } from "uuid";
 
-const fetchAllNotifications = async () => {
+const fetchAllNotifications = async (queries: FirebaseQuery<boolean>[]) => {
   const response = await FirestoreService.readDocuments({
     collection: "app/notifications/documents",
-    queries: [{ field: "isPublished", condition: "==", value: true }],
+    queries,
   });
 
   const fetchedItems = response.docs.map((recipeDoc) => {

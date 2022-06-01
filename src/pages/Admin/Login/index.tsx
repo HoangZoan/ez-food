@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Box,
   Button,
@@ -9,11 +8,18 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import { useRecoilValue } from "recoil";
+import { adminLoginState } from "states/admin";
 import { useSnackbar } from "states/snackbar/hooks/useSnackbar";
 import { FirebaseAuthService } from "../../../firebase/authService";
 
 const Login = () => {
+  const adminState = useRecoilValue(adminLoginState);
+  const navigate = useNavigate();
+
   const {
     register,
     formState: { errors },
@@ -47,6 +53,12 @@ const Login = () => {
       });
     }
   };
+
+  useEffect(() => {
+    if (adminState) {
+      navigate("/admin");
+    }
+  }, [adminState, navigate]);
 
   return (
     <>

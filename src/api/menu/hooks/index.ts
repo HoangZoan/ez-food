@@ -1,13 +1,20 @@
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { MenuType } from "shared/types";
+import { useRecoilValue } from "recoil";
+import { FirebaseQuery, MenuType } from "shared/types";
+import { adminLoginState } from "states/admin";
 import { useSnackbar } from "states/snackbar/hooks/useSnackbar";
 import { menuApi } from "..";
 
 export const useFetchedMenu = (tableType: string) => {
+  const adminState = useRecoilValue(adminLoginState);
+  const queries: FirebaseQuery<boolean>[] = !adminState
+    ? [{ field: "isPublished", condition: "==", value: true }]
+    : [];
+
   const { data: fetchedMenu, isLoading: isGettingData } = useQuery(
     ["menu", tableType],
-    () => menuApi.fetchAllMenuItems(tableType)
+    () => menuApi.fetchAllMenuItems(tableType, queries)
   );
 
   return { fetchedMenu, isGettingData };
@@ -86,7 +93,7 @@ export const useUploadNewMenu = (tableType: string, closeForm: () => void) => {
   };
 };
 
-export const useUpdateMenu = (tableType: string, closeForm: () => void) => {
+export const useUpdateMenu = (tableType: string, closeForm?: () => void) => {
   const { updateMenu: updateMenuApi } = menuApi;
   const queryClient = useQueryClient();
   const { showToast } = useSnackbar();
@@ -96,7 +103,9 @@ export const useUpdateMenu = (tableType: string, closeForm: () => void) => {
     {
       onSuccess: () => {
         queryClient.invalidateQueries(["menu", tableType]);
-        closeForm();
+        if (closeForm) {
+          closeForm();
+        }
         showToast({
           title: "Cập nhật sản phẩm thành công!",
           type: "success",

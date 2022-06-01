@@ -18,7 +18,11 @@ import { MenuType, TableSortsType } from "shared/types";
 import { useState } from "react";
 import MenuForm from "./MenuForm";
 import { useConfirmationDialog } from "states/confirmationDialog/hooks";
-import { useFetchedMenu, useRemoveMenuItem } from "../../../api/menu/hooks";
+import {
+  useFetchedMenu,
+  useRemoveMenuItem,
+  useUpdateMenu,
+} from "../../../api/menu/hooks";
 
 const sorts: TableSortsType[] = [
   { title: "Bánh mỳ", value: "banhMy" },
@@ -34,6 +38,7 @@ const MenuTable = () => {
   const [showForm, setShowForm] = useState(false);
   const { fetchedMenu, isGettingData } = useFetchedMenu(tableType);
   const { deletingId, removeMenuItem } = useRemoveMenuItem(tableType);
+  const { isUpdating, updateMenu } = useUpdateMenu(tableType);
 
   const handleSortChange = (value: string) => {
     setTableType(value);
@@ -52,10 +57,18 @@ const MenuTable = () => {
   };
 
   const handleUpdateItem = (id: string) => {
-    const updatingItem =
-      fetchedMenu!.find((product) => product.id === id) || {};
+    const updatingItem = fetchedMenu!.find((product) => product.id === id)!;
     setActiveItem(updatingItem);
     setShowForm(true);
+  };
+
+  const toggleItemVisibility = (id: string) => {
+    const updatingItem = fetchedMenu!.find((product) => product.id === id)!;
+    const updatedItem = {
+      ...updatingItem,
+      isPublished: !updatingItem.isPublished,
+    };
+    updateMenu({ tableType, id, data: updatedItem });
   };
 
   const openConfirmationDialog = (
@@ -105,12 +118,21 @@ const MenuTable = () => {
                     Cập nhật
                   </Button>
                   {isPublished && (
-                    <Button variant="contained" color="success">
+                    <Button
+                      variant="contained"
+                      color="success"
+                      onClick={() => toggleItemVisibility(id!)}
+                    >
                       Hiện
                     </Button>
                   )}
                   {!isPublished && (
-                    <Button variant="contained-disabled">Ẩn</Button>
+                    <Button
+                      variant="contained-disabled"
+                      onClick={() => toggleItemVisibility(id!)}
+                    >
+                      Ẩn
+                    </Button>
                   )}
                   <Button
                     variant="outlined"
