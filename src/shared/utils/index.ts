@@ -33,7 +33,7 @@ export const formatPriceText = (price: number) => {
 };
 
 export const convertDateTime = (date: string) => {
-  return moment("2022-06-01T15:30:02.417Z").format("h:mm");
+  return moment(date).format("HH:mm");
 };
 
 // FORM DATA CONVERT FUNCTION

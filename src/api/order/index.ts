@@ -1,9 +1,10 @@
 import { FirestoreService } from "../../firebase/firestoreService";
 import { OrderStatusType, OrderType } from "../../shared/types";
 
-const fetchAllOrders = async (orderStatus: OrderStatusType) => {
+const fetchOrders = async (orderStatus: OrderStatusType) => {
   const response = await FirestoreService.readDocuments({
-    collection: `app/orders/${orderStatus}`,
+    collection: "app/orders/documents",
+    queries: [{ field: "status", condition: "==", value: orderStatus }],
   });
 
   const fetchedItems = response.docs.map((recipeDoc) => {
@@ -17,7 +18,7 @@ const fetchAllOrders = async (orderStatus: OrderStatusType) => {
 };
 
 const createNewOrder = (data: OrderType) => {
-  return FirestoreService.createDocument("app/orders/in-queue", data);
+  return FirestoreService.createDocument("app/orders/documents", data);
 };
 
 // const updateMenu = ({
@@ -32,18 +33,12 @@ const createNewOrder = (data: OrderType) => {
 //   return FirestoreService.updateDocument(`app/menu/${tableType}`, id, data);
 // };
 
-const deleteOrder = async ({
-  id,
-  orderStatus,
-}: {
-  id: string;
-  orderStatus: OrderStatusType;
-}) => {
-  return FirestoreService.deleteDocument(`app/orders/${orderStatus}`, id);
+const deleteOrder = async (id: string) => {
+  return FirestoreService.deleteDocument("app/orders/documents", id);
 };
 
 export const orderApi = {
-  fetchAllOrders,
+  fetchOrders,
   createNewOrder,
   //   updateMenu,
   deleteOrder,

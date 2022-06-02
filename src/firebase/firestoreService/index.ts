@@ -8,7 +8,7 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore/lite";
-import { FirebaseQueries } from "shared/types";
+import { FirebaseQuery } from "shared/types";
 import firebase from "../config";
 
 const firestore = firebase.firestore;
@@ -19,7 +19,7 @@ const createDocument = <T>(collection: string, document: T) => {
 
 interface ReadDocumentsParams<T> {
   collection: string;
-  queries?: FirebaseQueries<T>[];
+  queries?: FirebaseQuery<T>[];
 }
 
 const readDocuments = async <T>({

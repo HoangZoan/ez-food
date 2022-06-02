@@ -9,13 +9,11 @@ const InQueueActions = ({ onShowDetail }: InQueueActionsProps) => {
   return (
     <>
       <Button variant="contained" onClick={onShowDetail}>
-        Chi tiết
+        Xem đơn hàng
       </Button>
-      <Button variant="contained" color="success">
-        Xong
-      </Button>
+
       <Button variant="outlined" color="error">
-        Xóa
+        Hủy
       </Button>
     </>
   );

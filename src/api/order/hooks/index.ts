@@ -11,7 +11,7 @@ interface UseCreateOrder {
 export const useFetchOrders = (orderStatus: OrderStatusType) => {
   const { data: fetchedOrders, isLoading } = useQuery(
     ["orders", orderStatus],
-    () => orderApi.fetchAllOrders(orderStatus)
+    () => orderApi.fetchOrders(orderStatus)
   );
 
   return {
@@ -46,7 +46,7 @@ export const useDeleteOrder = (orderStatus: OrderStatusType) => {
   const { showToast } = useSnackbar();
   const [deletingId, setDeletingId] = useState("");
   const { mutate: removeOrder } = useMutation(orderApi.deleteOrder, {
-    onMutate: ({ id }) => {
+    onMutate: (id) => {
       setDeletingId(id);
     },
     onSuccess: () => {

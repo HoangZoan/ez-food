@@ -15,8 +15,9 @@ import {
   TableCell,
   TableCellHead,
 } from "components/UI/ManagingTable";
-import { useFetchOrders } from "api/order/hooks";
+import { useDeleteOrder, useFetchOrders } from "api/order/hooks";
 import { convertDateTime } from "shared/utils";
+import OrderInfoDialog from "./OrderInfoDialog";
 
 const sorts: TableSortsType[] = [
   { title: "Đơn đang đặt", value: IN_QUEUE_STATUS },
@@ -25,20 +26,24 @@ const sorts: TableSortsType[] = [
 ];
 
 const OrdersTable = () => {
-  const [orderDetail, setOrderDetail] = useState<Omit<OrderType, "id"> | null>(
-    null
-  );
+  const [orderDetail, setOrderDetail] = useState<Partial<OrderType>>({});
+  const [showDialog, setShowDialog] = useState(false);
   const [currentTable, setCurrentTable] =
     useState<OrderStatusType>(IN_QUEUE_STATUS);
   const { fetchedOrders, isLoading } = useFetchOrders(currentTable);
+  // const { deletingId, removeOrder } = useDeleteOrder(currentTable);
 
   const handleSortChange = (value: string) => {
     setCurrentTable(value as OrderStatusType);
   };
-  console.log(fetchedOrders);
 
   const showOrderDetail = (order: Omit<OrderType, "id">) => {
     setOrderDetail(order);
+    setShowDialog(true);
+  };
+
+  const closeOrderDetail = () => {
+    setShowDialog(false);
   };
 
   return (
@@ -83,6 +88,12 @@ const OrdersTable = () => {
           )}
         </TableBody>
       </Table>
+
+      <OrderInfoDialog
+        open={showDialog}
+        order={orderDetail}
+        onClose={closeOrderDetail}
+      />
     </>
   );
 };
