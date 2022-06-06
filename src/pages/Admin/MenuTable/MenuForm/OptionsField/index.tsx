@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, Stack } from "@mui/material";
 import { FormLabel, TextField } from "components/UI/FormComponents";
-import MenuFormControl from "../MenuFormControl";
+import MenuFormControl from "../../../../../components/UI/MenuFormControl";
 import {
   UseFormRegister,
   FieldValues,

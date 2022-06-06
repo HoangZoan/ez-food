@@ -16,7 +16,7 @@ import {
 } from "components/UI/FormComponents";
 import { FieldValues, UseFormRegister, UseFormWatch } from "react-hook-form";
 import { styled } from "shared/theme";
-import MenuFormControl from "../MenuFormControl";
+import MenuFormControl from "../../../../../components/UI/MenuFormControl";
 import { useSetRecoilState } from "recoil";
 import { menuItemImageState } from "states/menu";
 import ImageInputContainer from "components/UI/ImageInputContainer";

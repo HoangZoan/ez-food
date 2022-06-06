@@ -14,32 +14,24 @@ const fetchOrders = async (orderStatus: OrderStatusType) => {
     return { id, ...data };
   });
 
-  return fetchedItems;
+  return fetchedItems as OrderType[];
 };
 
 const createNewOrder = (data: OrderType) => {
   return FirestoreService.createDocument("app/orders/documents", data);
 };
 
-// const updateMenu = ({
-//   tableType,
-//   id,
-//   data,
-// }: {
-//   tableType: string;
-//   id: string;
-//   data: MenuType;
-// }) => {
-//   return FirestoreService.updateDocument(`app/menu/${tableType}`, id, data);
-// };
-
-const deleteOrder = async (id: string) => {
-  return FirestoreService.deleteDocument("app/orders/documents", id);
+const updateOrder = ({ id, data }: { id: string; data: OrderType }) => {
+  return FirestoreService.updateDocument("app/orders/documents", id, data);
 };
+
+// const deleteOrder = async (id: string) => {
+//   return FirestoreService.deleteDocument("app/orders/documents", id);
+// };
 
 export const orderApi = {
   fetchOrders,
   createNewOrder,
-  //   updateMenu,
-  deleteOrder,
+  updateOrder,
+  // deleteOrder,
 };

@@ -9,15 +9,21 @@ import {
   DELIVERED_STATUS,
   IN_QUEUE_STATUS,
 } from "shared/config";
-import { OrderStatusType, OrderType, TableSortsType } from "shared/types";
+import {
+  CanceledOrderType,
+  OrderStatusType,
+  OrderType,
+  TableSortsType,
+} from "shared/types";
 import {
   TableBodyRow,
   TableCell,
   TableCellHead,
 } from "components/UI/ManagingTable";
-import { useDeleteOrder, useFetchOrders } from "api/order/hooks";
+import { useRemoveOrder, useFetchOrders } from "api/order/hooks";
 import { convertDateTime } from "shared/utils";
 import OrderInfoDialog from "./OrderInfoDialog";
+import OrderDeleteDialog from "./OrderDeleteDialog";
 
 const sorts: TableSortsType[] = [
   { title: "Đơn đang đặt", value: IN_QUEUE_STATUS },
@@ -28,10 +34,11 @@ const sorts: TableSortsType[] = [
 const OrdersTable = () => {
   const [orderDetail, setOrderDetail] = useState<Partial<OrderType>>({});
   const [showDialog, setShowDialog] = useState(false);
+  const [canceledOrder, setCanceledOrder] = useState<OrderType | null>(null);
   const [currentTable, setCurrentTable] =
     useState<OrderStatusType>(IN_QUEUE_STATUS);
   const { fetchedOrders, isLoading } = useFetchOrders(currentTable);
-  // const { deletingId, removeOrder } = useDeleteOrder(currentTable);
+  const { removingOrderId, removeOrder } = useRemoveOrder(currentTable);
 
   const handleSortChange = (value: string) => {
     setCurrentTable(value as OrderStatusType);
@@ -44,6 +51,15 @@ const OrdersTable = () => {
 
   const closeOrderDetail = () => {
     setShowDialog(false);
+  };
+
+  const closeDeleteDialog = () => {
+    setCanceledOrder(null);
+  };
+
+  const handleRemoveOrder = (id: string, data: CanceledOrderType) => {
+    setCanceledOrder(null);
+    removeOrder({ id, data });
   };
 
   return (
@@ -59,15 +75,17 @@ const OrdersTable = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {fetchedOrders?.map(({ id, ...order }) => (
-            <TableBodyRow key={id}>
-              <TableCell>{id}</TableCell>
+          {fetchedOrders?.map((order) => (
+            <TableBodyRow key={order.id}>
+              <TableCell>{order.id}</TableCell>
               <TableCell>{convertDateTime(order.orderAt)}</TableCell>
               <TableCell>
                 <Stack direction="row" justifyContent="flex-end" spacing={3}>
                   {currentTable === IN_QUEUE_STATUS && (
                     <InQueueActions
+                      isDeleting={order.id === removingOrderId}
                       onShowDetail={() => showOrderDetail(order)}
+                      onRemoveOrder={() => setCanceledOrder(order)}
                     />
                   )}
                   {currentTable === DELIVERED_STATUS && <DeliveredActions />}
@@ -80,9 +98,7 @@ const OrdersTable = () => {
           {(!fetchedOrders || fetchedOrders.length === 0) && (
             <TableBodyRow>
               <TableCell>
-                {isLoading
-                  ? "Đang tải..."
-                  : "Chưa có sản phẩm nào. Hãy thêm sản phẩm mới."}
+                {isLoading ? "Đang tải..." : "Chưa có đơn hàng."}
               </TableCell>
             </TableBodyRow>
           )}
@@ -93,6 +109,17 @@ const OrdersTable = () => {
         open={showDialog}
         order={orderDetail}
         onClose={closeOrderDetail}
+      />
+
+      <OrderDeleteDialog
+        open={!!canceledOrder}
+        onClose={closeDeleteDialog}
+        onRemoveOrder={(cancelMessage) =>
+          handleRemoveOrder(canceledOrder!.id!, {
+            ...canceledOrder!,
+            cancelMessage,
+          })
+        }
       />
     </>
   );

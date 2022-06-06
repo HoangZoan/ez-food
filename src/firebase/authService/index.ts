@@ -4,6 +4,7 @@ import {
   onAuthStateChanged,
   User,
 } from "firebase/auth";
+import { cloneDeep } from "lodash";
 
 const auth = firebase.auth;
 
@@ -23,7 +24,7 @@ const subscribeToAuthChanges = (
   handleAuthChange: (admin: User | null) => void
 ) => {
   onAuthStateChanged(auth, (admin) => {
-    handleAuthChange(admin);
+    handleAuthChange(cloneDeep(admin));
   });
 };
 

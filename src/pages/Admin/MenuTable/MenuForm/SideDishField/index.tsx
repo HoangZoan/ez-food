@@ -2,7 +2,7 @@ import { Stack, Typography } from "@mui/material";
 import { FormLabel, TextField } from "components/UI/FormComponents";
 import { FieldValues, UseFormRegister } from "react-hook-form";
 import { SideDishType } from "shared/types";
-import MenuFormControl from "../MenuFormControl";
+import MenuFormControl from "../../../../../components/UI/MenuFormControl";
 
 interface SideDishFieldProps {
   index: number;

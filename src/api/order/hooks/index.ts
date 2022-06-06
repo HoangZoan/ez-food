@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { OrderStatusType } from "shared/types";
+import { CanceledOrderType, OrderStatusType } from "shared/types";
 import { useSnackbar } from "states/snackbar/hooks/useSnackbar";
 import { orderApi } from "..";
 
@@ -41,40 +41,44 @@ export const useCreateOrder = ({ handleSuccess }: UseCreateOrder) => {
   return { isCreating, createOrder };
 };
 
-export const useDeleteOrder = (orderStatus: OrderStatusType) => {
+export const useRemoveOrder = (orderStatus: OrderStatusType) => {
   const queryClient = useQueryClient();
   const { showToast } = useSnackbar();
-  const [deletingId, setDeletingId] = useState("");
-  const { mutate: removeOrder } = useMutation(orderApi.deleteOrder, {
-    onMutate: (id) => {
-      setDeletingId(id);
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries(["menu", orderStatus]);
-      showToast({
-        title: "Xóa đơn hàng thành công!",
-        type: "success",
-        SnackbarProps: {
-          anchorOrigin: { vertical: "bottom", horizontal: "right" },
-        },
-      });
-    },
-    onError: () => {
-      showToast({
-        title: "Xóa đơn hàng không thành công",
-        type: "error",
-        SnackbarProps: {
-          anchorOrigin: { vertical: "bottom", horizontal: "right" },
-        },
-      });
-    },
-    onSettled: () => {
-      setDeletingId("");
-    },
-  });
+  const [removingOrderId, setDeletingId] = useState("");
+  const { mutate: removeOrder } = useMutation(
+    ({ id, data }: { id: string; data: CanceledOrderType }) =>
+      orderApi.updateOrder({ id, data: { ...data, status: "canceled" } }),
+    {
+      onMutate: ({ id }) => {
+        setDeletingId(id);
+      },
+      onSuccess: () => {
+        queryClient.invalidateQueries(["orders", orderStatus]);
+        showToast({
+          title: "Hủy đơn hàng thành công!",
+          type: "success",
+          SnackbarProps: {
+            anchorOrigin: { vertical: "bottom", horizontal: "right" },
+          },
+        });
+      },
+      onError: () => {
+        showToast({
+          title: "Hủy đơn hàng không thành công",
+          type: "error",
+          SnackbarProps: {
+            anchorOrigin: { vertical: "bottom", horizontal: "right" },
+          },
+        });
+      },
+      onSettled: () => {
+        setDeletingId("");
+      },
+    }
+  );
 
   return {
-    deletingId,
+    removingOrderId,
     removeOrder,
   };
 };

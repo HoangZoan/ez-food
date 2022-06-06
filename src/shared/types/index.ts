@@ -71,13 +71,18 @@ export interface MenuType extends ProductInfoType {
 
 // ORDER TYPE
 export interface OrderType {
+  id?: string;
   orderAt: string;
   fullName: string;
   phoneNumber: string;
   address: string;
   orders: ProductOrderType[];
   totalPrice: number;
-  status: string;
+  status: OrderStatusType;
+}
+
+export interface CanceledOrderType extends OrderType {
+  cancelMessage: string;
 }
 
 // ADMIN

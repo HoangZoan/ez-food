@@ -169,6 +169,15 @@ theme.components = {
       },
     },
   },
+
+  // TABLE
+  MuiTableCell: {
+    styleOverrides: {
+      root: {
+        fontSize: "1.6rem",
+      },
+    },
+  },
 } as Components;
 
 export default theme;

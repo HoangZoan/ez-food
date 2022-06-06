@@ -9,9 +9,13 @@ import {
   List,
   ListItem,
   Stack,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
   Typography,
 } from "@mui/material";
-import React from "react";
 import { OptionsType, OrderType, ProductOrderType } from "shared/types";
 import { convertDateTime, formatPriceText } from "shared/utils";
 
@@ -56,10 +60,8 @@ const OptionsList = ({ options }: OptionsListProps) => {
         const variant = variants.find(({ selected }) => selected);
 
         return (
-          <ListItem key={name}>
-            <Typography variant="body1">
-              - {name}: {variant?.type}
-            </Typography>
+          <ListItem key={name} sx={{ px: 0, py: 1 }}>
+            - {name}: {variant?.type}
           </ListItem>
         );
       })}
@@ -68,27 +70,31 @@ const OptionsList = ({ options }: OptionsListProps) => {
 };
 
 const OrdersList = ({ orders }: OrdersListProps) => {
-  console.log(orders);
   return (
-    <List sx={{ p: 0, m: 0 }}>
-      {orders.map(({ title, options, orderId, quantity }, index) => (
-        <ListItem
-          key={orderId}
-          sx={{
-            px: 0,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "flex-start",
-          }}
-        >
-          <Typography variant="body1" fontWeight={500}>
-            {index + 1}) {title} (Số lượng: {quantity})
-          </Typography>
-
-          {options.length > 0 && <OptionsList options={options} />}
-        </ListItem>
-      ))}
-    </List>
+    <Table>
+      <TableHead>
+        <TableRow>
+          <TableCell align="center">STT</TableCell>
+          <TableCell>Tên món</TableCell>
+          <TableCell>Lựa chọn</TableCell>
+          <TableCell align="center">Số lượng</TableCell>
+          <TableCell align="right">Giá</TableCell>
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {orders.map(({ orderId, title, options, quantity, price }, index) => (
+          <TableRow key={orderId}>
+            <TableCell align="center">{index + 1}</TableCell>
+            <TableCell>{title}</TableCell>
+            <TableCell>
+              <OptionsList options={options} />
+            </TableCell>
+            <TableCell align="center">{quantity}</TableCell>
+            <TableCell align="right">{formatPriceText(price)}</TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
   );
 };
 
@@ -96,7 +102,7 @@ const OrderInfoDialog = ({ open, onClose, order }: OrderInfoDialogProps) => {
   const { fullName, address, orderAt, orders, phoneNumber, totalPrice } = order;
 
   return (
-    <Dialog open={open} onClose={onClose} fullWidth>
+    <Dialog open={open} onClose={onClose} fullWidth maxWidth="md">
       <DialogTitle
         sx={{ fontWeight: 700, textAlign: "center", fontSize: "2.1rem" }}
       >
@@ -106,7 +112,7 @@ const OrderInfoDialog = ({ open, onClose, order }: OrderInfoDialogProps) => {
       <Divider />
 
       <DialogContent>
-        <Stack spacing={3}>
+        <Stack spacing={3} sx={{ px: 6 }}>
           <InfoText title="Họ tên" content={fullName!} />
           <InfoText title="Số điện thoại" content={phoneNumber!} />
           <InfoText title="Địa chỉ" content={address!} />
