@@ -33,7 +33,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route
           path="/admin"
-          element={AuthGuard(<Navigate to="/admin/orders" />)}
+          element={AuthGuard(<Navigate to="/admin/orders?order=in-queue" />)}
         />
         <Route path="/admin/*" element={AuthGuard(<Admin />)} />
       </Routes>

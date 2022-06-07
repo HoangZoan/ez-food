@@ -3,19 +3,30 @@ import { Box, Button, Typography } from "@mui/material";
 import ExpandCircleDownIcon from "@mui/icons-material/ExpandCircleDown";
 import PopupItem from "components/UI/PopupMenuLayout/PopupItem";
 import PopupMenu from "components/UI/PopupMenuLayout/PopupMenu";
-import { TableSortsType } from "shared/types";
+import { OrderStatusType, TableSortsType } from "shared/types";
 
 interface SortButtonProps {
   onChange: (value: string) => void;
+  defaultQuery: OrderStatusType;
   sorts: TableSortsType[];
   side?: "left" | "right";
+  width?: string;
 }
 
-const SortButton = ({ onChange, sorts, side = "right" }: SortButtonProps) => {
+const SortButton = ({
+  width = "15rem",
+  onChange,
+  sorts,
+  defaultQuery,
+  side = "right",
+}: SortButtonProps) => {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const showMenu = Boolean(anchorEl);
-  const [activeItem, setActiveItem] = useState(sorts[0].title);
-  const selects = sorts.filter(({ title }) => title !== activeItem);
+  const defaultActiveTitle = sorts.find(
+    ({ value }) => value === defaultQuery
+  )?.title;
+  const [activeTitle, setActiveTitle] = useState(defaultActiveTitle);
+  const selects = sorts.filter(({ title }) => title !== activeTitle);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -25,8 +36,11 @@ const SortButton = ({ onChange, sorts, side = "right" }: SortButtonProps) => {
     setAnchorEl(null);
   };
 
-  const handleItemClick = (activeTitle: string, activeValue: string) => {
-    setActiveItem(activeTitle);
+  const handleItemClick = (
+    activeTitle: string,
+    activeValue: OrderStatusType
+  ) => {
+    setActiveTitle(activeTitle);
     onChange(activeValue);
     handleClose();
   };
@@ -34,12 +48,13 @@ const SortButton = ({ onChange, sorts, side = "right" }: SortButtonProps) => {
   return (
     <Box>
       <Button
+        sx={{ width }}
         variant="outlined"
         onClick={handleClick}
         endIcon={<ExpandCircleDownIcon fontSize="large" />}
       >
         <Typography textTransform="capitalize" variant="body1">
-          {activeItem}
+          {activeTitle}
         </Typography>
       </Button>
 
@@ -60,9 +75,10 @@ const SortButton = ({ onChange, sorts, side = "right" }: SortButtonProps) => {
           <PopupItem
             key={value}
             sx={{
+              width,
               fontSize: "1.6rem",
               py: 3,
-              padding: "1rem 2.4rem",
+              justifyContent: "center",
             }}
             onClick={() => handleItemClick(title, value)}
           >

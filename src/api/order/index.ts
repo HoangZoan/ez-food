@@ -21,7 +21,13 @@ const createNewOrder = (data: OrderType) => {
   return FirestoreService.createDocument("app/orders/documents", data);
 };
 
-const updateOrder = ({ id, data }: { id: string; data: OrderType }) => {
+const updateOrder = ({
+  id,
+  data,
+}: {
+  id: string;
+  data: Partial<OrderType>;
+}) => {
   return FirestoreService.updateDocument("app/orders/documents", id, data);
 };
 

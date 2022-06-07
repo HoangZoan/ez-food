@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { Stack, Table, TableBody, TableHead, TableRow } from "@mui/material";
+import {
+  Stack,
+  Table,
+  TableBody,
+  TableHead,
+  TableRow,
+  Typography,
+} from "@mui/material";
 import SortButton from "../../../components/TableSortButton";
 import InQueueActions from "./InQueueActions";
 import DeliveredActions from "./DeliveredActions";
@@ -20,10 +27,16 @@ import {
   TableCell,
   TableCellHead,
 } from "components/UI/ManagingTable";
-import { useRemoveOrder, useFetchOrders } from "api/order/hooks";
+import {
+  useRemoveOrder,
+  useFetchOrders,
+  useFinishOrder,
+} from "api/order/hooks";
 import { convertDateTime } from "shared/utils";
 import OrderInfoDialog from "./OrderInfoDialog";
 import OrderDeleteDialog from "./OrderDeleteDialog";
+import { useLocation, useNavigate } from "react-router-dom";
+import ReportGmailerrorredOutlinedIcon from "@mui/icons-material/ReportGmailerrorredOutlined";
 
 const sorts: TableSortsType[] = [
   { title: "Đơn đang đặt", value: IN_QUEUE_STATUS },
@@ -32,16 +45,21 @@ const sorts: TableSortsType[] = [
 ];
 
 const OrdersTable = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const orderQuery = new URLSearchParams(location.search).get(
+    "order"
+  ) as OrderStatusType;
   const [orderDetail, setOrderDetail] = useState<Partial<OrderType>>({});
   const [showDialog, setShowDialog] = useState(false);
   const [canceledOrder, setCanceledOrder] = useState<OrderType | null>(null);
-  const [currentTable, setCurrentTable] =
-    useState<OrderStatusType>(IN_QUEUE_STATUS);
-  const { fetchedOrders, isLoading } = useFetchOrders(currentTable);
-  const { removingOrderId, removeOrder } = useRemoveOrder(currentTable);
+  const { fetchedOrders, isLoading } = useFetchOrders(orderQuery!);
+  const { finishOrder, isFinishing, isFinished, resetFinishOrder } =
+    useFinishOrder(orderQuery!);
+  const { removingOrderId, removeOrder } = useRemoveOrder(orderQuery!);
 
   const handleSortChange = (value: string) => {
-    setCurrentTable(value as OrderStatusType);
+    navigate(`${location.pathname}?order=${value}`);
   };
 
   const showOrderDetail = (order: Omit<OrderType, "id">) => {
@@ -51,6 +69,10 @@ const OrdersTable = () => {
 
   const closeOrderDetail = () => {
     setShowDialog(false);
+
+    if (orderQuery === "in-queue") {
+      resetFinishOrder();
+    }
   };
 
   const closeDeleteDialog = () => {
@@ -62,6 +84,32 @@ const OrdersTable = () => {
     removeOrder({ id, data });
   };
 
+  const handleFinishOrder = () => {
+    finishOrder({
+      id: orderDetail.id!,
+      data: { ...orderDetail, deliverAt: new Date().toISOString() },
+    });
+  };
+
+  if (
+    orderQuery !== "canceled" &&
+    orderQuery !== "delivered" &&
+    orderQuery !== "in-queue"
+  ) {
+    return (
+      <Stack
+        spacing={3}
+        direction="row"
+        alignItems="center"
+        justifyContent="center"
+        sx={{ fontSize: "4.8rem" }}
+      >
+        <ReportGmailerrorredOutlinedIcon color="error" fontSize="inherit" />
+        <Typography variant="h5">Trang không tồn tại</Typography>
+      </Stack>
+    );
+  }
+
   return (
     <>
       <Table>
@@ -70,7 +118,12 @@ const OrdersTable = () => {
             <TableCellHead>Id</TableCellHead>
             <TableCellHead>Thời gian</TableCellHead>
             <TableCellHead align="right">
-              <SortButton onChange={handleSortChange} sorts={sorts} />
+              <SortButton
+                width="18rem"
+                defaultQuery={orderQuery}
+                onChange={handleSortChange}
+                sorts={sorts}
+              />
             </TableCellHead>
           </TableRow>
         </TableHead>
@@ -81,15 +134,21 @@ const OrdersTable = () => {
               <TableCell>{convertDateTime(order.orderAt)}</TableCell>
               <TableCell>
                 <Stack direction="row" justifyContent="flex-end" spacing={3}>
-                  {currentTable === IN_QUEUE_STATUS && (
+                  {orderQuery === IN_QUEUE_STATUS && (
                     <InQueueActions
                       isDeleting={order.id === removingOrderId}
                       onShowDetail={() => showOrderDetail(order)}
                       onRemoveOrder={() => setCanceledOrder(order)}
                     />
                   )}
-                  {currentTable === DELIVERED_STATUS && <DeliveredActions />}
-                  {currentTable === CANCELED_STATUS && <CanceledActions />}
+                  {orderQuery === DELIVERED_STATUS && (
+                    <DeliveredActions
+                      isDeleting={order.id === removingOrderId}
+                      onShowDetail={() => showOrderDetail(order)}
+                      onRemoveOrder={() => setCanceledOrder(order)}
+                    />
+                  )}
+                  {orderQuery === CANCELED_STATUS && <CanceledActions />}
                 </Stack>
               </TableCell>
             </TableBodyRow>
@@ -108,6 +167,9 @@ const OrdersTable = () => {
       <OrderInfoDialog
         open={showDialog}
         order={orderDetail}
+        tableType={orderQuery!}
+        submitStatus={{ isFinishing, isFinished }}
+        onFinish={handleFinishOrder}
         onClose={closeOrderDetail}
       />
 

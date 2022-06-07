@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { CanceledOrderType, OrderStatusType } from "shared/types";
+import { CanceledOrderType, OrderStatusType, OrderType } from "shared/types";
 import { useSnackbar } from "states/snackbar/hooks/useSnackbar";
 import { orderApi } from "..";
 
@@ -39,6 +39,48 @@ export const useCreateOrder = ({ handleSuccess }: UseCreateOrder) => {
   );
 
   return { isCreating, createOrder };
+};
+
+export const useFinishOrder = (orderStatus: OrderStatusType) => {
+  const queryClient = useQueryClient();
+  const { showToast } = useSnackbar();
+  const {
+    mutate: finishOrder,
+    isLoading: isFinishing,
+    isSuccess: isFinished,
+    reset: resetFinishOrder,
+  } = useMutation(
+    ({ id, data }: { id: string; data: Partial<OrderType> }) =>
+      orderApi.updateOrder({ id, data: { ...data, status: "delivered" } }),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(["orders", orderStatus]);
+        showToast({
+          title: "Đơn hàng đã hoàn thành",
+          type: "success",
+          SnackbarProps: {
+            anchorOrigin: { vertical: "bottom", horizontal: "right" },
+          },
+        });
+      },
+      onError: () => {
+        showToast({
+          title: "Đơn hàng chưa hoàn thành",
+          type: "error",
+          SnackbarProps: {
+            anchorOrigin: { vertical: "bottom", horizontal: "right" },
+          },
+        });
+      },
+    }
+  );
+
+  return {
+    isFinishing,
+    finishOrder,
+    isFinished,
+    resetFinishOrder,
+  };
 };
 
 export const useRemoveOrder = (orderStatus: OrderStatusType) => {

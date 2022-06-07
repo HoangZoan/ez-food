@@ -1,5 +1,6 @@
 import {
   Button,
+  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
@@ -16,13 +17,26 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import { OptionsType, OrderType, ProductOrderType } from "shared/types";
+import { useEffect } from "react";
+import {
+  OptionsType,
+  OrderStatusType,
+  OrderType,
+  ProductOrderType,
+} from "shared/types";
 import { convertDateTime, formatPriceText } from "shared/utils";
+import { useConfirmationDialog } from "states/confirmationDialog/hooks";
 
 interface OrderInfoDialogProps {
   open: boolean;
+  tableType: OrderStatusType;
   onClose: () => void;
+  onFinish: () => void;
   order: Partial<OrderType>;
+  submitStatus: {
+    isFinishing: boolean;
+    isFinished: boolean;
+  };
 }
 
 interface InfoTextProps {
@@ -98,8 +112,38 @@ const OrdersList = ({ orders }: OrdersListProps) => {
   );
 };
 
-const OrderInfoDialog = ({ open, onClose, order }: OrderInfoDialogProps) => {
-  const { fullName, address, orderAt, orders, phoneNumber, totalPrice } = order;
+const OrderInfoDialog = ({
+  open,
+  tableType,
+  onClose,
+  onFinish,
+  order,
+  submitStatus,
+}: OrderInfoDialogProps) => {
+  const {
+    fullName,
+    address,
+    orderAt,
+    deliverAt,
+    orders,
+    phoneNumber,
+    totalPrice,
+  } = order;
+  const { isFinishing, isFinished } = submitStatus;
+  const { openDialog } = useConfirmationDialog();
+
+  const openConfirmDialog = () => {
+    openDialog({
+      content: "Xác nhận hoàn thành đơn hàng",
+      onConfirm: onFinish,
+    });
+  };
+
+  useEffect(() => {
+    if (isFinished) {
+      onClose();
+    }
+  }, [isFinished, onClose]);
 
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="md">
@@ -120,6 +164,12 @@ const OrderInfoDialog = ({ open, onClose, order }: OrderInfoDialogProps) => {
             title="Thời gian đặt hàng"
             content={convertDateTime(orderAt!)}
           />
+          {deliverAt && deliverAt !== "" && (
+            <InfoText
+              title="Thời gian giao hàng"
+              content={convertDateTime(deliverAt!)}
+            />
+          )}
           <InfoText
             title="Tổng hóa đơn"
             content={formatPriceText(totalPrice!)}
@@ -135,9 +185,20 @@ const OrderInfoDialog = ({ open, onClose, order }: OrderInfoDialogProps) => {
       <Divider />
 
       <DialogActions sx={{ justifyContent: "center", py: 3 }}>
-        <Button variant="contained" sx={{ mr: 4 }}>
-          Hoàn thành
-        </Button>
+        {tableType === "in-queue" && (
+          <Button
+            variant="contained"
+            disabled={isFinishing}
+            sx={{ mr: 4 }}
+            onClick={openConfirmDialog}
+          >
+            {isFinishing ? (
+              <CircularProgress size={16} color="inherit" />
+            ) : (
+              "Hoàn thành"
+            )}
+          </Button>
+        )}
         <Button variant="outlined" onClick={onClose}>
           Đóng
         </Button>

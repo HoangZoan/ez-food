@@ -25,7 +25,9 @@ const ConfirmationDialog = () => {
   return (
     <Dialog open={show} onClose={closeDialog}>
       <DialogContent>
-        <DialogContentText>{content}</DialogContentText>
+        <DialogContentText sx={{ fontWeight: 700, color: "black" }}>
+          {content}
+        </DialogContentText>
       </DialogContent>
 
       <DialogActions sx={{ mb: 1 }}>

@@ -58,7 +58,7 @@ export interface ProductOrderType extends ProductDetailType {
 
 export interface TableSortsType {
   title: string;
-  value: string;
+  value: OrderStatusType;
 }
 
 export interface MenuType extends ProductInfoType {
@@ -73,6 +73,7 @@ export interface MenuType extends ProductInfoType {
 export interface OrderType {
   id?: string;
   orderAt: string;
+  deliverAt: string;
   fullName: string;
   phoneNumber: string;
   address: string;
