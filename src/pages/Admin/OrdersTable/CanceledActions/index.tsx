@@ -1,11 +1,24 @@
-import { Button } from "@mui/material";
-import React from "react";
+import { Button, CircularProgress } from "@mui/material";
 
-const CanceledActions = () => {
+interface Props {
+  onShowDetail: () => void;
+  onRemoveOrder: () => void;
+  isChanging: boolean;
+}
+
+const CanceledActions = ({
+  onShowDetail,
+  onRemoveOrder,
+  isChanging,
+}: Props) => {
   return (
     <>
-      <Button variant="contained">Chi tiết</Button>
-      <Button variant="outlined">Sửa lý do</Button>
+      <Button variant="contained" onClick={onShowDetail}>
+        Chi tiết
+      </Button>
+      <Button variant="outlined" onClick={onRemoveOrder}>
+        {isChanging ? <CircularProgress size={16} /> : "Sửa lý do"}
+      </Button>
     </>
   );
 };

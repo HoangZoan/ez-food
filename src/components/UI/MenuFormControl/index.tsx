@@ -2,8 +2,7 @@ import { FormControl } from "components/UI/FormComponents";
 import { styled } from "shared/theme";
 
 const MenuFormControl = styled(FormControl)({
-  gridTemplateColumns: "1fr 3fr",
-  columnGap: "3.6rem",
+  gridTemplateColumns: "3.5fr 8.5fr",
 });
 
 export default MenuFormControl;

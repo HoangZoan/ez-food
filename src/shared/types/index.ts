@@ -58,7 +58,7 @@ export interface ProductOrderType extends ProductDetailType {
 
 export interface TableSortsType {
   title: string;
-  value: OrderStatusType;
+  value: string;
 }
 
 export interface MenuType extends ProductInfoType {
@@ -80,6 +80,7 @@ export interface OrderType {
   orders: ProductOrderType[];
   totalPrice: number;
   status: OrderStatusType;
+  cancelMessage: string;
 }
 
 export interface CanceledOrderType extends OrderType {

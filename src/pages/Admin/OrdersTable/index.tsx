@@ -37,6 +37,8 @@ import OrderInfoDialog from "./OrderInfoDialog";
 import OrderDeleteDialog from "./OrderDeleteDialog";
 import { useLocation, useNavigate } from "react-router-dom";
 import ReportGmailerrorredOutlinedIcon from "@mui/icons-material/ReportGmailerrorredOutlined";
+import OrderInfo from "./OrderInfoDialog/OrderInfo";
+import CanceledInfo from "./OrderInfoDialog/CanceledInfo";
 
 const sorts: TableSortsType[] = [
   { title: "Đơn đang đặt", value: IN_QUEUE_STATUS },
@@ -51,7 +53,8 @@ const OrdersTable = () => {
     "order"
   ) as OrderStatusType;
   const [orderDetail, setOrderDetail] = useState<Partial<OrderType>>({});
-  const [showDialog, setShowDialog] = useState(false);
+  const [showOrderDetailDialog, setShowOrderDetail] = useState(false);
+  const [showCanceledDetailDialog, setShowCanceledDetail] = useState(false);
   const [canceledOrder, setCanceledOrder] = useState<OrderType | null>(null);
   const { fetchedOrders, isLoading } = useFetchOrders(orderQuery!);
   const { finishOrder, isFinishing, isFinished, resetFinishOrder } =
@@ -64,15 +67,24 @@ const OrdersTable = () => {
 
   const showOrderDetail = (order: Omit<OrderType, "id">) => {
     setOrderDetail(order);
-    setShowDialog(true);
+    setShowOrderDetail(true);
   };
 
   const closeOrderDetail = () => {
-    setShowDialog(false);
+    setShowOrderDetail(false);
 
     if (orderQuery === "in-queue") {
       resetFinishOrder();
     }
+  };
+
+  const showCanceledDetail = (order: Omit<OrderType, "id">) => {
+    setOrderDetail(order);
+    setShowCanceledDetail(true);
+  };
+
+  const closeCanceledDetail = () => {
+    setShowCanceledDetail(false);
   };
 
   const closeDeleteDialog = () => {
@@ -148,7 +160,13 @@ const OrdersTable = () => {
                       onRemoveOrder={() => setCanceledOrder(order)}
                     />
                   )}
-                  {orderQuery === CANCELED_STATUS && <CanceledActions />}
+                  {orderQuery === CANCELED_STATUS && (
+                    <CanceledActions
+                      isChanging={order.id === removingOrderId}
+                      onShowDetail={() => showCanceledDetail(order)}
+                      onRemoveOrder={() => setCanceledOrder(order)}
+                    />
+                  )}
                 </Stack>
               </TableCell>
             </TableBodyRow>
@@ -165,15 +183,25 @@ const OrdersTable = () => {
       </Table>
 
       <OrderInfoDialog
-        open={showDialog}
-        order={orderDetail}
+        open={showOrderDetailDialog}
         tableType={orderQuery!}
         submitStatus={{ isFinishing, isFinished }}
         onFinish={handleFinishOrder}
         onClose={closeOrderDetail}
-      />
+      >
+        <OrderInfo order={orderDetail} />
+      </OrderInfoDialog>
+
+      <OrderInfoDialog
+        open={showCanceledDetailDialog}
+        tableType={orderQuery!}
+        onClose={closeCanceledDetail}
+      >
+        <CanceledInfo order={orderDetail} />
+      </OrderInfoDialog>
 
       <OrderDeleteDialog
+        cancelMessage={canceledOrder?.cancelMessage}
         open={!!canceledOrder}
         onClose={closeDeleteDialog}
         onRemoveOrder={(cancelMessage) =>

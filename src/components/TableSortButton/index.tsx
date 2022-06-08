@@ -3,11 +3,11 @@ import { Box, Button, Typography } from "@mui/material";
 import ExpandCircleDownIcon from "@mui/icons-material/ExpandCircleDown";
 import PopupItem from "components/UI/PopupMenuLayout/PopupItem";
 import PopupMenu from "components/UI/PopupMenuLayout/PopupMenu";
-import { OrderStatusType, TableSortsType } from "shared/types";
+import { TableSortsType } from "shared/types";
 
 interface SortButtonProps {
   onChange: (value: string) => void;
-  defaultQuery: OrderStatusType;
+  defaultQuery: string;
   sorts: TableSortsType[];
   side?: "left" | "right";
   width?: string;
@@ -36,10 +36,7 @@ const SortButton = ({
     setAnchorEl(null);
   };
 
-  const handleItemClick = (
-    activeTitle: string,
-    activeValue: OrderStatusType
-  ) => {
+  const handleItemClick = (activeTitle: string, activeValue: string) => {
     setActiveTitle(activeTitle);
     onChange(activeValue);
     handleClose();

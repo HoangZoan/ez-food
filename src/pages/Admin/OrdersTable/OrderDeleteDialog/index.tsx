@@ -8,17 +8,19 @@ import {
 } from "@mui/material";
 import { FormLabel, MultilineTextField } from "components/UI/FormComponents";
 import MenuFormControl from "components/UI/MenuFormControl";
-import React from "react";
 import { useForm } from "react-hook-form";
+import InfoText from "../OrderInfoDialog/InfoText";
 
 interface OrderDeleteDialogProps {
   open: boolean;
   onClose: () => void;
   onRemoveOrder: (message: string) => void;
+  cancelMessage?: string;
 }
 
 const OrderDeleteDialog = ({
   open,
+  cancelMessage: fetchedMessage,
   onClose,
   onRemoveOrder,
 }: OrderDeleteDialogProps) => {
@@ -32,6 +34,7 @@ const OrderDeleteDialog = ({
   const submitForm = (values: any) => {
     const message = values.cancelMessage as string;
     onRemoveOrder(message);
+    reset();
   };
 
   const handleCloseForm = () => {
@@ -45,7 +48,7 @@ const OrderDeleteDialog = ({
       onClose={handleCloseForm}
       sx={{
         "& .MuiPaper-root": {
-          minWidth: "48rem",
+          minWidth: "54rem",
         },
       }}
     >
@@ -55,8 +58,18 @@ const OrderDeleteDialog = ({
 
       <form onSubmit={handleSubmit(submitForm)}>
         <DialogContent>
+          {fetchedMessage && (
+            <InfoText
+              title="Lý do"
+              content={fetchedMessage}
+              sx={{ mb: "1.6rem" }}
+            />
+          )}
+
           <MenuFormControl>
-            <FormLabel htmlFor="reason">Lý do:</FormLabel>
+            <FormLabel htmlFor="reason">
+              {fetchedMessage ? "Nội dung sửa" : "Lý do"}:
+            </FormLabel>
             <MultilineTextField
               id="reason"
               error={!!errors.cancelMessage}

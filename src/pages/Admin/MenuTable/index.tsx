@@ -93,6 +93,7 @@ const MenuTable = () => {
           <TableRow>
             <TableCellHead>
               <SortButton
+                defaultQuery={tableType}
                 side="left"
                 onChange={handleSortChange}
                 sorts={sorts}
