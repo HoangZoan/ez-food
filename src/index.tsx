@@ -8,6 +8,7 @@ import theme from "./shared/theme";
 import ScrollToTop from "components/ScrollToTop";
 
 import "./index.css";
+import "mapbox-gl/dist/mapbox-gl.css";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
