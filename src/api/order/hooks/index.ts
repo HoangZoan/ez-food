@@ -3,28 +3,66 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 import { CanceledOrderType, OrderStatusType, OrderType } from "shared/types";
 import { useSnackbar } from "states/snackbar/hooks/useSnackbar";
 import { orderApi } from "..";
+import { usePubNub } from "pubnub-react";
+import { NEW_ORDER_NOTIFICATIONS } from "shared/config";
 
 interface UseCreateOrder {
   handleSuccess: () => void;
 }
 
 export const useFetchOrders = (orderStatus: OrderStatusType) => {
-  const { data: fetchedOrders, isLoading } = useQuery(
+  const { showToast } = useSnackbar();
+
+  const {
+    data: fetchedOrders,
+    isLoading,
+    isRefetching,
+    isFetched,
+    isError: fetchError,
+    refetch: refetchOrders,
+  } = useQuery(
     ["orders", orderStatus],
-    () => orderApi.fetchOrders(orderStatus)
+    () => orderApi.fetchOrders(orderStatus),
+    {
+      onSuccess: () => {
+        if (!isFetched) return;
+
+        showToast({
+          title: "Đã cập nhật đơn hàng mới",
+          type: "success",
+          SnackbarProps: {
+            anchorOrigin: { vertical: "bottom", horizontal: "right" },
+          },
+        });
+      },
+    }
   );
 
   return {
     fetchedOrders,
     isLoading,
+    refetchOrders,
+    isRefetching,
+    fetchError,
   };
 };
 
 export const useCreateOrder = ({ handleSuccess }: UseCreateOrder) => {
+  const pubnub = usePubNub();
   const { showToast } = useSnackbar();
   const { isLoading: isCreating, mutate: createOrder } = useMutation(
     orderApi.createNewOrder,
     {
+      onMutate: async () => {
+        try {
+          await pubnub.publish({
+            channel: NEW_ORDER_NOTIFICATIONS,
+            message: "new-order",
+          });
+        } catch (error) {
+          throw error;
+        }
+      },
       onSuccess: handleSuccess,
       onError: () => {
         showToast({

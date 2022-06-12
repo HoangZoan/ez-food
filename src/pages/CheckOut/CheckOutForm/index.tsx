@@ -60,8 +60,8 @@ const CheckOutForm = () => {
   const phoneNumberHasError = Boolean(errors.phoneNumber);
   const addressHasError = Boolean(errors.address);
   const [showModal, setShowModal] = useState(false);
-
   const { resetCart } = useCart();
+
   const handleSubmitSuccess = () => {
     setShowModal(true);
 
@@ -75,6 +75,7 @@ const CheckOutForm = () => {
       navigate("/");
     }, 2000);
   };
+
   const { isCreating, createOrder } = useCreateOrder({
     handleSuccess: handleSubmitSuccess,
   });
@@ -95,6 +96,7 @@ const CheckOutForm = () => {
       orders: cart,
       totalPrice: totalPrice + shippingFee,
       status: IN_QUEUE_STATUS,
+      cancelMessage: "",
     });
   };
 

@@ -8,3 +8,6 @@ export const DELIVERED_STATUS = "delivered";
 export const CANCELED_STATUS = "canceled";
 
 export const ADMIN = "admin";
+
+// PUBNUB CHANNEL
+export const NEW_ORDER_NOTIFICATIONS = "new-order-notificationS";

@@ -1,5 +1,5 @@
-import React, { useState } from "react";
 import {
+  Button,
   Stack,
   Table,
   TableBody,
@@ -15,30 +15,26 @@ import {
   CANCELED_STATUS,
   DELIVERED_STATUS,
   IN_QUEUE_STATUS,
+  NEW_ORDER_NOTIFICATIONS,
 } from "shared/config";
-import {
-  CanceledOrderType,
-  OrderStatusType,
-  OrderType,
-  TableSortsType,
-} from "shared/types";
+import { TableSortsType } from "shared/types";
 import {
   TableBodyRow,
   TableCell,
   TableCellHead,
 } from "components/UI/ManagingTable";
-import {
-  useRemoveOrder,
-  useFetchOrders,
-  useFinishOrder,
-} from "api/order/hooks";
+import { useFetchOrders } from "api/order/hooks";
 import { convertDateTime } from "shared/utils";
 import OrderInfoDialog from "./OrderInfoDialog";
 import OrderDeleteDialog from "./OrderDeleteDialog";
-import { useLocation, useNavigate } from "react-router-dom";
 import ReportGmailerrorredOutlinedIcon from "@mui/icons-material/ReportGmailerrorredOutlined";
 import OrderInfo from "./OrderInfoDialog/OrderInfo";
 import CanceledInfo from "./OrderInfoDialog/CanceledInfo";
+import { useOrderTable } from "./hooks";
+import { useEffect, useState } from "react";
+import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
+import { usePubNub } from "pubnub-react";
+import { MessageEvent } from "pubnub";
 
 const sorts: TableSortsType[] = [
   { title: "Đơn đang đặt", value: IN_QUEUE_STATUS },
@@ -47,61 +43,47 @@ const sorts: TableSortsType[] = [
 ];
 
 const OrdersTable = () => {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const orderQuery = new URLSearchParams(location.search).get(
-    "order"
-  ) as OrderStatusType;
-  const [orderDetail, setOrderDetail] = useState<Partial<OrderType>>({});
-  const [showOrderDetailDialog, setShowOrderDetail] = useState(false);
-  const [showCanceledDetailDialog, setShowCanceledDetail] = useState(false);
-  const [canceledOrder, setCanceledOrder] = useState<OrderType | null>(null);
-  const { fetchedOrders, isLoading } = useFetchOrders(orderQuery!);
-  const { finishOrder, isFinishing, isFinished, resetFinishOrder } =
-    useFinishOrder(orderQuery!);
-  const { removingOrderId, removeOrder } = useRemoveOrder(orderQuery!);
+  const pubnub = usePubNub();
+  const {
+    orderQuery,
+    orderDetail,
+    showOrderDetailDialog,
+    showCanceledDetailDialog,
+    canceledOrder,
+    isFinishingOrder,
+    orderIsFinished,
+    removingOrderId,
+    handleSortChange,
+    showOrderDetail,
+    closeOrderDetail,
+    showCanceledDetail,
+    closeCanceledDetail,
+    closeDeleteDialog,
+    handleRemoveOrder,
+    handleFinishOrder,
+    handleCancelOrder,
+  } = useOrderTable();
+  const { fetchedOrders, isLoading, isRefetching, fetchError, refetchOrders } =
+    useFetchOrders(orderQuery!);
+  const [refreshDisabled, setRefreshDisabled] = useState(true);
 
-  const handleSortChange = (value: string) => {
-    navigate(`${location.pathname}?order=${value}`);
+  const handleRefreshOrders = () => {
+    refetchOrders().then(() => setRefreshDisabled(true));
   };
 
-  const showOrderDetail = (order: Omit<OrderType, "id">) => {
-    setOrderDetail(order);
-    setShowOrderDetail(true);
+  const getNotified = (event: MessageEvent) => {
+    const message = event.message;
+    const text = message.text || message;
+
+    if (text !== "new-order") return;
+
+    setRefreshDisabled(false);
   };
 
-  const closeOrderDetail = () => {
-    setShowOrderDetail(false);
-
-    if (orderQuery === "in-queue") {
-      resetFinishOrder();
-    }
-  };
-
-  const showCanceledDetail = (order: Omit<OrderType, "id">) => {
-    setOrderDetail(order);
-    setShowCanceledDetail(true);
-  };
-
-  const closeCanceledDetail = () => {
-    setShowCanceledDetail(false);
-  };
-
-  const closeDeleteDialog = () => {
-    setCanceledOrder(null);
-  };
-
-  const handleRemoveOrder = (id: string, data: CanceledOrderType) => {
-    setCanceledOrder(null);
-    removeOrder({ id, data });
-  };
-
-  const handleFinishOrder = () => {
-    finishOrder({
-      id: orderDetail.id!,
-      data: { ...orderDetail, deliverAt: new Date().toISOString() },
-    });
-  };
+  useEffect(() => {
+    pubnub.addListener({ message: getNotified });
+    pubnub.subscribe({ channels: [NEW_ORDER_NOTIFICATIONS] });
+  }, [pubnub]);
 
   if (
     orderQuery !== "canceled" &&
@@ -130,12 +112,24 @@ const OrdersTable = () => {
             <TableCellHead>Id</TableCellHead>
             <TableCellHead>Thời gian</TableCellHead>
             <TableCellHead align="right">
-              <SortButton
-                width="18rem"
-                defaultQuery={orderQuery}
-                onChange={handleSortChange}
-                sorts={sorts}
-              />
+              <Stack spacing={3} direction="row" justifyContent="flex-end">
+                {orderQuery === "in-queue" && (
+                  <Button
+                    disabled={refreshDisabled}
+                    variant="contained"
+                    color="success"
+                    onClick={handleRefreshOrders}
+                  >
+                    Đơn hàng mới
+                  </Button>
+                )}
+                <SortButton
+                  width="18rem"
+                  defaultQuery={orderQuery}
+                  onChange={handleSortChange}
+                  sorts={sorts}
+                />
+              </Stack>
             </TableCellHead>
           </TableRow>
         </TableHead>
@@ -150,21 +144,21 @@ const OrdersTable = () => {
                     <InQueueActions
                       isDeleting={order.id === removingOrderId}
                       onShowDetail={() => showOrderDetail(order)}
-                      onRemoveOrder={() => setCanceledOrder(order)}
+                      onRemoveOrder={() => handleCancelOrder(order)}
                     />
                   )}
                   {orderQuery === DELIVERED_STATUS && (
                     <DeliveredActions
                       isDeleting={order.id === removingOrderId}
                       onShowDetail={() => showOrderDetail(order)}
-                      onRemoveOrder={() => setCanceledOrder(order)}
+                      onRemoveOrder={() => handleCancelOrder(order)}
                     />
                   )}
                   {orderQuery === CANCELED_STATUS && (
                     <CanceledActions
                       isChanging={order.id === removingOrderId}
                       onShowDetail={() => showCanceledDetail(order)}
-                      onRemoveOrder={() => setCanceledOrder(order)}
+                      onRemoveOrder={() => handleCancelOrder(order)}
                     />
                   )}
                 </Stack>
@@ -174,8 +168,19 @@ const OrdersTable = () => {
 
           {(!fetchedOrders || fetchedOrders.length === 0) && (
             <TableBodyRow>
-              <TableCell>
-                {isLoading ? "Đang tải..." : "Chưa có đơn hàng."}
+              <TableCell colSpan={3}>
+                {isLoading || isRefetching ? (
+                  "Đang tải..."
+                ) : fetchError ? (
+                  <Stack direction="row" alignItems="center" spacing={2}>
+                    <ErrorOutlineIcon color="error" fontSize="large" />
+                    <Typography variant="body1">
+                      Tải về đơn hàng gặp lỗi. Vui lòng thử lại.
+                    </Typography>
+                  </Stack>
+                ) : (
+                  "Chưa có đơn hàng."
+                )}
               </TableCell>
             </TableBodyRow>
           )}
@@ -185,7 +190,10 @@ const OrdersTable = () => {
       <OrderInfoDialog
         open={showOrderDetailDialog}
         tableType={orderQuery!}
-        submitStatus={{ isFinishing, isFinished }}
+        submitStatus={{
+          isFinishing: isFinishingOrder,
+          isFinished: orderIsFinished,
+        }}
         onFinish={handleFinishOrder}
         onClose={closeOrderDetail}
       >
