@@ -4,6 +4,8 @@ import {
   deleteDoc,
   doc,
   getDocs,
+  orderBy,
+  OrderByDirection,
   query,
   updateDoc,
   where,
@@ -20,11 +22,13 @@ const createDocument = <T>(collection: string, document: T) => {
 interface ReadDocumentsParams<T> {
   collection: string;
   queries?: FirebaseQuery<T>[];
+  order?: { byField: string; byDirection: OrderByDirection };
 }
 
 const readDocuments = async <T>({
   collection,
   queries,
+  order,
 }: ReadDocumentsParams<T>) => {
   const collectionRef = firestoreCollection(firestore, collection);
   let queryConstraints = [];
@@ -33,6 +37,10 @@ const readDocuments = async <T>({
     for (const query of queries) {
       queryConstraints.push(where(query.field, query.condition, query.value));
     }
+  }
+
+  if (order?.byField && order.byDirection) {
+    queryConstraints.push(orderBy(order.byField, order.byDirection));
   }
 
   const firestoreQuery = query(collectionRef, ...queryConstraints);

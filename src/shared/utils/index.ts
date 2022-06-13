@@ -32,8 +32,8 @@ export const formatPriceText = (price: number) => {
   return currency.format(price) + "đ";
 };
 
-export const convertDateTime = (date: string) => {
-  return moment(date).format("HH:mm");
+export const convertDateTime = (date: Date & { seconds: number }) => {
+  return moment(new Date(date.seconds * 1000)).format("HH:mm");
 };
 
 // FORM DATA CONVERT FUNCTION

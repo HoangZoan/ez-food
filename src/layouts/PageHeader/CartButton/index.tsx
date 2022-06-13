@@ -3,32 +3,17 @@ import PopupMenuLayout from "../PopupMenuLayout";
 import { cartTotalPriceState, headerCartState } from "states/cart";
 import { useRecoilValue } from "recoil";
 import CartItem from "../CartItem";
-import {
-  Badge,
-  Button,
-  Divider,
-  List,
-  Paper,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { Button, Divider, List, Paper, Stack, Typography } from "@mui/material";
 import LocalMallIcon from "@mui/icons-material/LocalMall";
 import { formatPriceText } from "shared/utils";
 import { Link } from "react-router-dom";
+import BadgePrimary from "components/UI/BadgePrimary";
 
 const IconButton = ({ content }: { content: number }) => {
   return (
-    <Badge
-      badgeContent={
-        <Typography color="white" fontWeight={700} variant="subtitle2">
-          {content}
-        </Typography>
-      }
-      color="primary"
-      invisible={content === 0}
-    >
+    <BadgePrimary count={content}>
       <LocalMallIcon sx={{ fontSize: "24px" }} />
-    </Badge>
+    </BadgePrimary>
   );
 };
 

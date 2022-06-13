@@ -1,5 +1,4 @@
 import {
-  Button,
   Stack,
   Table,
   TableBody,
@@ -31,10 +30,12 @@ import ReportGmailerrorredOutlinedIcon from "@mui/icons-material/ReportGmailerro
 import OrderInfo from "./OrderInfoDialog/OrderInfo";
 import CanceledInfo from "./OrderInfoDialog/CanceledInfo";
 import { useOrderTable } from "./hooks";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import { usePubNub } from "pubnub-react";
 import { MessageEvent } from "pubnub";
+import { useSnackbar } from "states/snackbar/hooks/useSnackbar";
+import UpdateOrdersButton from "./UpdateOrdersButton";
 
 const sorts: TableSortsType[] = [
   { title: "Đơn đang đặt", value: IN_QUEUE_STATUS },
@@ -44,6 +45,7 @@ const sorts: TableSortsType[] = [
 
 const OrdersTable = () => {
   const pubnub = usePubNub();
+  const { showToast } = useSnackbar();
   const {
     orderQuery,
     orderDetail,
@@ -66,24 +68,41 @@ const OrdersTable = () => {
   const { fetchedOrders, isLoading, isRefetching, fetchError, refetchOrders } =
     useFetchOrders(orderQuery!);
   const [refreshDisabled, setRefreshDisabled] = useState(true);
+  const [pendingOrdersCount, setPendingOrdersCount] = useState(0);
 
   const handleRefreshOrders = () => {
-    refetchOrders().then(() => setRefreshDisabled(true));
+    refetchOrders().then(() => {
+      setRefreshDisabled(true);
+      setPendingOrdersCount(0);
+    });
   };
 
-  const getNotified = (event: MessageEvent) => {
-    const message = event.message;
-    const text = message.text || message;
+  const getNotified = useCallback(
+    (event: MessageEvent) => {
+      const message = event.message;
 
-    if (text !== "new-order") return;
+      if (message !== "new-order") return;
 
-    setRefreshDisabled(false);
-  };
+      console.log(pendingOrdersCount);
+
+      setRefreshDisabled(false);
+      setPendingOrdersCount(pendingOrdersCount + 1);
+
+      showToast({
+        title: `Bạn có ${pendingOrdersCount + 1} đơn hàng mới`,
+        type: "success",
+        SnackbarProps: {
+          anchorOrigin: { vertical: "bottom", horizontal: "right" },
+        },
+      });
+    },
+    [showToast, pendingOrdersCount]
+  );
 
   useEffect(() => {
     pubnub.addListener({ message: getNotified });
     pubnub.subscribe({ channels: [NEW_ORDER_NOTIFICATIONS] });
-  }, [pubnub]);
+  }, [pubnub, getNotified]);
 
   if (
     orderQuery !== "canceled" &&
@@ -113,16 +132,12 @@ const OrdersTable = () => {
             <TableCellHead>Thời gian</TableCellHead>
             <TableCellHead align="right">
               <Stack spacing={3} direction="row" justifyContent="flex-end">
-                {orderQuery === "in-queue" && (
-                  <Button
-                    disabled={refreshDisabled}
-                    variant="contained"
-                    color="success"
-                    onClick={handleRefreshOrders}
-                  >
-                    Đơn hàng mới
-                  </Button>
-                )}
+                <UpdateOrdersButton
+                  show={orderQuery === "in-queue"}
+                  disabled={refreshDisabled}
+                  ordersCount={pendingOrdersCount}
+                  onClick={handleRefreshOrders}
+                />
                 <SortButton
                   width="18rem"
                   defaultQuery={orderQuery}

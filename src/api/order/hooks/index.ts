@@ -53,15 +53,11 @@ export const useCreateOrder = ({ handleSuccess }: UseCreateOrder) => {
   const { isLoading: isCreating, mutate: createOrder } = useMutation(
     orderApi.createNewOrder,
     {
-      onMutate: async () => {
-        try {
-          await pubnub.publish({
-            channel: NEW_ORDER_NOTIFICATIONS,
-            message: "new-order",
-          });
-        } catch (error) {
-          throw error;
-        }
+      onMutate: () => {
+        pubnub.publish({
+          channel: NEW_ORDER_NOTIFICATIONS,
+          message: "new-order",
+        });
       },
       onSuccess: handleSuccess,
       onError: () => {

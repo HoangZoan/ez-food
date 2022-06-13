@@ -72,8 +72,8 @@ export interface MenuType extends ProductInfoType {
 // ORDER TYPE
 export interface OrderType {
   id?: string;
-  orderAt: string;
-  deliverAt: string;
+  orderAt: Date & { seconds: number };
+  deliverAt: Date & { seconds: number };
   fullName: string;
   phoneNumber: string;
   address: string;

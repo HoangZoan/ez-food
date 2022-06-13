@@ -88,7 +88,7 @@ const CheckOutForm = () => {
     const { fullName, phoneNumber, address } = data as CustomerInfoType;
 
     createOrder({
-      orderAt: new Date().toISOString(),
+      orderAt: new Date(),
       deliverAt: "",
       fullName,
       phoneNumber,

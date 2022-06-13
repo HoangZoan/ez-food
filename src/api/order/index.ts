@@ -5,6 +5,10 @@ const fetchOrders = async (orderStatus: OrderStatusType) => {
   const response = await FirestoreService.readDocuments({
     collection: "app/orders/documents",
     queries: [{ field: "status", condition: "==", value: orderStatus }],
+    order: {
+      byField: orderStatus === "delivered" ? "deliverAt" : "orderAt",
+      byDirection: orderStatus === "in-queue" ? "asc" : "desc",
+    },
   });
 
   const fetchedItems = response.docs.map((recipeDoc) => {

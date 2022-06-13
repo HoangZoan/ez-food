@@ -59,7 +59,7 @@ export const useOrderTable = () => {
   const handleFinishOrder = () => {
     finishOrder({
       id: orderDetail.id!,
-      data: { ...orderDetail, deliverAt: new Date().toISOString() },
+      data: { ...orderDetail, deliverAt: new Date() },
     });
   };
 
