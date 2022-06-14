@@ -1,4 +1,4 @@
-import { Button, Tooltip, Typography } from "@mui/material";
+import { Button } from "@mui/material";
 import BadgePrimary from "components/UI/BadgePrimary";
 import React from "react";
 
@@ -19,26 +19,15 @@ const UpdateOrdersButton = ({
 
   return (
     <BadgePrimary count={ordersCount}>
-      <Tooltip
-        title={<Typography variant="body2">Cập nhật đơn hàng</Typography>}
-        arrow
-        placement="top"
-        disableFocusListener={disabled}
-        disableHoverListener={disabled}
-        disableTouchListener={disabled}
+      <Button
+        disabled={disabled}
+        variant="contained"
+        color="success"
+        onClick={onClick}
+        sx={{ height: "100%" }}
       >
-        <span>
-          <Button
-            disabled={disabled}
-            variant="contained"
-            color="success"
-            onClick={onClick}
-            sx={{ height: "100%" }}
-          >
-            Đơn hàng mới
-          </Button>
-        </span>
-      </Tooltip>
+        Đơn hàng mới
+      </Button>
     </BadgePrimary>
   );
 };

@@ -13,7 +13,7 @@ import { convertDateTime, formatPriceText } from "shared/utils";
 import InfoText from "../InfoText";
 
 interface OrderInfoProps {
-  order: Partial<OrderType>;
+  order: OrderType;
 }
 
 interface OptionsListProps {
@@ -82,20 +82,17 @@ const OrderInfo = ({ order }: OrderInfoProps) => {
 
   return (
     <>
-      <InfoText title="Họ tên" content={fullName!} />
-      <InfoText title="Số điện thoại" content={phoneNumber!} />
-      <InfoText title="Địa chỉ" content={address!} />
-      <InfoText
-        title="Thời gian đặt hàng"
-        content={convertDateTime(orderAt!)}
-      />
-      {deliverAt && deliverAt !== "" && (
+      <InfoText title="Họ tên" content={fullName} />
+      <InfoText title="Số điện thoại" content={phoneNumber} />
+      <InfoText title="Địa chỉ" content={address} />
+      <InfoText title="Thời gian đặt hàng" content={convertDateTime(orderAt)} />
+      {deliverAt && (
         <InfoText
           title="Thời gian giao hàng"
-          content={convertDateTime(deliverAt!)}
+          content={convertDateTime(deliverAt)}
         />
       )}
-      <InfoText title="Tổng hóa đơn" content={formatPriceText(totalPrice!)} />
+      <InfoText title="Tổng hóa đơn" content={formatPriceText(totalPrice)} />
       <Typography variant="body1" fontWeight={700}>
         Nội dung đơn hàng:
       </Typography>

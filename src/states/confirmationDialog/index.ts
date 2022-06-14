@@ -9,3 +9,12 @@ export const confirmationDialogState = atom({
     onConfirm: () => {},
   },
 });
+
+export const confirmationFinishOrderState = atom({
+  key: "confirmationDialog",
+  default: {
+    show: false,
+    content: "" as string | React.ReactNode,
+    onConfirm: () => {},
+  },
+});

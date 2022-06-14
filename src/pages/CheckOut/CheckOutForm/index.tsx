@@ -18,6 +18,7 @@ import CheckoutInput from "../CheckOutInput";
 import PriceField from "../PriceField";
 import { useCreateOrder } from "api/order/hooks";
 import { useNavigate } from "react-router-dom";
+import { DateType } from "shared/types";
 
 interface CustomerInfoType {
   fullName: string;
@@ -88,8 +89,8 @@ const CheckOutForm = () => {
     const { fullName, phoneNumber, address } = data as CustomerInfoType;
 
     createOrder({
-      orderAt: new Date(),
-      deliverAt: "",
+      orderAt: new Date() as DateType,
+      deliverAt: null,
       fullName,
       phoneNumber,
       address,

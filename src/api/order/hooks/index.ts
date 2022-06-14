@@ -11,31 +11,14 @@ interface UseCreateOrder {
 }
 
 export const useFetchOrders = (orderStatus: OrderStatusType) => {
-  const { showToast } = useSnackbar();
-
   const {
     data: fetchedOrders,
     isLoading,
     isRefetching,
-    isFetched,
     isError: fetchError,
     refetch: refetchOrders,
-  } = useQuery(
-    ["orders", orderStatus],
-    () => orderApi.fetchOrders(orderStatus),
-    {
-      onSuccess: () => {
-        if (!isFetched) return;
-
-        showToast({
-          title: "Đã cập nhật đơn hàng mới",
-          type: "success",
-          SnackbarProps: {
-            anchorOrigin: { vertical: "bottom", horizontal: "right" },
-          },
-        });
-      },
-    }
+  } = useQuery(["orders", orderStatus], () =>
+    orderApi.fetchOrders(orderStatus)
   );
 
   return {

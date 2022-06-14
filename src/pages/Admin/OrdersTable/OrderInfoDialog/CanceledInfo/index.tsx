@@ -8,7 +8,7 @@ import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import { styled } from "shared/theme";
 
 interface Props {
-  order: Partial<OrderType>;
+  order: OrderType;
 }
 
 const StackWrapper = styled(Stack)(({ theme }) => ({
@@ -30,7 +30,7 @@ const CanceledInfo = ({ order }: Props) => {
 
   return (
     <>
-      <InfoText title="Lý do hủy đơn" content={order.cancelMessage!} />
+      <InfoText title="Lý do hủy đơn" content={order.cancelMessage} />
 
       <StackWrapper
         direction="row"

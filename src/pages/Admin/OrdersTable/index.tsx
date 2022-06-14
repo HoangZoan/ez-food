@@ -74,6 +74,14 @@ const OrdersTable = () => {
     refetchOrders().then(() => {
       setRefreshDisabled(true);
       setPendingOrdersCount(0);
+
+      showToast({
+        title: "Đã cập nhật đơn hàng mới",
+        type: "success",
+        SnackbarProps: {
+          anchorOrigin: { vertical: "bottom", horizontal: "right" },
+        },
+      });
     });
   };
 
@@ -82,8 +90,6 @@ const OrdersTable = () => {
       const message = event.message;
 
       if (message !== "new-order") return;
-
-      console.log(pendingOrdersCount);
 
       setRefreshDisabled(false);
       setPendingOrdersCount(pendingOrdersCount + 1);
@@ -152,7 +158,13 @@ const OrdersTable = () => {
           {fetchedOrders?.map((order) => (
             <TableBodyRow key={order.id}>
               <TableCell>{order.id}</TableCell>
-              <TableCell>{convertDateTime(order.orderAt)}</TableCell>
+              <TableCell>
+                {convertDateTime(
+                  orderQuery === DELIVERED_STATUS
+                    ? order.deliverAt!
+                    : order.orderAt
+                )}
+              </TableCell>
               <TableCell>
                 <Stack direction="row" justifyContent="flex-end" spacing={3}>
                   {orderQuery === IN_QUEUE_STATUS && (
@@ -204,6 +216,7 @@ const OrdersTable = () => {
 
       <OrderInfoDialog
         open={showOrderDetailDialog}
+        form
         tableType={orderQuery!}
         submitStatus={{
           isFinishing: isFinishingOrder,

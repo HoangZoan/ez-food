@@ -1,5 +1,10 @@
 import { WhereFilterOp } from "firebase/firestore/lite";
 
+// DATA TYPE
+export interface DateType extends Date {
+  seconds: number;
+}
+
 // PRODUCT TYPE
 export interface ProductType {
   id: string;
@@ -72,8 +77,8 @@ export interface MenuType extends ProductInfoType {
 // ORDER TYPE
 export interface OrderType {
   id?: string;
-  orderAt: Date & { seconds: number };
-  deliverAt: Date & { seconds: number };
+  orderAt: DateType;
+  deliverAt: DateType | null;
   fullName: string;
   phoneNumber: string;
   address: string;

@@ -1,7 +1,12 @@
 import { useFinishOrder, useRemoveOrder } from "api/order/hooks";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { CanceledOrderType, OrderStatusType, OrderType } from "shared/types";
+import {
+  CanceledOrderType,
+  DateType,
+  OrderStatusType,
+  OrderType,
+} from "shared/types";
 
 export const useOrderTable = () => {
   const location = useLocation();
@@ -9,7 +14,7 @@ export const useOrderTable = () => {
   const orderQuery = new URLSearchParams(location.search).get(
     "order"
   ) as OrderStatusType;
-  const [orderDetail, setOrderDetail] = useState<Partial<OrderType>>({});
+  const [orderDetail, setOrderDetail] = useState<OrderType>({} as OrderType);
   const [showOrderDetailDialog, setShowOrderDetail] = useState(false);
   const [showCanceledDetailDialog, setShowCanceledDetail] = useState(false);
   const [canceledOrder, setCanceledOrder] = useState<OrderType | null>(null);
@@ -59,7 +64,7 @@ export const useOrderTable = () => {
   const handleFinishOrder = () => {
     finishOrder({
       id: orderDetail.id!,
-      data: { ...orderDetail, deliverAt: new Date() },
+      data: { ...orderDetail, deliverAt: new Date() as DateType },
     });
   };
 
