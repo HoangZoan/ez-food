@@ -216,7 +216,6 @@ const OrdersTable = () => {
 
       <OrderInfoDialog
         open={showOrderDetailDialog}
-        form
         tableType={orderQuery!}
         submitStatus={{
           isFinishing: isFinishingOrder,

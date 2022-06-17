@@ -1,3 +1,7 @@
+import { useRecoilValue } from "recoil";
+import { useConfirmationDialog } from "../../states/confirmationDialog/hooks";
+import { confirmationDialogState } from "states/confirmationDialog";
+import styled from "@emotion/styled";
 import {
   Button,
   Dialog,
@@ -5,10 +9,6 @@ import {
   DialogContent,
   DialogContentText,
 } from "@mui/material";
-import { styled } from "shared/theme";
-import { useRecoilValue } from "recoil";
-import { confirmationDialogState } from "../../states/confirmationDialog";
-import { useConfirmationDialog } from "../../states/confirmationDialog/hooks";
 
 const DialogActions = styled(MuiDialogActions)({
   justifyContent: "center",
@@ -19,13 +19,13 @@ const DialogActions = styled(MuiDialogActions)({
 });
 
 const ConfirmationDialog = () => {
-  const { show, content, onConfirm } = useRecoilValue(confirmationDialogState);
   const { closeDialog } = useConfirmationDialog();
+  const { show, content, onConfirm } = useRecoilValue(confirmationDialogState);
 
   return (
     <Dialog open={show} onClose={closeDialog}>
       <DialogContent>
-        <DialogContentText sx={{ fontWeight: 700, color: "black" }}>
+        <DialogContentText sx={{ fontWeight: 500, color: "black" }}>
           {content}
         </DialogContentText>
       </DialogContent>

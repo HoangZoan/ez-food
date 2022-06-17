@@ -2,7 +2,7 @@ import React from "react";
 import { useSetRecoilState } from "recoil";
 import { confirmationDialogState } from "..";
 
-interface openDialogParams {
+interface OpenDialogParams {
   content: string | React.ReactNode;
   onConfirm: () => void;
 }
@@ -10,7 +10,7 @@ interface openDialogParams {
 export const useConfirmationDialog = () => {
   const setState = useSetRecoilState(confirmationDialogState);
 
-  const openDialog = ({ content, onConfirm }: openDialogParams) => {
+  const openDialog = ({ content, onConfirm }: OpenDialogParams) => {
     setState({ show: true, content, onConfirm });
   };
 

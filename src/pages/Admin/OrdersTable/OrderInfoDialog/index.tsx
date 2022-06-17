@@ -1,3 +1,4 @@
+import React, { useEffect } from "react";
 import {
   Button,
   CircularProgress,
@@ -8,13 +9,10 @@ import {
   Divider,
   Stack,
 } from "@mui/material";
-import React, { useEffect, useRef } from "react";
 import { OrderStatusType } from "shared/types";
-import { useConfirmationDialog } from "states/confirmationDialog/hooks";
 
 interface OrderInfoDialogProps {
   open: boolean;
-  form?: boolean;
   tableType: OrderStatusType;
   onClose: () => void;
   onFinish?: () => void;
@@ -27,24 +25,13 @@ interface OrderInfoDialogProps {
 
 const OrderInfoDialog = ({
   open,
-  form = false,
   tableType,
   onClose,
   onFinish = () => {},
   submitStatus = { isFinishing: false, isFinished: false },
   children,
 }: OrderInfoDialogProps) => {
-  // const containerRef = useRef();
   const { isFinishing, isFinished } = submitStatus;
-  const { openDialog } = useConfirmationDialog();
-  const ContainerComponent = form ? "form" : React.Fragment;
-
-  const openConfirmDialog = () => {
-    openDialog({
-      content: "Xác nhận hoàn thành đơn hàng",
-      onConfirm: onFinish,
-    });
-  };
 
   useEffect(() => {
     if (isFinished) {
@@ -53,8 +40,8 @@ const OrderInfoDialog = ({
   }, [isFinished, onClose]);
 
   return (
-    <Dialog open={open} onClose={onClose} fullWidth maxWidth="md">
-      <ContainerComponent>
+    <>
+      <Dialog open={open} onClose={onClose} fullWidth maxWidth="md">
         <DialogTitle
           sx={{ fontWeight: 700, textAlign: "center", fontSize: "2.1rem" }}
         >
@@ -74,11 +61,10 @@ const OrderInfoDialog = ({
         <DialogActions sx={{ justifyContent: "center", py: 3 }}>
           {tableType === "in-queue" && (
             <Button
-              type={form ? "submit" : "button"}
               variant="contained"
               disabled={isFinishing}
               sx={{ mr: 4 }}
-              onClick={openConfirmDialog}
+              onClick={onFinish}
             >
               {isFinishing ? (
                 <CircularProgress size={16} color="inherit" />
@@ -91,8 +77,8 @@ const OrderInfoDialog = ({
             Đóng
           </Button>
         </DialogActions>
-      </ContainerComponent>
-    </Dialog>
+      </Dialog>
+    </>
   );
 };
 

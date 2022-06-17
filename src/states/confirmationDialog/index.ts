@@ -1,20 +1,17 @@
 import React from "react";
 import { atom } from "recoil";
 
-export const confirmationDialogState = atom({
-  key: "confirmationDialog",
-  default: {
-    show: false,
-    content: "" as string | React.ReactNode,
-    onConfirm: () => {},
-  },
-});
+export interface ConfirmationDialogType {
+  show: boolean;
+  content: string | React.ReactNode;
+  onConfirm: () => void;
+}
 
-export const confirmationFinishOrderState = atom({
+export const confirmationDialogState = atom<ConfirmationDialogType>({
   key: "confirmationDialog",
   default: {
     show: false,
-    content: "" as string | React.ReactNode,
+    content: "",
     onConfirm: () => {},
   },
 });
