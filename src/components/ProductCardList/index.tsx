@@ -1,10 +1,10 @@
 import React from "react";
-import { ProductType } from "shared/types";
+import { MenuType } from "shared/types";
 import { Grid } from "@mui/material";
 import ProductCard from "components/UI/ProductCard";
 
 interface ProductCardListProps {
-  items: ProductType[];
+  items: MenuType[];
 }
 
 const ProductCardList = ({ items }: ProductCardListProps) => {

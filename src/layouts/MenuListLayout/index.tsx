@@ -5,9 +5,10 @@ import BoxedHeading from "../../components/UI/BoxedHeading";
 interface MenuListLayoutProps {
   children: React.ReactNode;
   onTop?: boolean;
+  title: string;
 }
 
-const MenuListLayout = ({ children, onTop }: MenuListLayoutProps) => {
+const MenuListLayout = ({ children, onTop, title }: MenuListLayoutProps) => {
   return (
     <div>
       <Box
@@ -17,7 +18,7 @@ const MenuListLayout = ({ children, onTop }: MenuListLayoutProps) => {
         bgcolor="black"
         pt={(theme) => theme.spacing(onTop ? 13 : 9)}
       >
-        <BoxedHeading content="Bánh mỳ" />
+        <BoxedHeading content={title} />
       </Box>
       {children}
     </div>

@@ -61,35 +61,38 @@ export const useRemoveMenuItem = (tableType: string) => {
 export const useUploadNewMenu = (tableType: string, closeForm: () => void) => {
   const queryClient = useQueryClient();
   const { showToast } = useSnackbar();
-  const { mutate: uploadNewMenu, isLoading: isSubmiting } = useMutation(
-    (data: MenuType) => menuApi.createNewMenu(tableType, data),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(["menu", tableType]);
-        closeForm();
-        showToast({
-          title: "Thêm sản phẩm mới thành công!",
-          type: "success",
-          SnackbarProps: {
-            anchorOrigin: { vertical: "bottom", horizontal: "right" },
-          },
-        });
-      },
-      onError: () => {
-        showToast({
-          title: "Thêm sản phẩm mới không thành công!",
-          type: "error",
-          SnackbarProps: {
-            anchorOrigin: { vertical: "bottom", horizontal: "right" },
-          },
-        });
-      },
-    }
-  );
+  const {
+    mutate: uploadNewMenu,
+    isLoading: isSubmiting,
+    isSuccess,
+    isError,
+  } = useMutation((data: MenuType) => menuApi.createNewMenu(tableType, data), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(["menu", tableType]);
+      closeForm();
+      showToast({
+        title: "Thêm sản phẩm mới thành công!",
+        type: "success",
+        SnackbarProps: {
+          anchorOrigin: { vertical: "bottom", horizontal: "right" },
+        },
+      });
+    },
+    onError: () => {
+      showToast({
+        title: "Thêm sản phẩm mới không thành công!",
+        type: "error",
+        SnackbarProps: {
+          anchorOrigin: { vertical: "bottom", horizontal: "right" },
+        },
+      });
+    },
+  });
 
   return {
     uploadNewMenu,
     isSubmiting,
+    submitIsStoped: isSuccess || isError,
   };
 };
 
@@ -99,41 +102,48 @@ export const useUpdateMenu = (tableType: string, closeForm?: () => void) => {
   const { showToast } = useSnackbar();
   const [updatingId, setUpdatingId] = useState("");
 
-  const { mutate: updateMenu, isLoading: isUpdating } = useMutation(
-    updateMenuApi,
-    {
-      onMutate: ({ id }) => {
-        setUpdatingId(id);
-      },
-      onSuccess: () => {
-        queryClient.invalidateQueries(["menu", tableType]);
-        if (closeForm) {
-          closeForm();
-        }
-        showToast({
-          title: "Cập nhật sản phẩm thành công!",
-          type: "success",
-          SnackbarProps: {
-            anchorOrigin: { vertical: "bottom", horizontal: "right" },
-          },
-        });
-      },
-      onError: () => {
-        showToast({
-          title: "Cập nhật sản phẩm không thành công!",
-          type: "error",
-          SnackbarProps: {
-            anchorOrigin: { vertical: "bottom", horizontal: "right" },
-          },
-        });
-      },
-      onSettled: () => {
-        setUpdatingId("");
-      },
-    }
-  );
+  const {
+    mutate: updateMenu,
+    isLoading: isUpdating,
+    isSuccess,
+    isError,
+  } = useMutation(updateMenuApi, {
+    onMutate: ({ id }) => {
+      setUpdatingId(id);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["menu", tableType]);
+      if (closeForm) {
+        closeForm();
+      }
+      showToast({
+        title: "Cập nhật sản phẩm thành công!",
+        type: "success",
+        SnackbarProps: {
+          anchorOrigin: { vertical: "bottom", horizontal: "right" },
+        },
+      });
+    },
+    onError: () => {
+      showToast({
+        title: "Cập nhật sản phẩm không thành công!",
+        type: "error",
+        SnackbarProps: {
+          anchorOrigin: { vertical: "bottom", horizontal: "right" },
+        },
+      });
+    },
+    onSettled: () => {
+      setUpdatingId("");
+    },
+  });
 
-  return { updateMenu, updatingId, isUpdating };
+  return {
+    updateMenu,
+    updatingId,
+    isUpdating,
+    updateIsStoped: isSuccess || isError,
+  };
 };
 
 export const useUploadImage = (isAddingNew: boolean) => {

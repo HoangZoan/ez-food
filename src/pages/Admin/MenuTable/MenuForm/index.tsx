@@ -48,11 +48,25 @@ const MenuForm = ({ onClose, item, tableType }: MenuFormProps) => {
     getValues,
     resetField,
   } = useForm();
-  const { isSubmiting, uploadNewMenu } = useUploadNewMenu(tableType, onClose);
-  const { isUpdating, updateMenu } = useUpdateMenu(tableType, onClose);
+  const { isSubmiting, uploadNewMenu, submitIsStoped } = useUploadNewMenu(
+    tableType,
+    onClose
+  );
+  const { isUpdating, updateMenu, updateIsStoped } = useUpdateMenu(
+    tableType,
+    onClose
+  );
   const { isUploadingImage, uploadImage } = useUploadImage(isAddingNew);
   const { clearImage } = useClearImage();
-  const isLoading = isUploadingImage || isSubmiting || isUpdating;
+  let isLoading = false;
+
+  if (isUploadingImage || isSubmiting || isUpdating) {
+    isLoading = true;
+  }
+
+  if ((submitIsStoped || updateIsStoped) && isLoading) {
+    isLoading = false;
+  }
 
   const handleFormSubmit = async (data: { [key: string]: string }) => {
     const { title, price, menuType, description } = data;
