@@ -32,8 +32,6 @@ const PageHeader = () => {
               </>
             )}
             {adminState && <LogoutButton />}
-            <CartButton />
-            <NotificationsButton />
           </Stack>
         </Stack>
       </Container>
