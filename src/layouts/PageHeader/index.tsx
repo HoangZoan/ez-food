@@ -25,13 +25,13 @@ const PageHeader = () => {
           </Typography>
 
           <Stack direction="row" spacing={3}>
-            {/* {!adminState && (
+            {!adminState && (
               <>
                 <CartButton />
                 <NotificationsButton />
               </>
             )}
-            {adminState && <LogoutButton />} */}
+            {adminState && <LogoutButton />}
             <CartButton />
             <NotificationsButton />
           </Stack>
