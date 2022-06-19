@@ -23,10 +23,11 @@ import {
   useRemoveMenuItem,
   useUpdateMenu,
 } from "../../../api/menu/hooks";
+import { TYPE_BEVERAGE } from "shared/config";
 
 const sorts: TableSortsType[] = [
   { title: "Bánh mỳ", value: "banhMy" },
-  { title: "Đồ uống", value: "barverage" },
+  { title: "Đồ uống", value: TYPE_BEVERAGE },
 ];
 
 const MenuTable = () => {

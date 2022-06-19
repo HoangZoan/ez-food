@@ -1,7 +1,7 @@
-import MenuListPreview from "./MenuListPreview";
+import BaveragePreiew from "./BaveragePreivew";
 
 const HomeMenuList = () => {
-  return <MenuListPreview menuTitle="Đồ uống" items={[]} />;
+  return <BaveragePreiew />;
 };
 
 export default HomeMenuList;

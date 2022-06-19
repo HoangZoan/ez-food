@@ -2,9 +2,10 @@ import {
   Card,
   CardContent,
   CardActions,
-  Box,
   Typography,
   Button,
+  CardMedia,
+  Stack,
 } from "@mui/material";
 import { formatPriceText } from "shared/utils";
 
@@ -12,9 +13,15 @@ interface ProductCardProps {
   title: string;
   description: string;
   price: number;
+  imageSrc: string;
 }
 
-const ProductCard = ({ title, description, price }: ProductCardProps) => {
+const ProductCard = ({
+  title,
+  description,
+  price,
+  imageSrc,
+}: ProductCardProps) => {
   return (
     <Card
       elevation={0}
@@ -23,14 +30,9 @@ const ProductCard = ({ title, description, price }: ProductCardProps) => {
         textAlign: "left",
       }}
     >
-      <Box
-        sx={{
-          backgroundColor: "primary.main",
-          width: 1,
-          aspectRatio: "5 / 4",
-        }}
-      ></Box>
-      <div>
+      <CardMedia component="img" src={imageSrc} />
+
+      <Stack minHeight={300} justifyContent="space-between">
         <CardContent sx={{ px: 5 }}>
           <Typography mb={3} textAlign="center" variant="h6" fontWeight={700}>
             {title}
@@ -50,7 +52,7 @@ const ProductCard = ({ title, description, price }: ProductCardProps) => {
             <Typography variant="body1">Đặt món</Typography>
           </Button>
         </CardActions>
-      </div>
+      </Stack>
     </Card>
   );
 };

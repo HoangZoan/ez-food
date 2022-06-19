@@ -9,6 +9,7 @@ import {
   query,
   updateDoc,
   where,
+  limit as firebaseLimit,
 } from "firebase/firestore/lite";
 import { FirebaseQuery } from "shared/types";
 import firebase from "../config";
@@ -23,12 +24,14 @@ interface ReadDocumentsParams<T> {
   collection: string;
   queries?: FirebaseQuery<T>[];
   order?: { byField: string; byDirection: OrderByDirection };
+  limit?: number;
 }
 
 const readDocuments = async <T>({
   collection,
   queries,
   order,
+  limit,
 }: ReadDocumentsParams<T>) => {
   const collectionRef = firestoreCollection(firestore, collection);
   let queryConstraints = [];
@@ -41,6 +44,10 @@ const readDocuments = async <T>({
 
   if (order?.byField && order.byDirection) {
     queryConstraints.push(orderBy(order.byField, order.byDirection));
+  }
+
+  if (limit && limit > 0) {
+    queryConstraints.push(firebaseLimit(limit));
   }
 
   const firestoreQuery = query(collectionRef, ...queryConstraints);

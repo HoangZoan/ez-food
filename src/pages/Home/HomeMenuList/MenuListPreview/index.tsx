@@ -8,15 +8,16 @@ import { MenuType } from "shared/types";
 interface Props {
   menuTitle: string;
   items: MenuType[];
+  menuType: string;
 }
 
-const MenuListPreview = ({ menuTitle, items }: Props) => {
+const MenuListPreview = ({ menuTitle, items, menuType }: Props) => {
   return (
     <MenuListLayout title={menuTitle}>
       <Container sx={{ py: 9, textAlign: "center" }}>
         <ProductCardList items={items} />
 
-        <Link to="/products">
+        <Link to={`/products/${menuType}`}>
           <Button variant="outlined">Xem thực đơn</Button>
         </Link>
       </Container>
@@ -25,5 +26,3 @@ const MenuListPreview = ({ menuTitle, items }: Props) => {
 };
 
 export default MenuListPreview;
-
-// OrderType

@@ -189,3 +189,16 @@ export const useClearImage = () => {
     clearImage,
   };
 };
+
+export const useGetHomePageMenu = (menuType: string) => {
+  const adminState = useRecoilValue(adminLoginState);
+  const queries: FirebaseQuery<boolean>[] = !adminState
+    ? [{ field: "isPublished", condition: "==", value: true }]
+    : [];
+  const { data: fetchedMenu, isLoading: isGettingData } = useQuery(
+    ["home-menu", menuType],
+    () => menuApi.fetchAllMenuItems(menuType, queries, 3)
+  );
+
+  return { fetchedMenu, isGettingData };
+};

@@ -6,11 +6,13 @@ import { v4 as uuidv4 } from "uuid";
 
 const fetchAllMenuItems = async <T>(
   tableType: string,
-  queries: FirebaseQuery<T>[]
+  queries: FirebaseQuery<T>[],
+  perPage?: number
 ) => {
   const response = await FirestoreService.readDocuments({
     collection: `app/menu/${tableType}`,
     queries,
+    limit: perPage,
   });
 
   const fetchedItems = response.docs.map((recipeDoc) => {

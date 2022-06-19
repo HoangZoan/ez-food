@@ -1,63 +1,32 @@
 import React from "react";
-import { ProductType } from "shared/types";
 import MenuListLayout from "layouts/MenuListLayout";
 import { Container, Stack } from "@mui/material";
 import ProductCardList from "components/ProductCardList";
 import PagePagination from "components/PagePagination";
-
-const dummyData: ProductType[] = [
-  {
-    id: "p-1",
-    title: "Bánh mỳ",
-    description:
-      "Mô tả: It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages.",
-    price: 20000,
-  },
-  {
-    id: "p-2",
-    title: "Bánh mỳ",
-    description:
-      "Mô tả: It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages.",
-    price: 20000,
-  },
-  {
-    id: "p-3",
-    title: "Bánh mỳ",
-    description:
-      "Mô tả: It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages.",
-    price: 20000,
-  },
-  {
-    id: "p-4",
-    title: "Bánh mỳ",
-    description:
-      "Mô tả: It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages.",
-    price: 20000,
-  },
-  {
-    id: "p-5",
-    title: "Bánh mỳ",
-    description:
-      "Mô tả: It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages.",
-    price: 20000,
-  },
-  {
-    id: "p-6",
-    title: "Bánh mỳ",
-    description:
-      "Mô tả: It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages.",
-    price: 20000,
-  },
-];
+import { useParams } from "react-router-dom";
+import { TYPE_BEVERAGE } from "shared/config";
+import { useFetchedMenu } from "api/menu/hooks";
 
 const Products = () => {
+  const { type } = useParams<{ type: string }>();
+  const { fetchedMenu } = useFetchedMenu(type!);
+  let title = "";
+  const pagesCount =
+    (fetchedMenu && fetchedMenu.length / 6 > 1 && fetchedMenu.length / 6) || 0;
+
+  switch (type) {
+    case TYPE_BEVERAGE:
+      title = "Đồ uống";
+      break;
+  }
+
   return (
-    <MenuListLayout onTop>
+    <MenuListLayout title={title} onTop>
       <Container sx={{ py: 8 }}>
         <Stack alignItems="center">
-          <ProductCardList items={dummyData} />
+          <ProductCardList items={fetchedMenu || []} />
 
-          <PagePagination count={3} />
+          {fetchedMenu && <PagePagination count={pagesCount} />}
         </Stack>
       </Container>
     </MenuListLayout>

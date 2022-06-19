@@ -11,3 +11,6 @@ export const ADMIN = "admin";
 
 // PUBNUB CHANNEL
 export const NEW_ORDER_NOTIFICATIONS = "new-order-notificationS";
+
+// PRODUCT TYPE KEY
+export const TYPE_BEVERAGE = "barverage";
