@@ -6,6 +6,16 @@ import { adminLoginState } from "states/admin";
 import { useSnackbar } from "states/snackbar/hooks/useSnackbar";
 import { menuApi } from "..";
 
+export const useFetchMenuItem = (type: string, id: string) => {
+  const {
+    data: fetchedItem,
+    isLoading: isGettingData,
+    isError,
+  } = useQuery(["menu", { type, id }], () => menuApi.fetchMenuItem(type, id));
+
+  return { fetchedItem, isGettingData, isError };
+};
+
 export const useFetchedMenu = (tableType: string) => {
   const adminState = useRecoilValue(adminLoginState);
   const queries: FirebaseQuery<boolean>[] = !adminState

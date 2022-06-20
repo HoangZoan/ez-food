@@ -8,19 +8,24 @@ import {
   Stack,
 } from "@mui/material";
 import { formatPriceText } from "shared/utils";
+import { Link } from "react-router-dom";
 
 interface ProductCardProps {
+  id: string;
   title: string;
   description: string;
   price: number;
   imageSrc: string;
+  menuType: string;
 }
 
 const ProductCard = ({
+  id,
   title,
   description,
   price,
   imageSrc,
+  menuType,
 }: ProductCardProps) => {
   return (
     <Card
@@ -48,9 +53,12 @@ const ProductCard = ({
           }}
         >
           <Typography variant="h6">Giá: {formatPriceText(price)}</Typography>
-          <Button variant="contained">
-            <Typography variant="body1">Đặt món</Typography>
-          </Button>
+
+          <Link to={`/products/${menuType}/${id}`}>
+            <Button variant="contained">
+              <Typography variant="body1">Đặt món</Typography>
+            </Button>
+          </Link>
         </CardActions>
       </Stack>
     </Card>

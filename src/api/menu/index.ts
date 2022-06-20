@@ -4,6 +4,16 @@ import { FirebaseQuery, MenuType } from "../../shared/types";
 import { IMAGE_KEY } from "../../shared/config";
 import { v4 as uuidv4 } from "uuid";
 
+const fetchMenuItem = async (itemType: string, id: string) => {
+  const response = await FirestoreService.readDocument({
+    collection: `app/menu/${itemType}`,
+    id,
+  });
+  const data = response.data() as MenuType;
+
+  return data.isPublished ? data : undefined;
+};
+
 const fetchAllMenuItems = async <T>(
   tableType: string,
   queries: FirebaseQuery<T>[],
@@ -71,6 +81,7 @@ const deleteMenuItem = async ({
 };
 
 export const menuApi = {
+  fetchMenuItem,
   fetchAllMenuItems,
   createNewMenu,
   createMenuImageUrl,

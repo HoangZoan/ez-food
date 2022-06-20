@@ -10,11 +10,21 @@ import {
   updateDoc,
   where,
   limit as firebaseLimit,
+  getDoc,
 } from "firebase/firestore/lite";
 import { FirebaseQuery } from "shared/types";
 import firebase from "../config";
 
 const firestore = firebase.firestore;
+
+interface ReadDocumentParams {
+  collection: string;
+  id: string;
+}
+
+const readDocument = ({ collection, id }: ReadDocumentParams) => {
+  return getDoc(doc(firestoreCollection(firestore, collection), id));
+};
 
 const createDocument = <T>(collection: string, document: T) => {
   return addDoc(firestoreCollection(firestore, collection), document);
@@ -64,6 +74,7 @@ const deleteDocument = (collection: string, id: string) => {
 };
 
 export const FirestoreService = {
+  readDocument,
   createDocument,
   readDocuments,
   updateDocument,

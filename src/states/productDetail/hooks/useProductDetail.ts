@@ -32,7 +32,7 @@ export const useProductDetail = () => {
         ({ variants }) => variants.find(({ selected }) => selected)!.price
       );
 
-      setProductIdState(id);
+      setProductIdState(id!);
       setProductOptionState(options);
       setProductTypePriceState(typePricesArr);
       setProductPriceState(price);

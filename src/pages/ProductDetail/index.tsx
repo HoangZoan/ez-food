@@ -7,37 +7,8 @@ import { createId } from "shared/utils";
 import { useCart } from "states/cart";
 import PreviewProducts from "./PreviewProducts";
 import ProductImage from "./ProductImage";
-
-const dummyData: ProductDetailType = {
-  id: "1",
-  title: "Bánh mỳ cay",
-  price: 20000,
-  totalPrice: 20000,
-  quantity: 1,
-  options: [
-    {
-      name: "Cỡ",
-      variants: [
-        { type: "Nửa chiếc", price: -10000, selected: false },
-        { type: "Cỡ vừa", price: 0, selected: true },
-        { type: "Cỡ lớn", price: 5000, selected: false },
-      ],
-    },
-    {
-      name: "Nhân bánh",
-      variants: [
-        { type: "Pate", price: 2000, selected: false },
-        { type: "Trứng", price: 0, selected: true },
-      ],
-    },
-  ],
-  availableSideDish: [
-    { name: "Rau củ", price: 0 },
-    { name: "Chả quế", price: 3000 },
-  ],
-  selectedSideDish: [],
-  description: "abc",
-};
+import { useParams } from "react-router-dom";
+import { useFetchMenuItem } from "api/menu/hooks";
 
 const SubmitButton = React.memo(() => {
   return (
@@ -48,20 +19,38 @@ const SubmitButton = React.memo(() => {
 });
 
 const ProductDetail = () => {
-  const { title } = dummyData;
+  const { productId, type } = useParams<{
+    productId: string;
+    type: string;
+  }>();
   const { addNewOrder } = useCart();
+  const { fetchedItem } = useFetchMenuItem(type!, productId!);
 
   const handleSubmit = (data: ProductDetailType) => {
     const orderId = createId(SELECT_KEY);
     const orderData = {
       ...data,
       orderId,
-      title,
+      title: fetchedItem!.title,
       date: new Date().toISOString(),
     };
 
     addNewOrder(orderData);
   };
+
+  if (!fetchedItem) return null;
+
+  const menuItem = {
+    id: fetchedItem.id,
+    title: fetchedItem.title,
+    description: fetchedItem.description,
+    price: fetchedItem.price,
+    quantity: 1,
+    options: fetchedItem.options,
+    totalPrice: fetchedItem.price,
+    availableSideDish: fetchedItem.sideDish,
+    selectedSideDish: [],
+  } as ProductDetailType;
 
   return (
     <Container sx={{ pt: 13 }}>
@@ -72,7 +61,7 @@ const ProductDetail = () => {
           variant="h2"
           sx={{ maxWidth: "56rem" }}
         >
-          {title}
+          {fetchedItem.title}
         </Typography>
       </Stack>
 
@@ -82,7 +71,7 @@ const ProductDetail = () => {
         </Grid>
         <Grid item xs={7}>
           <ProductDetailCard
-            item={dummyData}
+            item={menuItem}
             actionButton={<SubmitButton />}
             onSubmit={handleSubmit}
           />
