@@ -83,3 +83,26 @@ export const convertProductFormData = (data: { [key: string]: string }) => {
 
   return { options, sideDish };
 };
+
+// PAGINATION FUNCTIONS
+interface GetProductsByPage<T> {
+  page: number;
+  perPage: number;
+  items: T[] | undefined;
+}
+
+export const getPaginationData = <T>({
+  page,
+  perPage,
+  items,
+}: GetProductsByPage<T>) => {
+  const startIndex = (page - 1) * perPage;
+  const endIndex = page * perPage;
+
+  const pageItems = items ? items.slice(startIndex, endIndex) : [];
+  const pageCount = Math.ceil(
+    (items && items.length / perPage > 1 && items.length / perPage) || 0
+  );
+
+  return { pageItems, pageCount };
+};

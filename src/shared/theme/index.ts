@@ -98,6 +98,15 @@ declare module "@mui/material/Button" {
 }
 
 theme.components = {
+  // TYPOGRAPHY
+  MuiTypography: {
+    styleOverrides: {
+      root: {
+        wordBreak: "break-word",
+      },
+    },
+  },
+
   // BUTTON
   MuiButton: {
     defaultProps: {

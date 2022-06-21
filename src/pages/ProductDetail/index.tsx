@@ -67,7 +67,10 @@ const ProductDetail = () => {
 
       <Grid columnSpacing={6} container sx={{ my: 7 }}>
         <Grid item xs={5}>
-          <ProductImage />
+          <ProductImage
+            imgSrc={fetchedItem.imageUrl}
+            imgAlt={fetchedItem.title}
+          />
         </Grid>
         <Grid item xs={7}>
           <ProductDetailCard

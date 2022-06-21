@@ -1,10 +1,20 @@
 import { Box } from "@mui/material";
 
-const ProductImage = () => {
+const ProductImage = ({
+  imgSrc,
+  imgAlt,
+}: {
+  imgSrc: string;
+  imgAlt: string;
+}) => {
   return (
-    <Box
-      sx={{ backgroundColor: "green", width: 1, aspectRatio: "1 / 1" }}
-    ></Box>
+    <Box sx={{ width: 1, aspectRatio: "1 / 1" }}>
+      <img
+        style={{ objectFit: "cover", width: "100%" }}
+        src={imgSrc}
+        alt={imgAlt}
+      />
+    </Box>
   );
 };
 

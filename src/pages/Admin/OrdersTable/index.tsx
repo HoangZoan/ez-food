@@ -23,7 +23,7 @@ import {
   TableCellHead,
 } from "components/UI/ManagingTable";
 import { useFetchOrders } from "api/order/hooks";
-import { convertDateTime } from "shared/utils";
+import { convertDateTime, getPaginationData } from "shared/utils";
 import OrderInfoDialog from "./OrderInfoDialog";
 import OrderDeleteDialog from "./OrderDeleteDialog";
 import ReportGmailerrorredOutlinedIcon from "@mui/icons-material/ReportGmailerrorredOutlined";
@@ -36,6 +36,7 @@ import { usePubNub } from "pubnub-react";
 import { MessageEvent } from "pubnub";
 import { useSnackbar } from "states/snackbar/hooks/useSnackbar";
 import UpdateOrdersButton from "./UpdateOrdersButton";
+import PagePagination from "components/PagePagination";
 
 const sorts: TableSortsType[] = [
   { title: "Đơn đang đặt", value: IN_QUEUE_STATUS },
@@ -69,6 +70,12 @@ const OrdersTable = () => {
     useFetchOrders(orderQuery!);
   const [refreshDisabled, setRefreshDisabled] = useState(true);
   const [pendingOrdersCount, setPendingOrdersCount] = useState(0);
+  const [page, setPage] = useState(1);
+  const { pageCount, pageItems: ordersData } = getPaginationData({
+    page,
+    perPage: 8,
+    items: fetchedOrders,
+  });
 
   const handleRefreshOrders = () => {
     refetchOrders().then(() => {
@@ -131,6 +138,7 @@ const OrdersTable = () => {
 
   return (
     <>
+      {/* ORDERS TABLE */}
       <Table>
         <TableHead>
           <TableRow>
@@ -155,7 +163,7 @@ const OrdersTable = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {fetchedOrders?.map((order) => (
+          {ordersData?.map((order) => (
             <TableBodyRow key={order.id}>
               <TableCell>{order.id}</TableCell>
               <TableCell>
@@ -193,7 +201,7 @@ const OrdersTable = () => {
             </TableBodyRow>
           ))}
 
-          {(!fetchedOrders || fetchedOrders.length === 0) && (
+          {(!ordersData || ordersData.length === 0) && (
             <TableBodyRow>
               <TableCell colSpan={3}>
                 {isLoading || isRefetching ? (
@@ -214,6 +222,19 @@ const OrdersTable = () => {
         </TableBody>
       </Table>
 
+      {/* PAGINATION */}
+      <PagePagination
+        count={pageCount}
+        onChange={(_, page) => setPage(page)}
+        sx={{
+          mt: 5,
+          "& .MuiPagination-ul": {
+            justifyContent: "center",
+          },
+        }}
+      />
+
+      {/* POPUP DIALOGS */}
       <OrderInfoDialog
         open={showOrderDetailDialog}
         tableType={orderQuery!}

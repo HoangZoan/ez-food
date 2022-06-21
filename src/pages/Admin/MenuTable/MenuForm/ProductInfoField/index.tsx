@@ -103,7 +103,7 @@ const ProductInfoField = ({
 
       <MenuFormControl>
         <FormLabel>Hình ảnh:</FormLabel>
-        <Stack alignItems="flex-start" spacing={3}>
+        <Stack alignItems="flex-start" spacing={errors.image ? 0 : 3}>
           <FileInputButton htmlFor="photo" focused={false}>
             Thay đổi ảnh
           </FileInputButton>
@@ -162,6 +162,10 @@ const ProductInfoField = ({
           error={Boolean(errors.description)}
           {...register("description", {
             required: { value: true, message: "Mô tả không được bỏ trống" },
+            maxLength: {
+              value: 140,
+              message: "Mô tả không được dài quá 140 ký tự",
+            },
           })}
           helperText={errors.description?.message}
         />

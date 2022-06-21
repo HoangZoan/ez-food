@@ -181,6 +181,10 @@ const NotificationsForm = ({ item, onClose }: NotificationsFormProps) => {
               value: true,
               message: "Nội dung thông báo không được bỏ trống",
             },
+            maxLength: {
+              value: 140,
+              message: "Mô tả không được dài quá 140 ký tự",
+            },
           })}
         />
       </FormControl>

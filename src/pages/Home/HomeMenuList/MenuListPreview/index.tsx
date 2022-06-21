@@ -16,7 +16,7 @@ const MenuListPreview = ({ menuTitle, items, menuType }: Props) => {
       <Container sx={{ py: 9, textAlign: "center" }}>
         <ProductCardList items={items} />
 
-        <Link to={`/products/${menuType}`}>
+        <Link to={`/products/${menuType}?page=1`}>
           <Button variant="outlined">Xem thực đơn</Button>
         </Link>
       </Container>

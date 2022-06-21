@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useRecoilValue } from "recoil";
 import { menuState } from "states/menu";
 import { ListItem, Typography } from "@mui/material";
+import { Link } from "react-router-dom";
+import { MenuButtonContext } from "../../context/MenuButtonContext";
 
 interface MenuListProps {
   activeItem: string;
@@ -10,12 +12,15 @@ interface MenuListProps {
 
 interface ItemProps {
   id: string;
+  itemType: string;
   content: string;
   active: boolean;
   handleHover: (itemId: string) => void;
 }
 
-const Item = ({ id, content, active, handleHover }: ItemProps) => {
+const Item = ({ id, content, itemType, active, handleHover }: ItemProps) => {
+  const { onClosePopup } = useContext(MenuButtonContext);
+
   return (
     <ListItem
       sx={{
@@ -25,7 +30,14 @@ const Item = ({ id, content, active, handleHover }: ItemProps) => {
       }}
       onMouseOver={() => handleHover(id)}
     >
-      <Typography textTransform="uppercase" variant="h6">
+      <Typography
+        component={Link}
+        to={`/products/${itemType}?page=1`}
+        textTransform="uppercase"
+        variant="h6"
+        sx={{ color: "inherit" }}
+        onClick={onClosePopup}
+      >
         {content}
       </Typography>
     </ListItem>
@@ -41,6 +53,7 @@ const MenuList = ({ activeItem, handleHover }: MenuListProps) => {
         <Item
           key={item.id}
           id={item.id}
+          itemType={item.value}
           content={item.title}
           active={activeItem === item.id}
           handleHover={handleHover}

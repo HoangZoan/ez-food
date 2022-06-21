@@ -21,6 +21,8 @@ import {
 } from "api/notifications/hooks";
 import { NotificationListType } from "shared/types";
 import { useConfirmationDialog } from "states/confirmationDialog/hooks";
+import { getPaginationData } from "shared/utils";
+import PagePagination from "components/PagePagination";
 
 const NotificationsTable = () => {
   const [showForm, setShowForm] = useState(false);
@@ -30,6 +32,12 @@ const NotificationsTable = () => {
   const { fetchedNotifications, isGettingData } = useFetchedNotifications();
   const { deletingId, removeNotification } = useRemoveNotification();
   const { openDialog } = useConfirmationDialog();
+  const [page, setPage] = useState(1);
+  const { pageCount, pageItems: notifications } = getPaginationData({
+    page,
+    perPage: 8,
+    items: fetchedNotifications,
+  });
 
   const handleOpenForm = () => {
     setShowForm(true);
@@ -68,7 +76,7 @@ const NotificationsTable = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {(!fetchedNotifications || fetchedNotifications.length === 0) && (
+          {(!notifications || notifications.length === 0) && (
             <TableBodyRow>
               <TableCell>
                 {isGettingData
@@ -78,7 +86,7 @@ const NotificationsTable = () => {
             </TableBodyRow>
           )}
 
-          {fetchedNotifications?.map(({ id, title, imageUrl, isPublished }) => (
+          {notifications?.map(({ id, title, imageUrl, isPublished }) => (
             <TableBodyRow key={id}>
               <TableCell sx={{ fontWeight: 700 }}>{title}</TableCell>
               <TableCell>
@@ -109,6 +117,17 @@ const NotificationsTable = () => {
           ))}
         </TableBody>
       </Table>
+
+      <PagePagination
+        count={pageCount}
+        onChange={(_, page) => setPage(page)}
+        sx={{
+          mt: 5,
+          "& .MuiPagination-ul": {
+            justifyContent: "center",
+          },
+        }}
+      />
 
       <Dialog open={showForm} onClose={handleCloseForm} disableAutoFocus>
         <NotificationsForm

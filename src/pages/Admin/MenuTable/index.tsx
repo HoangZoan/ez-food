@@ -24,6 +24,8 @@ import {
   useUpdateMenu,
 } from "../../../api/menu/hooks";
 import { TYPE_BEVERAGE } from "shared/config";
+import { getPaginationData } from "shared/utils";
+import PagePagination from "components/PagePagination";
 
 const sorts: TableSortsType[] = [
   { title: "Bánh mỳ", value: "banhMy" },
@@ -40,6 +42,12 @@ const MenuTable = () => {
   const { fetchedMenu, isGettingData } = useFetchedMenu(tableType);
   const { deletingId, removeMenuItem } = useRemoveMenuItem(tableType);
   const { updatingId, updateMenu } = useUpdateMenu(tableType);
+  const [page, setPage] = useState(1);
+  const { pageCount, pageItems: menuData } = getPaginationData({
+    page,
+    perPage: 8,
+    items: fetchedMenu,
+  });
 
   const handleSortChange = (value: string) => {
     setTableType(value);
@@ -108,7 +116,7 @@ const MenuTable = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {fetchedMenu?.map(({ id, title, isPublished, imageUrl }) => (
+          {menuData?.map(({ id, title, isPublished, imageUrl }) => (
             <TableBodyRow key={id}>
               <TableCell sx={{ fontWeight: 700 }}>{title}</TableCell>
               <TableCell>
@@ -142,7 +150,7 @@ const MenuTable = () => {
               </TableCell>
             </TableBodyRow>
           ))}
-          {(!fetchedMenu || fetchedMenu.length === 0) && (
+          {(!menuData || menuData.length === 0) && (
             <TableBodyRow>
               <TableCell>
                 {isGettingData
@@ -153,6 +161,17 @@ const MenuTable = () => {
           )}
         </TableBody>
       </Table>
+
+      <PagePagination
+        count={pageCount}
+        onChange={(_, page) => setPage(page)}
+        sx={{
+          mt: 5,
+          "& .MuiPagination-ul": {
+            justifyContent: "center",
+          },
+        }}
+      />
 
       <Dialog open={showForm} onClose={handleCloseForm} scroll="body">
         <MenuForm

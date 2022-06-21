@@ -20,7 +20,7 @@ const MenuContent = () => {
         <MenuList activeItem={activeItem} handleHover={handleListHover} />
       </Grid>
 
-      <Grid xs="auto">
+      <Grid item xs="auto">
         <Divider
           orientation="vertical"
           sx={{ backgroundColor: "primary.light" }}
