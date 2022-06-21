@@ -1,6 +1,6 @@
 import React from "react";
 import { Box } from "@mui/material";
-import BoxedHeading from "../../components/UI/BoxedHeading";
+import BoxedHeading from "components/UI/BoxedHeading";
 
 interface MenuListLayoutProps {
   children: React.ReactNode;
@@ -11,14 +11,8 @@ interface MenuListLayoutProps {
 const MenuListLayout = ({ children, onTop, title }: MenuListLayoutProps) => {
   return (
     <div>
-      <Box
-        display="flex"
-        justifyContent="center"
-        pb={9}
-        bgcolor="black"
-        pt={(theme) => theme.spacing(onTop ? 13 : 9)}
-      >
-        <BoxedHeading content={title} />
+      <Box pb={9} bgcolor="black" pt={(theme) => theme.spacing(onTop ? 13 : 9)}>
+        <BoxedHeading content={title} sx={{ mb: 0 }} />
       </Box>
       {children}
     </div>

@@ -1,7 +1,6 @@
 import { Button, Container } from "@mui/material";
 import ProductCardList from "components/ProductCardList";
 import MenuListLayout from "layouts/MenuListLayout";
-import React from "react";
 import { Link } from "react-router-dom";
 import { MenuType } from "shared/types";
 

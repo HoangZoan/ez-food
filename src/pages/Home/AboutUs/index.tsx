@@ -1,10 +1,9 @@
-import React from "react";
 import { Paper, Container, Box, Grid } from "@mui/material";
 import { Settings } from "react-slick";
-import BoxedHeading from "components/UI/BoxedHeading";
 import Carousel from "components/Carousel";
 import AuthorPicture from "./AuthorPicture";
 import AuthorQuote from "./AuthorQuote";
+import BoxedHeading from "components/UI/BoxedHeading";
 
 const dummyData = [
   {
@@ -42,12 +41,9 @@ const AboutUs = () => {
         borderRadius: "0",
       }}
     >
-      <Container>
-        <BoxedHeading
-          sx={{ mb: 8, display: "inline-block" }}
-          content="Về chúng tôi"
-        />
+      <BoxedHeading content="Về chúng tôi" />
 
+      <Container>
         <Carousel settings={sliderSettings}>
           {dummyData.map(({ id, message, author }) => (
             <div key={id}>

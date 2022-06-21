@@ -73,7 +73,9 @@ const PreviewProducts = ({ sx }: PreviewProductsProps) => {
         {dummyData.map(({ id, title, description, price }) => (
           <Box key={id} sx={{ px: 3 }}>
             <ProductCard
+              id={id}
               imageSrc=""
+              menuType=""
               title={title}
               description={description}
               price={price}

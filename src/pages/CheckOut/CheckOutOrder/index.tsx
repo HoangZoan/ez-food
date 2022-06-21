@@ -47,6 +47,7 @@ const CheckOutOrder = ({ item }: CheckOutOrderProps) => {
     quantity,
     selectedSideDish,
     date,
+    description,
   } = item;
   const [isChanging, setIsChanging] = useState(false);
   const { showToast } = useSnackbar();
@@ -139,6 +140,7 @@ const CheckOutOrder = ({ item }: CheckOutOrderProps) => {
             price,
             quantity,
             totalPrice,
+            description,
           }}
           actionButton={<ActionButtons onCancel={closeChangeModal} />}
           onSubmit={handleChangeProduct}

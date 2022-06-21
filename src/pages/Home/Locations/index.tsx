@@ -26,11 +26,7 @@ const locations = [
 const Locations = () => {
   return (
     <Container sx={{ py: 10, textAlign: "center" }}>
-      <BoxedHeading
-        primary
-        sx={{ display: "inline-block", mb: 8 }}
-        content="Cửa hàng"
-      />
+      <BoxedHeading content="Cửa hàng" primary />
 
       <Grid
         container

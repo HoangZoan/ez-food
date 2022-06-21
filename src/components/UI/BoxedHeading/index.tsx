@@ -1,4 +1,4 @@
-import { Box, BoxProps, SxProps, Typography } from "@mui/material";
+import { Box, BoxProps, Typography, SxProps, Stack } from "@mui/material";
 import { styled } from "@mui/system";
 
 interface BoxedHeadingProps {
@@ -7,7 +7,9 @@ interface BoxedHeadingProps {
   sx?: SxProps;
 }
 
-type StyledBoxProps = BoxProps & BoxedHeadingProps;
+interface StyledBoxProps extends BoxProps {
+  primary?: boolean;
+}
 
 const StyledBox = styled(Box, {
   shouldForwardProp: (prop) => prop !== "primary",
@@ -22,11 +24,13 @@ const StyledBox = styled(Box, {
 
 const BoxedHeading = ({ primary, content, sx }: BoxedHeadingProps) => {
   return (
-    <StyledBox primary={primary} sx={sx}>
-      <Typography textTransform="uppercase" variant="h2">
-        {content}
-      </Typography>
-    </StyledBox>
+    <Stack alignItems="center" sx={{ mb: 8, ...sx }}>
+      <StyledBox primary={primary}>
+        <Typography textTransform="uppercase" variant="h2">
+          {content}
+        </Typography>
+      </StyledBox>
+    </Stack>
   );
 };
 
