@@ -16,7 +16,7 @@ export const useFetchMenuItem = (type: string, id: string) => {
   return { fetchedItem, isGettingData, isError };
 };
 
-export const useFetchedMenu = (tableType: string) => {
+export const useFetchedMenu = (tableType: string, limit?: number) => {
   const adminState = useRecoilValue(adminLoginState);
   const queries: FirebaseQuery<boolean>[] = !adminState
     ? [{ field: "isPublished", condition: "==", value: true }]
@@ -24,7 +24,7 @@ export const useFetchedMenu = (tableType: string) => {
 
   const { data: fetchedMenu, isLoading: isGettingData } = useQuery(
     ["menu", tableType],
-    () => menuApi.fetchAllMenuItems(tableType, queries)
+    () => menuApi.fetchAllMenuItems(tableType, queries, limit)
   );
 
   return { fetchedMenu, isGettingData };

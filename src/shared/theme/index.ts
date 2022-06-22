@@ -187,6 +187,18 @@ theme.components = {
       },
     },
   },
+
+  // CONTAINER
+  MuiContainer: {
+    styleOverrides: {
+      root: {
+        [theme.breakpoints.down("lg")]: {
+          paddingLeft: "3.2rem",
+          paddingRight: "3.2rem",
+        },
+      },
+    },
+  },
 } as Components;
 
 export default theme;

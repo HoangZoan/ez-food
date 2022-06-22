@@ -17,12 +17,12 @@ const fetchMenuItem = async (itemType: string, id: string) => {
 const fetchAllMenuItems = async <T>(
   tableType: string,
   queries: FirebaseQuery<T>[],
-  perPage?: number
+  limit?: number
 ) => {
   const response = await FirestoreService.readDocuments({
     collection: `app/menu/${tableType}`,
     queries,
-    limit: perPage,
+    limit,
   });
 
   const fetchedItems = response.docs.map((recipeDoc) => {

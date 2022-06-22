@@ -11,14 +11,13 @@ interface MenuListProps {
 }
 
 interface ItemProps {
-  id: string;
   itemType: string;
   content: string;
   active: boolean;
   handleHover: (itemId: string) => void;
 }
 
-const Item = ({ id, content, itemType, active, handleHover }: ItemProps) => {
+const Item = ({ content, itemType, active, handleHover }: ItemProps) => {
   const { onClosePopup } = useContext(MenuButtonContext);
 
   return (
@@ -28,7 +27,7 @@ const Item = ({ id, content, itemType, active, handleHover }: ItemProps) => {
         transition: "all 0.2s",
         color: active ? "primary.main" : "black",
       }}
-      onMouseOver={() => handleHover(id)}
+      onMouseOver={() => handleHover(itemType)}
     >
       <Typography
         component={Link}
@@ -51,11 +50,10 @@ const MenuList = ({ activeItem, handleHover }: MenuListProps) => {
     <ul>
       {menu.map((item) => (
         <Item
-          key={item.id}
-          id={item.id}
+          key={item.value}
           itemType={item.value}
           content={item.title}
-          active={activeItem === item.id}
+          active={activeItem === item.value}
           handleHover={handleHover}
         />
       ))}

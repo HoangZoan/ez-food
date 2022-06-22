@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, useMediaQuery, useTheme } from "@mui/material";
 import Carousel from "components/Carousel";
 import TrendPreviewCard from "components/UI/TrendPreviewCard";
 import React from "react";
@@ -14,16 +14,43 @@ const dummyData = [
 ];
 
 const ProductsCarousel = () => {
+  const theme = useTheme();
+  const { sm: breakSm, md: breakMd } = theme.breakpoints.values;
+  const matchSm = useMediaQuery(theme.breakpoints.down(breakSm));
+  const matchMd = useMediaQuery(theme.breakpoints.down(breakMd));
+  let minSlides = 4;
+
+  if (matchSm && matchMd) {
+    minSlides = 1;
+  } else if (matchMd) {
+    minSlides = 2;
+  }
+
   const sliderSettings: Settings = {
-    speed: 500,
     slidesToShow: 4,
     slidesToScroll: 1,
-    arrows: false,
-    draggable: false,
+    responsive: [
+      {
+        breakpoint: breakSm,
+        settings: {
+          slidesToShow: 1,
+        },
+      },
+      {
+        breakpoint: breakMd,
+        settings: {
+          slidesToShow: 2,
+        },
+      },
+    ],
   };
 
   return (
-    <Carousel settings={sliderSettings}>
+    <Carousel
+      minSlides={minSlides}
+      count={dummyData.length}
+      settings={sliderSettings}
+    >
       {dummyData.map((data) => (
         <Box key={data.id} sx={{ textAlign: "center", padding: "0 3.2rem" }}>
           <TrendPreviewCard title={data.title} />

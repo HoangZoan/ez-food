@@ -1,15 +1,19 @@
-import React from "react";
-import { Typography } from "@mui/material";
+import { Card, CardMedia, Typography } from "@mui/material";
 
-const ProductPreviewCard = () => {
+interface Props {
+  imgSrc: string;
+  title: string;
+}
+
+const ProductPreviewCard = ({ title, imgSrc }: Props) => {
   return (
-    <div>
-      <div className="image-sqr" style={{ backgroundColor: "red" }}></div>
+    <Card elevation={0} square>
+      <CardMedia component="img" src={imgSrc} alt={title} />
 
-      <Typography mt={3} textAlign="center" variant="h6">
-        Bánh mỳ cay
+      <Typography mt={3} textAlign="center" variant="body1" fontWeight={700}>
+        {title}
       </Typography>
-    </div>
+    </Card>
   );
 };
 
