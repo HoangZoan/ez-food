@@ -34,8 +34,14 @@ const NotificationsButton = () => {
     <PopupMenuLayout
       icon={<IconButton invisible={fetchedNotifications?.length === 0} />}
     >
-      <Paper sx={{ overflow: "auto" }}>
-        <List sx={{ maxHeight: "48rem" }}>
+      <Paper elevation={0} sx={{ overflow: "auto" }}>
+        <List
+          sx={{
+            maxHeight: { xs: "calc(100vh - 9.6rem)", sm: "48rem" },
+            mb: { xs: 4, sm: 0 },
+            overflow: "auto",
+          }}
+        >
           {fetchedNotifications?.map((item) => (
             <NotificationItem
               key={item.id}

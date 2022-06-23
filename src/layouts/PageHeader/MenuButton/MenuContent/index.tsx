@@ -2,15 +2,14 @@ import React, { useCallback, useState } from "react";
 import { menuState } from "states/menu";
 import { useRecoilValue } from "recoil";
 import Grid from "@mui/material/Grid";
-import { Divider, useMediaQuery, useTheme } from "@mui/material";
+import { Divider } from "@mui/material";
 import MenuList from "./MenuList";
 import MenuPreview from "./MenuPreview";
 import { useFetchedMenu } from "api/menu/hooks";
+import { useMediaQueries } from "hooks/useMediaQueries";
 
 const MenuContent = () => {
-  const theme = useTheme();
-  const { sm: breakSm } = theme.breakpoints.values;
-  const matchSm = useMediaQuery(theme.breakpoints.up(breakSm));
+  const { smUp } = useMediaQueries();
   const defaultMenuItem = useRecoilValue(menuState)[0].value;
   const [activeItem, setActiveItem] = useState(defaultMenuItem);
   const { fetchedMenu: beverageMenu } = useFetchedMenu(activeItem, 3);
@@ -25,7 +24,7 @@ const MenuContent = () => {
         <MenuList activeItem={activeItem} handleHover={handleListHover} />
       </Grid>
 
-      {matchSm && (
+      {smUp && (
         <Grid item xs="auto">
           <Divider
             orientation="vertical"
@@ -34,7 +33,7 @@ const MenuContent = () => {
         </Grid>
       )}
 
-      {matchSm && (
+      {smUp && (
         <Grid item xs={6} md={8} lg={9}>
           <MenuPreview items={beverageMenu} />
         </Grid>

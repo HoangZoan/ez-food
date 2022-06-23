@@ -20,9 +20,11 @@ const MenuButton = () => {
 
   return (
     <MenuButtonContext.Provider value={{ onClosePopup: handleOnClose }}>
-      <IconButton onClick={handleOnOpen} variant="contained" sx={{ px: 3 }}>
+      <IconButton onClick={handleOnOpen} variant="contained">
         <MenuIcon fontSize="large" sx={{ marginRight: "1.2rem" }} />
-        <Typography variant="h6">Thực đơn</Typography>
+        <Typography variant="h6" sx={{ display: { xs: "none", sm: "block" } }}>
+          Thực đơn
+        </Typography>
       </IconButton>
 
       <MenuListPopupLayout

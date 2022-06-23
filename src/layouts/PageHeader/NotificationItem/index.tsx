@@ -1,7 +1,7 @@
-import React from "react";
 import { Grid, Typography } from "@mui/material";
 import { NotificationListType } from "shared/types";
 import MenuItem from "components/UI/MenuItem";
+import { useMediaQueries } from "hooks/useMediaQueries";
 
 const NotificationItem = ({
   imageUrl,
@@ -9,6 +9,8 @@ const NotificationItem = ({
   description,
   url,
 }: Omit<NotificationListType, "isPublished">) => {
+  const { smUp } = useMediaQueries();
+
   return (
     <MenuItem>
       <Grid
@@ -16,12 +18,14 @@ const NotificationItem = ({
         href={url}
         container
         columns={7}
-        spacing={4}
+        rowSpacing={4}
+        columnSpacing={4}
         alignItems="flex-start"
         sx={{ width: "48rem", py: 2, color: "inherit" }}
       >
         <Grid
-          xs={2}
+          xs={7}
+          sm={2}
           item
           sx={{
             aspectRatio: "1 / 1",
@@ -31,11 +35,13 @@ const NotificationItem = ({
           <img src={imageUrl} alt="JPG" />
         </Grid>
 
-        <Grid xs={5} item>
+        <Grid xs={7} sm={5} item>
           <Typography mb={1} variant="h6">
             {title}
           </Typography>
-          <Typography variant="body2">{description}</Typography>
+          <Typography variant={smUp ? "body2" : "body1"}>
+            {description}
+          </Typography>
         </Grid>
       </Grid>
     </MenuItem>

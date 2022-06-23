@@ -3,8 +3,14 @@ import { styled } from "shared/theme";
 
 const MenuItem = styled(ListItem)(({ theme }) => ({
   cursor: "auto",
-  paddingTop: "1.2rem",
-  paddingBottom: "1.2rem",
+  padding: "0 2.4rem",
+  "&:not(:last-child)": {
+    marginBottom: "3.6rem",
+
+    [theme.breakpoints.up("sm")]: {
+      marginBottom: "1.2rem",
+    },
+  },
   transition: "all 0.2s",
   "&:hover": {
     backgroundColor: theme.colors.background.primary,

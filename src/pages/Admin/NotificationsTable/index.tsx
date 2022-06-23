@@ -45,6 +45,7 @@ const NotificationsTable = () => {
 
   const handleCloseForm = () => {
     setShowForm(false);
+    setActiveNotification({});
   };
 
   const handleUpdate = (id: string) => {

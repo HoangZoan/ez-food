@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Box, ClickAwayListener, Grow } from "@mui/material";
+import { Box, ClickAwayListener, Grow, Stack } from "@mui/material";
 import { styled } from "shared/theme";
 import IconButton from "layouts/PageHeader/IconButton";
+import { useMediaQueries } from "hooks/useMediaQueries";
+import CloseButton from "components/UI/CloseButton";
 
 interface PopupMenuLayoutProps {
   children: React.ReactNode;
@@ -21,6 +23,7 @@ const BoxArrow = styled(Box)({
 });
 
 const PopupMenuLayout = ({ children, icon, isClose }: PopupMenuLayoutProps) => {
+  const { smDown, smUp } = useMediaQueries();
   const [open, setOpen] = useState(false);
 
   function handleOpenMenu() {
@@ -44,15 +47,31 @@ const PopupMenuLayout = ({ children, icon, isClose }: PopupMenuLayoutProps) => {
 
         <Grow in={open} style={{ transformOrigin: "90% 0" }}>
           <Box
-            sx={{
-              position: "absolute",
-              top: "120%",
-              right: "-1rem",
-            }}
+            sx={[
+              {
+                position: "absolute",
+                top: "120%",
+                right: "-1rem",
+                backgroundColor: "white",
+                borderRadius: "9px",
+              },
+              smDown && {
+                position: "fixed",
+                top: "4.8rem",
+                right: "0",
+                width: "100%",
+              },
+            ]}
           >
+            {smDown && (
+              <Stack alignItems="flex-end" sx={{ p: 3 }}>
+                <CloseButton fontSize="large" onClick={handleCloseMenu} />
+              </Stack>
+            )}
+
             {children}
 
-            <BoxArrow />
+            {smUp && <BoxArrow />}
           </Box>
         </Grow>
       </Box>

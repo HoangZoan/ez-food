@@ -2,22 +2,20 @@ import ProductPreviewCard from "components/UI/ProductPreviewCard";
 import { MenuType } from "shared/types";
 import { Settings } from "react-slick";
 import Carousel from "components/Carousel";
-import { Box, useMediaQuery, useTheme } from "@mui/material";
+import { Box } from "@mui/material";
+import { useMediaQueries } from "hooks/useMediaQueries";
 
 interface Props {
   items: MenuType[] | undefined;
 }
 
 const MenuPreview = ({ items }: Props) => {
-  const theme = useTheme();
-  const { lg: breakLg, md: breakMd } = theme.breakpoints.values;
-  const matchMd = useMediaQuery(theme.breakpoints.down(breakMd));
-  const matchLg = useMediaQuery(theme.breakpoints.down(breakLg));
+  const { mdDown, lgDown } = useMediaQueries();
   let slidesToShow = 3;
 
-  if (matchMd && matchLg) {
+  if (mdDown && lgDown) {
     slidesToShow = 1;
-  } else if (matchLg) {
+  } else if (lgDown) {
     slidesToShow = 2;
   }
 

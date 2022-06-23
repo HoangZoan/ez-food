@@ -1,6 +1,7 @@
-import { Box, useMediaQuery, useTheme } from "@mui/material";
+import { Box, useTheme } from "@mui/material";
 import Carousel from "components/Carousel";
 import TrendPreviewCard from "components/UI/TrendPreviewCard";
+import { useMediaQueries } from "hooks/useMediaQueries";
 import React from "react";
 import { Settings } from "react-slick";
 
@@ -16,13 +17,12 @@ const dummyData = [
 const ProductsCarousel = () => {
   const theme = useTheme();
   const { sm: breakSm, md: breakMd } = theme.breakpoints.values;
-  const matchSm = useMediaQuery(theme.breakpoints.down(breakSm));
-  const matchMd = useMediaQuery(theme.breakpoints.down(breakMd));
+  const { smDown, mdDown } = useMediaQueries();
   let minSlides = 4;
 
-  if (matchSm && matchMd) {
+  if (smDown && mdDown) {
     minSlides = 1;
-  } else if (matchMd) {
+  } else if (mdDown) {
     minSlides = 2;
   }
 

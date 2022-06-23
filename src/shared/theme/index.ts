@@ -196,6 +196,20 @@ theme.components = {
           paddingLeft: "3.2rem",
           paddingRight: "3.2rem",
         },
+        [theme.breakpoints.down("sm")]: {
+          paddingLeft: "2.4rem",
+          paddingRight: "2.4rem",
+        },
+      },
+    },
+  },
+
+  // TOOLBAR
+  MuiToolbar: {
+    styleOverrides: {
+      root: {
+        paddingLeft: 0,
+        paddingRight: 0,
       },
     },
   },

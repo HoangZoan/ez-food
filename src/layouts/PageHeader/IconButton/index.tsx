@@ -1,22 +1,25 @@
-import { Button, SxProps } from "@mui/material";
+import { Button } from "@mui/material";
 import { styled } from "shared/theme";
 
-interface ButtonSx {
-  [key: string]: SxProps;
-}
+const IconButton = styled(Button)(({ theme }) => ({
+  backgroundColor: "transparent",
+  padding: "0.8rem 1.2rem",
+  minWidth: "45px",
 
-const IconButton = styled(Button)(
-  ({ theme }): ButtonSx => ({
-    "&.MuiButton-root": {
+  [theme.breakpoints.down("sm")]: {
+    paddingLeft: 0,
+    paddingRight: 0,
+  },
+
+  "&.MuiButton-contained:hover": {
+    backgroundColor: "rgba(255, 255, 255, 0.2)",
+    color: theme.palette.primary.main,
+
+    [theme.breakpoints.down("sm")]: {
       backgroundColor: "transparent",
-      padding: "0.8rem 1.2rem",
-      minWidth: "45px",
+      color: "white",
     },
-    "&.MuiButton-contained:hover": {
-      backgroundColor: "rgba(255, 255, 255, 0.2)",
-      color: theme.palette.primary.main,
-    },
-  })
-);
+  },
+}));
 
 export default IconButton;
