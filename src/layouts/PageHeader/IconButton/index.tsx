@@ -6,7 +6,7 @@ const IconButton = styled(Button)(({ theme }) => ({
   padding: "0.8rem 1.2rem",
   minWidth: "45px",
 
-  [theme.breakpoints.down("sm")]: {
+  [theme.breakpoints.down("md")]: {
     paddingLeft: 0,
     paddingRight: 0,
   },

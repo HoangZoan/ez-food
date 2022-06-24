@@ -9,9 +9,14 @@ interface ProductCardListProps {
 
 const ProductCardList = ({ items }: ProductCardListProps) => {
   return (
-    <Grid container columnSpacing={7} rowSpacing={6} sx={{ mb: 8 }}>
+    <Grid
+      container
+      rowSpacing={9}
+      columnSpacing={6}
+      sx={{ mb: 8, width: { sm: 0.7, md: 1 }, mx: "auto" }}
+    >
       {items.map(({ id, title, description, price, imageUrl, itemType }) => (
-        <Grid item xs={4} key={id}>
+        <Grid item xs={12} md={6} lg={4} key={id}>
           <ProductCard
             id={id!}
             menuType={itemType}

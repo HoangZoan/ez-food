@@ -4,12 +4,15 @@ import { Settings } from "react-slick";
 import Carousel from "components/Carousel";
 import { Box } from "@mui/material";
 import { useMediaQueries } from "hooks/useMediaQueries";
+import { MenuButtonContext } from "../../context/MenuButtonContext";
+import { useContext } from "react";
 
 interface Props {
   items: MenuType[] | undefined;
 }
 
 const MenuPreview = ({ items }: Props) => {
+  const { onClosePopup } = useContext(MenuButtonContext);
   const { mdDown, lgDown } = useMediaQueries();
   let slidesToShow = 3;
 
@@ -30,9 +33,14 @@ const MenuPreview = ({ items }: Props) => {
       count={items?.length}
       minSlides={slidesToShow}
     >
-      {items?.map(({ id, title, imageUrl }) => (
+      {items?.map(({ id, title, imageUrl, itemType }) => (
         <Box key={id} sx={{ px: 3 }}>
-          <ProductPreviewCard title={title} imgSrc={imageUrl} />
+          <ProductPreviewCard
+            title={title}
+            imgSrc={imageUrl}
+            pathNameData={{ id: id!, itemType }}
+            onClick={onClosePopup}
+          />
         </Box>
       ))}
     </Carousel>

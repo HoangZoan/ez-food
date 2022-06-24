@@ -1,5 +1,5 @@
-import React from "react";
 import { Box, Button, Stack, Typography } from "@mui/material";
+import { useMediaQueries } from "hooks/useMediaQueries";
 import { styled } from "shared/theme";
 import heroImg from "../../../shared/images/hero.jpg";
 
@@ -15,9 +15,17 @@ const HeroStack = styled(Stack)({
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
+  width: "90%",
 });
 
 const Hero = () => {
+  const { smDown, mdDown } = useMediaQueries();
+  const handleViewMenuButtonClick = () => {
+    document
+      .getElementById("trends")
+      ?.scrollIntoView({ behavior: "smooth", block: "end" });
+  };
+
   return (
     <HeroBackground>
       <HeroStack alignItems="center">
@@ -32,7 +40,7 @@ const Hero = () => {
 
         <Typography
           textTransform="uppercase"
-          variant="h6"
+          variant={mdDown ? "body1" : "h6"}
           color="common.white"
           textAlign="center"
           mt={3}
@@ -42,7 +50,12 @@ const Hero = () => {
         </Typography>
 
         <Button size="large" variant="contained">
-          <Typography variant="h6">Xem thực đơn</Typography>
+          <Typography
+            variant={smDown ? "body1" : "h6"}
+            onClick={handleViewMenuButtonClick}
+          >
+            Xem thực đơn
+          </Typography>
         </Button>
       </HeroStack>
     </HeroBackground>

@@ -7,6 +7,7 @@ import LogoutButton from "./LogoutButton";
 import { useRecoilValue } from "recoil";
 import { adminLoginState } from "states/admin";
 import { useMediaQueries } from "hooks/useMediaQueries";
+import { Link } from "react-router-dom";
 
 const PageHeader = () => {
   const adminState = useRecoilValue(adminLoginState);
@@ -22,19 +23,21 @@ const PageHeader = () => {
         >
           <MenuButton />
 
-          <Typography
-            variant="h3"
-            color="white"
-            lineHeight={1.2}
-            sx={{
-              display: {
-                xs: "none",
-                sm: "block",
-              },
-            }}
-          >
-            LOGO
-          </Typography>
+          <Link to="/">
+            <Typography
+              variant="h3"
+              color="white"
+              lineHeight={1.2}
+              sx={{
+                display: {
+                  xs: "none",
+                  sm: "block",
+                },
+              }}
+            >
+              LOGO
+            </Typography>
+          </Link>
 
           <Stack direction="row" spacing={smUp ? 3 : 0}>
             {!adminState && (

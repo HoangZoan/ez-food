@@ -91,6 +91,23 @@ const theme = createTheme({
   },
 });
 
+// RESPONSIVE TYPOGRAPHY
+theme.typography.h1 = {
+  ...theme.typography.h1,
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "4rem",
+  },
+};
+theme.typography.h2 = {
+  ...theme.typography.h2,
+  [theme.breakpoints.down("md")]: {
+    fontSize: "2.8rem",
+  },
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "2rem",
+  },
+};
+
 declare module "@mui/material/Button" {
   interface ButtonPropsVariantOverrides {
     ["contained-disabled"]: true;
@@ -208,8 +225,8 @@ theme.components = {
   MuiToolbar: {
     styleOverrides: {
       root: {
-        paddingLeft: 0,
-        paddingRight: 0,
+        paddingLeft: "0 !important",
+        paddingRight: "0 !important",
       },
     },
   },
