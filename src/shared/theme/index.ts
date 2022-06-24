@@ -107,6 +107,12 @@ theme.typography.h2 = {
     fontSize: "2rem",
   },
 };
+theme.typography.h6 = {
+  ...theme.typography.h6,
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "1.6rem",
+  },
+};
 
 declare module "@mui/material/Button" {
   interface ButtonPropsVariantOverrides {
@@ -209,13 +215,13 @@ theme.components = {
   MuiContainer: {
     styleOverrides: {
       root: {
-        [theme.breakpoints.down("lg")]: {
-          paddingLeft: "3.2rem",
-          paddingRight: "3.2rem",
-        },
-        [theme.breakpoints.down("sm")]: {
+        [theme.breakpoints.up("xs")]: {
           paddingLeft: "2.4rem",
           paddingRight: "2.4rem",
+        },
+        [theme.breakpoints.up("sm")]: {
+          paddingLeft: "4.8rem",
+          paddingRight: "4.8rem",
         },
       },
     },

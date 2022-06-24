@@ -32,8 +32,9 @@ const Locations = () => {
         container
         sx={{ textAlign: "left", columnGap: 8 }}
         alignItems="center"
+        rowSpacing={5}
       >
-        <Grid xs item>
+        <Grid xs={12} md item>
           <Box
             sx={{
               aspectRatio: "4 / 3",
@@ -42,7 +43,7 @@ const Locations = () => {
             <LocationsMap />
           </Box>
         </Grid>
-        <Grid xs item>
+        <Grid xs={12} md item>
           <Typography fontWeight={700} variant="h6">
             Các chi nhánh:
           </Typography>

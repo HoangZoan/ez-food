@@ -40,20 +40,24 @@ const ProductDetailCard = ({
     <BorderBoxLayout
       component="form"
       onSubmit={handleSubmit}
-      sx={{ py: 4, px: 6, ...sx }}
+      sx={{ py: 4, px: { xs: 4, sm: 6 }, ...sx }}
     >
       <Stack spacing={4}>
         <ProductVariantOptionList />
 
         <SideDishOption />
 
-        <Stack direction="row" justifyContent="space-between">
+        <Stack
+          rowGap={4}
+          direction={{ xs: "column", lg: "row" }}
+          justifyContent="space-between"
+        >
           <ProductCounter />
           <ProductDetailTotalPrice />
         </Stack>
       </Stack>
 
-      <Stack alignItems="center" sx={{ pt: 7 }}>
+      <Stack alignItems="center" sx={{ pt: { xs: 5, sm: 7 } }}>
         {actionButton}
       </Stack>
     </BorderBoxLayout>

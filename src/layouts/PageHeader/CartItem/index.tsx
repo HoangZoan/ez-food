@@ -45,7 +45,7 @@ const CartItem = ({ id, title, total, quantity }: CartItemProps) => {
           >
             <Grid
               item
-              xs={8}
+              xs={12}
               sx={{
                 aspectRatio: "1 / 1",
 
@@ -62,7 +62,7 @@ const CartItem = ({ id, title, total, quantity }: CartItemProps) => {
               />
             </Grid>
 
-            <Grid xs={8} item>
+            <Grid xs item>
               <Typography
                 mb={2}
                 variant="h6"

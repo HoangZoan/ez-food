@@ -12,8 +12,8 @@ const ProductCardList = ({ items }: ProductCardListProps) => {
     <Grid
       container
       rowSpacing={9}
-      columnSpacing={6}
-      sx={{ mb: 8, width: { sm: 0.7, md: 1 }, mx: "auto" }}
+      columnSpacing={{ xs: 0, md: 6 }}
+      sx={{ mb: 8, mx: "auto", px: { sm: 6, md: 0 } }}
     >
       {items.map(({ id, title, description, price, imageUrl, itemType }) => (
         <Grid item xs={12} md={6} lg={4} key={id}>

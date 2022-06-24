@@ -3,7 +3,15 @@ import PopupMenuLayout from "../PopupMenuLayout";
 import { cartTotalPriceState, headerCartState } from "states/cart";
 import { useRecoilValue } from "recoil";
 import CartItem from "../CartItem";
-import { Button, Divider, List, Paper, Stack, Typography } from "@mui/material";
+import {
+  Button,
+  Container,
+  Divider,
+  List,
+  Paper,
+  Stack,
+  Typography,
+} from "@mui/material";
 import LocalMallIcon from "@mui/icons-material/LocalMall";
 import { formatPriceText } from "shared/utils";
 import { Link } from "react-router-dom";
@@ -31,10 +39,26 @@ const CartButton = () => {
       icon={<IconButton content={cart.length} />}
       isClose={showPopup}
     >
-      <Paper sx={{ backgroundColor: "white", minWidth: "48rem", py: 2 }}>
+      <Paper
+        sx={{
+          backgroundColor: "white",
+          minWidth: { sm: "48rem" },
+          py: 2,
+          height: "calc(100vh - 11rem)",
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
         {cart.length > 0 && (
           <>
-            <List sx={{ py: 0, maxHeight: "40rem", overflow: "auto" }}>
+            <List
+              sx={{
+                py: 0,
+                flex: 1,
+                maxHeight: { sm: "40rem" },
+                overflow: "auto",
+              }}
+            >
               {cart.map(({ orderId, title, quantity, totalPrice }) => (
                 <CartItem
                   key={orderId}
@@ -48,21 +72,27 @@ const CartButton = () => {
 
             <Divider sx={{ backgroundColor: "primary.light" }} />
 
-            <Stack alignItems="center">
-              <Typography my={2} variant="h6">
-                Tổng: {formatPriceText(cartTotalPrice)}
-              </Typography>
-
-              <Button
-                component={Link}
-                to="/check-out"
-                variant="contained"
-                sx={{ mb: 2 }}
-                onClick={closePopup}
+            <Container>
+              <Stack
+                alignItems="center"
+                direction="row"
+                justifyContent="space-between"
+                sx={{ py: 2 }}
               >
-                <Typography variant="h6">Thanh toán</Typography>
-              </Button>
-            </Stack>
+                <Typography my={2} variant="h6">
+                  Tổng: {formatPriceText(cartTotalPrice)}
+                </Typography>
+
+                <Button
+                  component={Link}
+                  to="/check-out"
+                  variant="contained"
+                  onClick={closePopup}
+                >
+                  <Typography variant="h6">Thanh toán</Typography>
+                </Button>
+              </Stack>
+            </Container>
           </>
         )}
 

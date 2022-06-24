@@ -16,17 +16,18 @@ const ProductVariantOption = ({ title, variants }: OptionProps) => {
 
   return (
     <div>
-      <Typography variant="h6" sx={{ mb: 2 }}>
-        {title}:
-      </Typography>
+      <Typography variant="h6">{title}:</Typography>
 
-      <Stack spacing={4} direction="row">
+      <Stack columnGap={{ xs: 3, sm: 4 }} direction="row" flexWrap="wrap">
         {variants.map(({ type, price, selected }) => (
           <Button
             onClick={() => handleClick(type, price)}
             key={type}
             variant={selected ? "contained" : "outlined"}
             sx={{
+              "&.MuiButton-root": {
+                mt: 2,
+              },
               "&.MuiButton-contained:hover": {
                 cursor: "auto",
                 backgroundColor: (theme) => theme.palette.primary.main,

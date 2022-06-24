@@ -6,12 +6,10 @@ import NotificationsButton from "./NotificationsButton";
 import LogoutButton from "./LogoutButton";
 import { useRecoilValue } from "recoil";
 import { adminLoginState } from "states/admin";
-import { useMediaQueries } from "hooks/useMediaQueries";
 import { Link } from "react-router-dom";
 
 const PageHeader = () => {
   const adminState = useRecoilValue(adminLoginState);
-  const { smUp } = useMediaQueries();
 
   return (
     <PageHeaderLayout>
@@ -39,7 +37,7 @@ const PageHeader = () => {
             </Typography>
           </Link>
 
-          <Stack direction="row" spacing={smUp ? 3 : 0}>
+          <Stack direction="row" spacing={{ sm: 3 }}>
             {!adminState && (
               <>
                 <CartButton />

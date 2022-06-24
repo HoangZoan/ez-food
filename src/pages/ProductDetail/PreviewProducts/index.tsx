@@ -4,6 +4,7 @@ import { ProductType } from "shared/types";
 import { Settings } from "react-slick";
 import ProductCard from "components/UI/ProductCard";
 import Carousel from "components/Carousel";
+import { useMediaQueries } from "hooks/useMediaQueries";
 
 const dummyData: ProductType[] = [
   {
@@ -54,22 +55,38 @@ interface PreviewProductsProps {
   sx?: SxProps;
 }
 
+const boxSx: SxProps = {
+  "& .css-jltqb6": { mx: { xs: -3 } },
+  "& .arrow--left": { left: "-16px" },
+  "& .arrow--right": { right: "-16px" },
+};
+
 const PreviewProducts = ({ sx }: PreviewProductsProps) => {
+  const { mdUp, lgUp } = useMediaQueries();
+  let slidesToShow = 1;
+
+  if (mdUp && lgUp) {
+    slidesToShow = 3;
+  } else if (mdUp) {
+    slidesToShow = 2;
+  }
+
   const sliderSettings: Settings = {
-    speed: 500,
-    slidesToShow: 3,
+    slidesToShow,
     slidesToScroll: 1,
-    arrows: false,
-    draggable: false,
   };
 
   return (
-    <Box sx={{ ...sx }}>
+    <Box sx={{ ...boxSx, ...sx }}>
       <Typography variant="h3" sx={{ mb: 6 }} fontWeight={700}>
         Combo
       </Typography>
 
-      <Carousel settings={sliderSettings}>
+      <Carousel
+        settings={sliderSettings}
+        count={dummyData.length}
+        minSlides={slidesToShow}
+      >
         {dummyData.map(({ id, title, description, price }) => (
           <Box key={id} sx={{ px: 3 }}>
             <ProductCard

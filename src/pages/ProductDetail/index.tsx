@@ -53,7 +53,7 @@ const ProductDetail = () => {
   } as ProductDetailType;
 
   return (
-    <Container sx={{ pt: 13 }}>
+    <Container sx={{ pt: { xs: 11, sm: 13 } }}>
       <Stack alignItems="center">
         <Typography
           textAlign="center"
@@ -65,14 +65,19 @@ const ProductDetail = () => {
         </Typography>
       </Stack>
 
-      <Grid columnSpacing={6} container sx={{ my: 7 }}>
-        <Grid item xs={5}>
+      <Grid
+        columnSpacing={6}
+        rowSpacing={5}
+        container
+        sx={{ my: { xs: 0, sm: 5 } }}
+      >
+        <Grid item xs={12} md={5}>
           <ProductImage
             imgSrc={fetchedItem.imageUrl}
             imgAlt={fetchedItem.title}
           />
         </Grid>
-        <Grid item xs={7}>
+        <Grid item xs={12} md={7}>
           <ProductDetailCard
             item={menuItem}
             actionButton={<SubmitButton />}
@@ -81,7 +86,7 @@ const ProductDetail = () => {
         </Grid>
       </Grid>
 
-      <PreviewProducts sx={{ my: 12 }} />
+      <PreviewProducts sx={{ my: { xs: 10, sm: 12 } }} />
     </Container>
   );
 };

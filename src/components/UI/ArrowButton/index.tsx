@@ -12,7 +12,11 @@ interface ArrowButtonProps {
 
 const ArrowButton = ({ variant, onClick, sx }: ArrowButtonProps) => {
   return (
-    <Box sx={{ ...sx, fontSize: "5.4rem" }} onClick={onClick}>
+    <Box
+      sx={{ ...sx, fontSize: "5.4rem" }}
+      onClick={onClick}
+      className={"arrow--" + variant}
+    >
       {variant === "left" && (
         <ChevronLeftIcon fontSize="inherit" color="primary" />
       )}
