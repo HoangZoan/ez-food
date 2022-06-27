@@ -12,7 +12,7 @@ const MenuContent = () => {
   const { smUp } = useMediaQueries();
   const defaultMenuItem = useRecoilValue(menuState)[0].value;
   const [activeItem, setActiveItem] = useState(defaultMenuItem);
-  const { fetchedMenu: beverageMenu } = useFetchedMenu(activeItem, 3);
+  const { fetchedMenu } = useFetchedMenu(activeItem, 3);
 
   const handleListHover = useCallback((itemId: string) => {
     setActiveItem(itemId);
@@ -35,7 +35,7 @@ const MenuContent = () => {
 
       {smUp && (
         <Grid item xs={6} md={8} lg={9}>
-          <MenuPreview items={beverageMenu} />
+          <MenuPreview items={fetchedMenu} />
         </Grid>
       )}
     </Grid>

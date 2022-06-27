@@ -6,6 +6,10 @@ import { adminLoginState } from "states/admin";
 import { useSnackbar } from "states/snackbar/hooks/useSnackbar";
 import { menuApi } from "..";
 
+export const prefetchMenuPopup = async () => {
+  return menuApi.fetchAllMenuItems("fried", [], 3);
+};
+
 export const useFetchMenuItem = (type: string, id: string) => {
   const {
     data: fetchedItem,
@@ -23,8 +27,9 @@ export const useFetchedMenu = (tableType: string, limit?: number) => {
     : [];
 
   const { data: fetchedMenu, isLoading: isGettingData } = useQuery(
-    ["menu", tableType],
-    () => menuApi.fetchAllMenuItems(tableType, queries, limit)
+    ["menu", { tableType, limit }],
+    () => menuApi.fetchAllMenuItems(tableType, queries, limit),
+    { staleTime: 300000, cacheTime: 500000 }
   );
 
   return { fetchedMenu, isGettingData };

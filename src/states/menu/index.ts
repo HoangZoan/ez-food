@@ -1,5 +1,5 @@
 import { atom } from "recoil";
-import { TYPE_BEVERAGE } from "shared/config";
+import { TYPE_BEVERAGE, TYPE_FRIED, TYPE_STEAM } from "shared/config";
 
 interface menuItemType {
   title: string;
@@ -7,9 +7,9 @@ interface menuItemType {
 }
 
 const menuData = [
+  { title: "Món chiên rán", value: TYPE_FRIED },
+  { title: "Món hấp", value: TYPE_STEAM },
   { title: "Đồ uống", value: TYPE_BEVERAGE },
-  // { title: "Đồ uống", value: "abc" },
-  // { title: "Đồ uống", value: "bcd" },
 ];
 
 export const menuState = atom({

@@ -7,23 +7,29 @@ import ProductDetail from "pages/ProductDetail";
 import Products from "pages/Products";
 import { Routes, Route, Navigate } from "react-router-dom";
 import PageHeader from "./layouts/PageHeader";
-import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import StatusSnackbar from "components/StatusSnackbar";
 import ConfirmationDialog from "components/ConfirmationDialog";
 import AuthGuard from "hoc/AuthGuard";
-
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false,
-    },
-  },
-});
+import { useQueryClient } from "react-query";
+import { prefetchMenuPopup } from "api/menu/hooks";
+import { useCallback, useEffect } from "react";
 
 function App() {
+  const queryClient = useQueryClient();
+  const prefetchTodos = useCallback(async () => {
+    await queryClient.prefetchQuery(
+      ["menu", { tableType: "fried", limit: 3 }],
+      prefetchMenuPopup
+    );
+  }, [queryClient]);
+
+  useEffect(() => {
+    prefetchTodos();
+  }, [prefetchTodos]);
+
   return (
-    <QueryClientProvider client={queryClient}>
+    <>
       <PageHeader />
       <Routes>
         <Route path="/" element={<Home />} />
@@ -44,7 +50,7 @@ function App() {
       <Footer />
 
       <ReactQueryDevtools />
-    </QueryClientProvider>
+    </>
   );
 }
 

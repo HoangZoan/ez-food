@@ -39,7 +39,12 @@ const ProductPreviewCard = ({
       square
       onClick={onClick}
     >
-      <CardMedia component="img" src={imgSrc} alt={title} />
+      <CardMedia
+        component="img"
+        src={imgSrc}
+        alt={title}
+        sx={{ aspectRatio: "1 / 1" }}
+      />
 
       <Typography mt={3} textAlign="center" variant="body1" fontWeight={700}>
         {title}

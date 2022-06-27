@@ -45,7 +45,7 @@ const ProductDetailCard = ({
       <Stack spacing={4}>
         <ProductVariantOptionList />
 
-        <SideDishOption />
+        {item.availableSideDish.length > 0 && <SideDishOption />}
 
         <Stack
           rowGap={4}

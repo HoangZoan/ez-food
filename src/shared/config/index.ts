@@ -14,3 +14,5 @@ export const NEW_ORDER_NOTIFICATIONS = "new-order-notificationS";
 
 // PRODUCT TYPE KEY
 export const TYPE_BEVERAGE = "barverage";
+export const TYPE_FRIED = "fried";
+export const TYPE_STEAM = "steam";

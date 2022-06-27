@@ -23,12 +23,13 @@ import {
   useRemoveMenuItem,
   useUpdateMenu,
 } from "../../../api/menu/hooks";
-import { TYPE_BEVERAGE } from "shared/config";
+import { TYPE_BEVERAGE, TYPE_FRIED, TYPE_STEAM } from "shared/config";
 import { getPaginationData } from "shared/utils";
 import PagePagination from "components/PagePagination";
 
 const sorts: TableSortsType[] = [
-  { title: "Bánh mỳ", value: "banhMy" },
+  { title: "Món chiên rán", value: TYPE_FRIED },
+  { title: "Món hấp", value: TYPE_STEAM },
   { title: "Đồ uống", value: TYPE_BEVERAGE },
 ];
 
@@ -102,6 +103,7 @@ const MenuTable = () => {
           <TableRow>
             <TableCellHead>
               <SortButton
+                width="20rem"
                 defaultQuery={tableType}
                 side="left"
                 onChange={handleSortChange}

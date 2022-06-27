@@ -12,11 +12,20 @@ import { v4 as uuid } from "uuid";
 
 import "./index.css";
 import "mapbox-gl/dist/mapbox-gl.css";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 const pubnub = new PubNub({
   publishKey: process.env.REACT_APP_PUBNUB_PUBLISH_KEY,
   subscribeKey: process.env.REACT_APP_PUBNUB_SUBSCRIBE_KEY!,
   uuid: uuid(),
+});
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  },
 });
 
 const root = ReactDOM.createRoot(
@@ -29,9 +38,11 @@ root.render(
         <ScrollToTop />
 
         <RecoilRoot>
-          <ThemeProvider theme={theme}>
-            <App />
-          </ThemeProvider>
+          <QueryClientProvider client={queryClient}>
+            <ThemeProvider theme={theme}>
+              <App />
+            </ThemeProvider>
+          </QueryClientProvider>
         </RecoilRoot>
       </PubNubProvider>
     </BrowserRouter>

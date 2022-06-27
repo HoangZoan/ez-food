@@ -35,7 +35,7 @@ const ProductCard = ({
         textAlign: "left",
       }}
     >
-      <CardMedia component="img" src={imageSrc} />
+      <CardMedia component="img" src={imageSrc} sx={{ aspectRatio: "1 / 1" }} />
 
       <Stack minHeight={300} justifyContent="space-between">
         <CardContent sx={{ px: 5 }}>
