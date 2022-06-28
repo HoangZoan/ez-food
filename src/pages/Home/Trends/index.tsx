@@ -3,7 +3,7 @@ import ProductsCarousel from "pages/Home/Trends/ProductsCarousel";
 
 const Trends = () => {
   return (
-    <Container sx={{ my: { xs: "6.4rem", sm: "12rem" } }} id="trends">
+    <Container sx={{ py: { xs: "6.4rem", sm: "12rem" } }} id="trends">
       <Typography
         textTransform="uppercase"
         variant="h2"

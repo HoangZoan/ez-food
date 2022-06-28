@@ -21,9 +21,7 @@ const HeroStack = styled(Stack)({
 const Hero = () => {
   const { smDown, mdDown } = useMediaQueries();
   const handleViewMenuButtonClick = () => {
-    document
-      .getElementById("trends")
-      ?.scrollIntoView({ behavior: "smooth", block: "end" });
+    document.getElementById("trends")?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
@@ -35,7 +33,7 @@ const Hero = () => {
           color="common.white"
           textAlign="center"
         >
-          Một vài lời giới thiệu
+          Món vặt cho người sành ăn
         </Typography>
 
         <Typography
@@ -46,7 +44,7 @@ const Hero = () => {
           mt={3}
           mb={6}
         >
-          Một vài lời giới thiệu
+          Đặt siêu nhanh, ăn siêu ngon
         </Typography>
 
         <Button size="large" variant="contained">

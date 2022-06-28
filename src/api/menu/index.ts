@@ -11,7 +11,7 @@ const fetchMenuItem = async (itemType: string, id: string) => {
   });
   const data = response.data() as MenuType;
 
-  return data.isPublished ? data : undefined;
+  return data?.isPublished ? data : undefined;
 };
 
 const fetchAllMenuItems = async <T>(

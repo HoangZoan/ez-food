@@ -15,7 +15,7 @@ const MenuListLayout = ({ children, onTop, title }: MenuListLayoutProps) => {
     <div>
       <Box
         pb={smDown ? 5 : 9}
-        bgcolor="black"
+        bgcolor="primary.light"
         pt={(theme) => theme.spacing(onTop ? 13 : smDown ? 5 : 9)}
       >
         <BoxedHeading content={title} sx={{ mb: 0 }} />

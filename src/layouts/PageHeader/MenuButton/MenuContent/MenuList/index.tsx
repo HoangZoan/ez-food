@@ -4,6 +4,7 @@ import { menuState } from "states/menu";
 import { ListItem, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import { MenuButtonContext } from "../../context/MenuButtonContext";
+import { useMediaQueries } from "hooks/useMediaQueries";
 
 interface MenuListProps {
   activeItem: string;
@@ -19,14 +20,20 @@ interface ItemProps {
 
 const Item = ({ content, itemType, active, handleHover }: ItemProps) => {
   const { onClosePopup } = useContext(MenuButtonContext);
+  const { smDown } = useMediaQueries();
 
   return (
     <ListItem
-      sx={{
-        padding: "1.6rem 0",
-        transition: "all 0.2s",
-        color: active ? "primary.main" : "black",
-      }}
+      sx={[
+        {
+          padding: "1.6rem 0",
+          transition: "all 0.2s",
+          color: active ? "primary.main" : "black",
+        },
+        smDown && {
+          color: "black",
+        },
+      ]}
       onMouseOver={() => handleHover(itemType)}
     >
       <Typography

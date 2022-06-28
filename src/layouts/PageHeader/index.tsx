@@ -1,12 +1,13 @@
 import PageHeaderLayout from "./PageHeaderLayout";
 import MenuButton from "./MenuButton";
-import { Container, Stack, Typography } from "@mui/material";
+import { Box, Container, Stack } from "@mui/material";
 import CartButton from "./CartButton";
 import NotificationsButton from "./NotificationsButton";
 import LogoutButton from "./LogoutButton";
 import { useRecoilValue } from "recoil";
 import { adminLoginState } from "states/admin";
 import { Link } from "react-router-dom";
+import logo from "shared/images/logo.svg";
 
 const PageHeader = () => {
   const adminState = useRecoilValue(adminLoginState);
@@ -21,21 +22,13 @@ const PageHeader = () => {
         >
           <MenuButton />
 
-          <Link to="/">
-            <Typography
-              variant="h3"
-              color="white"
-              lineHeight={1.2}
-              sx={{
-                display: {
-                  xs: "none",
-                  sm: "block",
-                },
-              }}
-            >
-              LOGO
-            </Typography>
-          </Link>
+          <Box
+            component={Link}
+            to="/"
+            sx={{ height: { xs: "2.8rem", sm: "3.6rem" } }}
+          >
+            <img src={logo} alt="EZ Food Logo" style={{ height: "100%" }} />
+          </Box>
 
           <Stack direction="row" spacing={{ sm: 3 }}>
             {!adminState && (

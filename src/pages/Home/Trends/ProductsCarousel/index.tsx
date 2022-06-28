@@ -1,23 +1,15 @@
 import { Box, useTheme } from "@mui/material";
+import { useFetchTrends } from "api/menu/hooks";
 import Carousel from "components/Carousel";
 import TrendPreviewCard from "components/UI/TrendPreviewCard";
 import { useMediaQueries } from "hooks/useMediaQueries";
-import React from "react";
 import { Settings } from "react-slick";
-
-const dummyData = [
-  { id: "1", title: "Banh My" },
-  { id: "2", title: "Banh My" },
-  { id: "3", title: "Banh My" },
-  { id: "4", title: "Banh My" },
-  { id: "5", title: "Banh My" },
-  { id: "6", title: "Banh My" },
-];
 
 const ProductsCarousel = () => {
   const theme = useTheme();
   const { sm: breakSm, md: breakMd } = theme.breakpoints.values;
   const { smDown, mdDown } = useMediaQueries();
+  const { trendsMenu } = useFetchTrends();
   let minSlides = 4;
 
   if (smDown && mdDown) {
@@ -48,12 +40,17 @@ const ProductsCarousel = () => {
   return (
     <Carousel
       minSlides={minSlides}
-      count={dummyData.length}
+      count={trendsMenu.length}
       settings={sliderSettings}
     >
-      {dummyData.map((data) => (
-        <Box key={data.id} sx={{ textAlign: "center", padding: "0 3.2rem" }}>
-          <TrendPreviewCard title={data.title} />
+      {trendsMenu.map(({ id, title, imageUrl, itemType }) => (
+        <Box key={id} sx={{ textAlign: "center", padding: "0 3.2rem" }}>
+          <TrendPreviewCard
+            id={id}
+            itemType={itemType}
+            title={title}
+            imageUrl={imageUrl}
+          />
         </Box>
       ))}
     </Carousel>

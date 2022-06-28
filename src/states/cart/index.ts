@@ -14,11 +14,12 @@ export const headerCartState = selector({
   get: ({ get }) => {
     const cart = get(cartState);
 
-    return cart.map(({ orderId, title, quantity, totalPrice }) => ({
+    return cart.map(({ orderId, title, quantity, totalPrice, imageUrl }) => ({
       orderId,
       title,
       quantity,
       totalPrice,
+      imageUrl,
     }));
   },
 });

@@ -46,6 +46,7 @@ interface ProductInfoType {
   options: OptionsType[];
   price: number;
   description: string;
+  imageUrl: string;
 }
 
 export interface ProductDetailType extends ProductInfoType {
@@ -71,7 +72,6 @@ export interface MenuType extends ProductInfoType {
   itemType: string;
   menuType: string;
   sideDish: SideDishType[];
-  imageUrl: string;
 }
 
 // ORDER TYPE

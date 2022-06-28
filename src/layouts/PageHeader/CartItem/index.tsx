@@ -6,10 +6,12 @@ import { useCart } from "states/cart";
 import { styled } from "shared/theme";
 import CloseButton from "components/UI/CloseButton";
 import ConfirmationBox from "layouts/PageHeader/CartItem/ConfirmationBox";
+import { useMediaQueries } from "hooks/useMediaQueries";
 
 interface CartItemProps {
   id: string;
   title: string;
+  imageUrl: string;
   total: number;
   quantity: number;
 }
@@ -22,9 +24,10 @@ const ConfirmationBoxLayout = styled(Stack)({
   height: "100%",
 });
 
-const CartItem = ({ id, title, total, quantity }: CartItemProps) => {
+const CartItem = ({ id, title, total, quantity, imageUrl }: CartItemProps) => {
   const { removeOrder } = useCart();
   const [isRemoving, setIsRemoving] = useState(false);
+  const { mdUp, smUp } = useMediaQueries();
 
   const handleClickClose = () => {
     setIsRemoving(true);
@@ -40,12 +43,13 @@ const CartItem = ({ id, title, total, quantity }: CartItemProps) => {
         <Box position="relative" width={1} height={1}>
           <Grid
             container
-            spacing={3}
+            columnGap={{ xs: 3, md: 5 }}
             sx={{ visibility: isRemoving ? "hidden" : "grid" }}
           >
             <Grid
               item
               xs={12}
+              sm={4}
               sx={{
                 aspectRatio: "1 / 1",
 
@@ -56,16 +60,13 @@ const CartItem = ({ id, title, total, quantity }: CartItemProps) => {
                 },
               }}
             >
-              <img
-                src="https://asianfoodnetwork.com/content/dam/afn/global/en/homepage/new-content-carousel/AFN_Food_Made_Good_HK_Awards_good_to_go_award_mobile.jpg.transform/desktop-img/img.jpg"
-                alt="Anh"
-              />
+              <img src={imageUrl} alt={title} />
             </Grid>
 
             <Grid xs item>
               <Typography
                 mb={2}
-                variant="h6"
+                variant={smUp ? "h6" : "h5"}
                 sx={{
                   display: "-webkit-box",
                   WebkitLineClamp: "2",
@@ -84,9 +85,11 @@ const CartItem = ({ id, title, total, quantity }: CartItemProps) => {
               </Typography>
             </Grid>
 
-            <Grid item>
-              <CloseButton onClick={handleClickClose} />
-            </Grid>
+            {mdUp && (
+              <Grid item>
+                <CloseButton onClick={handleClickClose} />
+              </Grid>
+            )}
           </Grid>
 
           <ConfirmationBoxLayout

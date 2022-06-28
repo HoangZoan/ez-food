@@ -33,7 +33,7 @@ const ProductDetailCard = ({
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
-    onSubmit(productState);
+    onSubmit({ ...productState, imageUrl: item.imageUrl });
   };
 
   return (

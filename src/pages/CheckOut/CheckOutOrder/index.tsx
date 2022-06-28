@@ -48,6 +48,7 @@ const CheckOutOrder = ({ item }: CheckOutOrderProps) => {
     selectedSideDish,
     date,
     description,
+    imageUrl,
   } = item;
   const [isChanging, setIsChanging] = useState(false);
   const { showToast } = useSnackbar();
@@ -134,6 +135,7 @@ const CheckOutOrder = ({ item }: CheckOutOrderProps) => {
           item={{
             id,
             title,
+            imageUrl,
             options,
             availableSideDish,
             selectedSideDish,

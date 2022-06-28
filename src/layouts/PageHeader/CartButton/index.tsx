@@ -16,6 +16,7 @@ import LocalMallIcon from "@mui/icons-material/LocalMall";
 import { formatPriceText } from "shared/utils";
 import { Link } from "react-router-dom";
 import BadgePrimary from "components/UI/BadgePrimary";
+import { useMediaQueries } from "hooks/useMediaQueries";
 
 const IconButton = ({ content }: { content: number }) => {
   return (
@@ -29,6 +30,7 @@ const CartButton = () => {
   const cart = useRecoilValue(headerCartState);
   const cartTotalPrice = useRecoilValue(cartTotalPriceState);
   const [showPopup, setShowPopup] = useState(false);
+  const { smDown } = useMediaQueries();
 
   const closePopup = () => {
     setShowPopup(!showPopup);
@@ -40,34 +42,41 @@ const CartButton = () => {
       isClose={showPopup}
     >
       <Paper
-        sx={{
-          backgroundColor: "white",
-          minWidth: { sm: "48rem" },
-          py: 2,
-          height: "calc(100vh - 11rem)",
-          display: "flex",
-          flexDirection: "column",
-        }}
+        sx={[
+          {
+            backgroundColor: "white",
+            minWidth: { sm: "48rem", md: "56rem" },
+            py: 2,
+            display: "flex",
+            flexDirection: "column",
+          },
+          smDown && {
+            height: "calc(100vh - 11rem)",
+          },
+        ]}
       >
         {cart.length > 0 && (
           <>
             <List
               sx={{
-                py: 0,
+                py: 3,
                 flex: 1,
                 maxHeight: { sm: "40rem" },
                 overflow: "auto",
               }}
             >
-              {cart.map(({ orderId, title, quantity, totalPrice }) => (
-                <CartItem
-                  key={orderId}
-                  id={orderId}
-                  title={title}
-                  quantity={quantity}
-                  total={totalPrice}
-                />
-              ))}
+              {cart.map(
+                ({ orderId, title, quantity, totalPrice, imageUrl }) => (
+                  <CartItem
+                    key={orderId}
+                    id={orderId}
+                    title={title}
+                    imageUrl={imageUrl}
+                    quantity={quantity}
+                    total={totalPrice}
+                  />
+                )
+              )}
             </List>
 
             <Divider sx={{ backgroundColor: "primary.light" }} />

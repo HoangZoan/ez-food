@@ -1,13 +1,27 @@
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useRecoilValue } from "recoil";
+import { TYPE_BEVERAGE, TYPE_FRIED, TYPE_STEAM } from "shared/config";
 import { FirebaseQuery, MenuType } from "shared/types";
 import { adminLoginState } from "states/admin";
 import { useSnackbar } from "states/snackbar/hooks/useSnackbar";
 import { menuApi } from "..";
+import lodash from "lodash";
 
 export const prefetchMenuPopup = async () => {
-  return menuApi.fetchAllMenuItems("fried", [], 3);
+  return menuApi.fetchAllMenuItems(TYPE_FRIED, [], 3);
+};
+
+export const useFetchTrends = () => {
+  const { data } = useQuery("trends", () => {
+    return Promise.all([
+      menuApi.fetchAllMenuItems(TYPE_FRIED, [], 3),
+      menuApi.fetchAllMenuItems(TYPE_STEAM, [], 3),
+      menuApi.fetchAllMenuItems(TYPE_BEVERAGE, [], 3),
+    ]);
+  });
+
+  return { trendsMenu: data ? lodash.concat(...data) : [] };
 };
 
 export const useFetchMenuItem = (type: string, id: string) => {

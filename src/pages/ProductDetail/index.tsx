@@ -43,6 +43,7 @@ const ProductDetail = () => {
   const menuItem = {
     id: fetchedItem.id,
     title: fetchedItem.title,
+    imageUrl: fetchedItem.imageUrl,
     description: fetchedItem.description,
     price: fetchedItem.price,
     quantity: 1,

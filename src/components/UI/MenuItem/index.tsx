@@ -3,13 +3,9 @@ import { styled } from "shared/theme";
 
 const MenuItem = styled(ListItem)(({ theme }) => ({
   cursor: "auto",
-  padding: "0 2.4rem",
-  "&:not(:last-child)": {
-    marginBottom: "3.6rem",
-
-    [theme.breakpoints.up("sm")]: {
-      marginBottom: "1.2rem",
-    },
+  padding: "1.6rem 2.4rem",
+  [theme.breakpoints.down("sm")]: {
+    padding: "3.2rem 2.4rem",
   },
   transition: "all 0.2s",
   "&:hover": {

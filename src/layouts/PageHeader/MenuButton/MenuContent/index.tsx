@@ -19,8 +19,12 @@ const MenuContent = () => {
   }, []);
 
   return (
-    <Grid container justifyContent="space-between" sx={{ px: { xs: "2rem" } }}>
-      <Grid item xs={5} md={3} lg={2}>
+    <Grid
+      container
+      justifyContent={{ xs: "center", sm: "space-between" }}
+      sx={{ px: { xs: "2rem" } }}
+    >
+      <Grid item xs={12} sm={5} md={3} lg={2}>
         <MenuList activeItem={activeItem} handleHover={handleListHover} />
       </Grid>
 
@@ -34,7 +38,7 @@ const MenuContent = () => {
       )}
 
       {smUp && (
-        <Grid item xs={6} md={8} lg={9}>
+        <Grid item sm={6} md={8} lg={9}>
           <MenuPreview items={fetchedMenu} />
         </Grid>
       )}
