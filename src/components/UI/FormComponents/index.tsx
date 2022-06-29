@@ -7,10 +7,16 @@ import {
 import React from "react";
 import { styled } from "shared/theme";
 
-export const FormControl = styled(MuiFormControl)({
-  display: "grid",
-  gridTemplateColumns: "1fr 1.5fr",
-});
+export const FormControl = styled(MuiFormControl)(({ theme }) => [
+  {
+    display: "grid",
+    gridTemplateColumns: "1fr",
+    rowGap: theme.spacing(1),
+  },
+  theme.breakpoints.up("sm") && {
+    gridTemplateColumns: "1fr 1.5fr",
+  },
+]);
 
 export const FormLabel = styled(MuiFormLabel)({
   fontWeight: 700,

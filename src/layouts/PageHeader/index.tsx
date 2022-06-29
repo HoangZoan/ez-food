@@ -1,6 +1,6 @@
 import PageHeaderLayout from "./PageHeaderLayout";
 import MenuButton from "./MenuButton";
-import { Box, Container, Stack } from "@mui/material";
+import { Box, Container, Stack, SxProps } from "@mui/material";
 import CartButton from "./CartButton";
 import NotificationsButton from "./NotificationsButton";
 import LogoutButton from "./LogoutButton";
@@ -8,6 +8,14 @@ import { useRecoilValue } from "recoil";
 import { adminLoginState } from "states/admin";
 import { Link } from "react-router-dom";
 import logo from "shared/images/logo.svg";
+
+const BoxSx: SxProps = {
+  height: { xs: "2.8rem", sm: "3.6rem" },
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+};
 
 const PageHeader = () => {
   const adminState = useRecoilValue(adminLoginState);
@@ -22,11 +30,7 @@ const PageHeader = () => {
         >
           <MenuButton />
 
-          <Box
-            component={Link}
-            to="/"
-            sx={{ height: { xs: "2.8rem", sm: "3.6rem" } }}
-          >
+          <Box component={Link} to="/" sx={BoxSx}>
             <img src={logo} alt="EZ Food Logo" style={{ height: "100%" }} />
           </Box>
 

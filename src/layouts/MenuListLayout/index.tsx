@@ -1,7 +1,6 @@
 import React from "react";
 import { Box } from "@mui/material";
 import BoxedHeading from "components/UI/BoxedHeading";
-import { useMediaQueries } from "hooks/useMediaQueries";
 
 interface MenuListLayoutProps {
   children: React.ReactNode;
@@ -10,13 +9,11 @@ interface MenuListLayoutProps {
 }
 
 const MenuListLayout = ({ children, onTop, title }: MenuListLayoutProps) => {
-  const { smDown } = useMediaQueries();
   return (
     <div>
       <Box
-        pb={smDown ? 5 : 9}
+        sx={[{ py: { xs: 5, sm: 9 } }, !!onTop && { pt: { xs: 10, sm: 13 } }]}
         bgcolor="primary.light"
-        pt={(theme) => theme.spacing(onTop ? 13 : smDown ? 5 : 9)}
       >
         <BoxedHeading content={title} sx={{ mb: 0 }} />
       </Box>

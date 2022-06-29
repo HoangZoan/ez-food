@@ -1,6 +1,9 @@
 import {
-  Box,
   Button,
+  Card,
+  CardActions,
+  CardContent,
+  CardMedia,
   Dialog,
   Divider,
   Grid,
@@ -86,20 +89,21 @@ const CheckOutOrder = ({ item }: CheckOutOrderProps) => {
   };
 
   return (
-    <Box width={1}>
+    <Card sx={{ width: 1 }} square elevation={0}>
       <Divider sx={{ backgroundColor: "primary.main" }} />
 
-      <Grid container sx={{ py: 4, pr: 3 }} columnSpacing={5}>
-        <Grid item>
-          <Box
+      <Grid container sx={{ pt: 4, pb: 6 }} rowGap={4} columnGap={5}>
+        <Grid item xs={12} lg={3}>
+          <CardMedia
+            component="img"
+            src={imageUrl}
+            alt={title}
             sx={{
-              backgroundColor: "green",
-              width: "16rem",
               aspectRatio: "1 / 1",
             }}
-          ></Box>
+          />
         </Grid>
-        <Grid xs item>
+        <Grid item xs component={CardContent} sx={{ p: 0 }}>
           <Stack justifyContent="space-between" sx={{ height: 1 }}>
             <Typography
               variant="h5"
@@ -119,9 +123,11 @@ const CheckOutOrder = ({ item }: CheckOutOrderProps) => {
                 Tổng: {formatPriceText(totalPrice)}
               </Typography>
 
-              <Button variant="outlined" onClick={openChangeModal}>
-                Thay đổi
-              </Button>
+              <CardActions sx={{ p: 0 }}>
+                <Button variant="outlined" onClick={openChangeModal}>
+                  Thay đổi
+                </Button>
+              </CardActions>
             </div>
           </Stack>
         </Grid>
@@ -149,7 +155,7 @@ const CheckOutOrder = ({ item }: CheckOutOrderProps) => {
           sx={{ minWidth: "54rem" }}
         />
       </Dialog>
-    </Box>
+    </Card>
   );
 };
 

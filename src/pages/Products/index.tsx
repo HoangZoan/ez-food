@@ -3,7 +3,7 @@ import MenuListLayout from "layouts/MenuListLayout";
 import { Container, Stack } from "@mui/material";
 import ProductCardList from "components/ProductCardList";
 import { useLocation, useParams } from "react-router-dom";
-import { TYPE_BEVERAGE } from "shared/config";
+import { TYPE_BEVERAGE, TYPE_FRIED, TYPE_STEAM } from "shared/config";
 import { useFetchedMenu } from "api/menu/hooks";
 import { getPaginationData } from "shared/utils";
 import LinkPagination from "components/LinkPagination";
@@ -22,6 +22,12 @@ const Products = () => {
 
   let title = "";
   switch (type) {
+    case TYPE_FRIED:
+      title = "Món chiên rán";
+      break;
+    case TYPE_STEAM:
+      title = "Món hấp";
+      break;
     case TYPE_BEVERAGE:
       title = "Đồ uống";
       break;
@@ -29,7 +35,7 @@ const Products = () => {
 
   return (
     <MenuListLayout title={title} onTop>
-      <Container sx={{ py: 8 }}>
+      <Container sx={{ py: 8, minHeight: "calc(100vh - 6.4rem)" }}>
         <Stack alignItems="center">
           <ProductCardList items={menuItems} />
 

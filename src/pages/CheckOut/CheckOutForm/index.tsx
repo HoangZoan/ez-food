@@ -106,7 +106,7 @@ const CheckOutForm = () => {
       <Stack component="form" spacing={4} onSubmit={handleSubmit(onSunmit)}>
         {/* Customer Info */}
         <FormBoxLayout label="Thông tin khách hàng">
-          <Stack sx={{ mt: 4 }} spacing={2}>
+          <Stack sx={{ mt: 4 }} spacing={3}>
             <CheckoutInput
               id="full-name"
               error={fullNameHasError}

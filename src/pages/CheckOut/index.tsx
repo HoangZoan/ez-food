@@ -10,7 +10,7 @@ const CheckOut = () => {
   const cart = useRecoilValue(cartState);
 
   return (
-    <Container sx={{ pt: 13 }}>
+    <Container sx={{ pt: { xs: 11, sm: 13 } }}>
       <Typography textAlign="center" variant="h2" sx={{ fontWeight: 700 }}>
         Giỏ hàng của bạn
       </Typography>
@@ -26,11 +26,11 @@ const CheckOut = () => {
       )}
 
       {cart.length > 0 && (
-        <Grid container columns={5} sx={{ my: 7 }} columnSpacing={6}>
-          <Grid item xs={3}>
+        <Grid container sx={{ my: 7, mt: { xs: 5, md: 7 } }} columnSpacing={6}>
+          <Grid item xs={12} md={6} lg={7}>
             <CheckOutOrdersList />
           </Grid>
-          <Grid item xs={2}>
+          <Grid item xs={12} md={6} lg={5}>
             <CheckOutForm />
           </Grid>
         </Grid>

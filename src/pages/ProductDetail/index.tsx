@@ -5,7 +5,7 @@ import { SELECT_KEY } from "shared/config";
 import { ProductDetailType } from "shared/types";
 import { createId } from "shared/utils";
 import { useCart } from "states/cart";
-import PreviewProducts from "./PreviewProducts";
+// import PreviewProducts from "./PreviewProducts";
 import ProductImage from "./ProductImage";
 import { useParams } from "react-router-dom";
 import { useFetchMenuItem } from "api/menu/hooks";
@@ -54,7 +54,9 @@ const ProductDetail = () => {
   } as ProductDetailType;
 
   return (
-    <Container sx={{ pt: { xs: 11, sm: 13 } }}>
+    <Container
+      sx={{ pt: { xs: 11, sm: 13 }, minHeight: "calc(100vh - 6.4rem)" }}
+    >
       <Stack alignItems="center">
         <Typography
           textAlign="center"
@@ -87,7 +89,7 @@ const ProductDetail = () => {
         </Grid>
       </Grid>
 
-      <PreviewProducts sx={{ my: { xs: 10, sm: 12 } }} />
+      {/* <PreviewProducts sx={{ my: { xs: 10, sm: 12 } }} /> */}
     </Container>
   );
 };
