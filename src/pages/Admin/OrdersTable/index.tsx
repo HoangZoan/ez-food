@@ -26,7 +26,6 @@ import { useFetchOrders } from "api/order/hooks";
 import { convertDateTime, getPaginationData } from "shared/utils";
 import OrderInfoDialog from "./OrderInfoDialog";
 import OrderDeleteDialog from "./OrderDeleteDialog";
-import ReportGmailerrorredOutlinedIcon from "@mui/icons-material/ReportGmailerrorredOutlined";
 import OrderInfo from "./OrderInfoDialog/OrderInfo";
 import CanceledInfo from "./OrderInfoDialog/CanceledInfo";
 import { useOrderTable } from "./hooks";
@@ -37,6 +36,7 @@ import { MessageEvent } from "pubnub";
 import { useSnackbar } from "states/snackbar/hooks/useSnackbar";
 import UpdateOrdersButton from "./UpdateOrdersButton";
 import PagePagination from "components/PagePagination";
+import NotFoundAdmin from "../NotFoundAdmin";
 
 const sorts: TableSortsType[] = [
   { title: "Đơn đang đặt", value: IN_QUEUE_STATUS },
@@ -122,18 +122,7 @@ const OrdersTable = () => {
     orderQuery !== "delivered" &&
     orderQuery !== "in-queue"
   ) {
-    return (
-      <Stack
-        spacing={3}
-        direction="row"
-        alignItems="center"
-        justifyContent="center"
-        sx={{ fontSize: "4.8rem" }}
-      >
-        <ReportGmailerrorredOutlinedIcon color="error" fontSize="inherit" />
-        <Typography variant="h5">Trang không tồn tại</Typography>
-      </Stack>
-    );
+    return <NotFoundAdmin />;
   }
 
   return (

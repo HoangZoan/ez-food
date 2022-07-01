@@ -53,12 +53,20 @@ const Footer = () => {
   };
 
   useEffect(() => {
+    if (pathname.indexOf("login") !== -1 || pathname.indexOf("admin") !== -1) {
+      setShow(true);
+      return;
+    }
+
     const timeout = setTimeout(() => {
       setShow(true);
-    }, 1000);
+    }, 400);
 
-    return () => clearTimeout(timeout);
-  }, []);
+    return () => {
+      clearTimeout(timeout);
+      setShow(false);
+    };
+  }, [pathname]);
 
   if (!show) {
     return null;

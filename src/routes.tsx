@@ -7,13 +7,13 @@ import ProductDetail from "pages/ProductDetail";
 import Products from "pages/Products";
 import { Routes, Route, Navigate } from "react-router-dom";
 import PageHeader from "./layouts/PageHeader";
-import { ReactQueryDevtools } from "react-query/devtools";
 import StatusSnackbar from "components/StatusSnackbar";
 import ConfirmationDialog from "components/ConfirmationDialog";
 import AuthGuard from "hoc/AuthGuard";
 import { useQueryClient } from "react-query";
 import { prefetchMenuPopup } from "api/menu/hooks";
 import { useCallback, useEffect } from "react";
+import NotFound from "pages/NotFound";
 
 function App() {
   const queryClient = useQueryClient();
@@ -42,14 +42,13 @@ function App() {
           element={AuthGuard(<Navigate to="/admin/orders?order=in-queue" />)}
         />
         <Route path="/admin/*" element={AuthGuard(<Admin />)} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
 
       <ConfirmationDialog />
       <StatusSnackbar />
 
       <Footer />
-
-      <ReactQueryDevtools />
     </>
   );
 }

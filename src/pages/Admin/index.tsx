@@ -4,6 +4,7 @@ import { Route, Routes } from "react-router-dom";
 import OrdersTable from "./OrdersTable";
 import MenuTable from "./MenuTable";
 import NotificationsTable from "./NotificationsTable";
+import NotFoundAdmin from "./NotFoundAdmin";
 
 const Admin = () => {
   return (
@@ -21,6 +22,7 @@ const Admin = () => {
             <Route path="orders" element={<OrdersTable />} />
             <Route path="menu" element={<MenuTable />} />
             <Route path="notifications" element={<NotificationsTable />} />
+            <Route path="*" element={<NotFoundAdmin />} />
           </Routes>
         </Grid>
       </Grid>

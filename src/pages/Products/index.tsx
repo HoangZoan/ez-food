@@ -7,6 +7,7 @@ import { TYPE_BEVERAGE, TYPE_FRIED, TYPE_STEAM } from "shared/config";
 import { useFetchedMenu } from "api/menu/hooks";
 import { getPaginationData } from "shared/utils";
 import LinkPagination from "components/LinkPagination";
+import NotFound from "pages/NotFound";
 
 const Products = () => {
   const location = useLocation();
@@ -33,9 +34,13 @@ const Products = () => {
       break;
   }
 
+  if (fetchedMenu && fetchedMenu.length === 0) {
+    return <NotFound />;
+  }
+
   return (
     <MenuListLayout title={title} onTop>
-      <Container sx={{ py: 8 }}>
+      <Container sx={{ py: 8, height: fetchedMenu ? "auto" : "100vh" }}>
         <Stack alignItems="center">
           <ProductCardList items={menuItems} />
 

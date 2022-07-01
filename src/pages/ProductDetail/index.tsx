@@ -9,6 +9,7 @@ import { useCart } from "states/cart";
 import ProductImage from "./ProductImage";
 import { useParams } from "react-router-dom";
 import { useFetchMenuItem } from "api/menu/hooks";
+import NotFound from "pages/NotFound";
 
 const SubmitButton = React.memo(() => {
   return (
@@ -24,7 +25,7 @@ const ProductDetail = () => {
     type: string;
   }>();
   const { addNewOrder } = useCart();
-  const { fetchedItem } = useFetchMenuItem(type!, productId!);
+  const { fetchedItem, isGettingData } = useFetchMenuItem(type!, productId!);
 
   const handleSubmit = (data: ProductDetailType) => {
     const orderId = createId(SELECT_KEY);
@@ -37,6 +38,10 @@ const ProductDetail = () => {
 
     addNewOrder(orderData);
   };
+
+  if (!isGettingData && !fetchedItem) {
+    return <NotFound />;
+  }
 
   if (!fetchedItem) return null;
 
@@ -54,7 +59,13 @@ const ProductDetail = () => {
   } as ProductDetailType;
 
   return (
-    <Container sx={{ pt: { xs: 11, sm: 13 } }}>
+    <Container
+      sx={{
+        pt: { xs: 11, sm: 13 },
+        mb: 12,
+        height: fetchedItem ? "auto" : "100vh",
+      }}
+    >
       <Stack alignItems="center">
         <Typography
           textAlign="center"
