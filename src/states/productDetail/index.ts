@@ -1,11 +1,6 @@
 import { atom, selector } from "recoil";
 import { OptionsType, ProductDetailType, SideDishType } from "shared/types";
 
-export const productIdState = atom({
-  key: "productId",
-  default: "",
-});
-
 export const productOptionsState = atom({
   key: "productOptions",
   default: [] as OptionsType[],
@@ -51,7 +46,6 @@ export const productTotalPriceState = selector({
 export const productDetailState = selector({
   key: "productDetail",
   get: ({ get }) => {
-    const id = get(productIdState);
     const options = get(productOptionsState);
     const { availableSideDish, selectedSideDish } = get(productSideDishState);
     const price = get(productPriceState);
@@ -59,7 +53,6 @@ export const productDetailState = selector({
     const totalPrice = get(productTotalPriceState);
 
     const state = {
-      id,
       options,
       availableSideDish,
       selectedSideDish,

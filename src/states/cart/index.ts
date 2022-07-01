@@ -3,9 +3,9 @@ import { SELECT_KEY } from "shared/config";
 import { ProductOrderType } from "shared/types";
 import { localStorageEffect } from "shared/utils";
 
-export const cartState = atom({
+export const cartState = atom<Array<Omit<ProductOrderType, "id">>>({
   key: "cart",
-  default: [] as ProductOrderType[],
+  default: [],
   effects: [localStorageEffect(SELECT_KEY)],
 });
 

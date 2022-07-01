@@ -36,13 +36,13 @@ export const useCreateOrder = ({ handleSuccess }: UseCreateOrder) => {
   const { isLoading: isCreating, mutate: createOrder } = useMutation(
     orderApi.createNewOrder,
     {
-      onMutate: () => {
+      onSuccess: () => {
+        handleSuccess();
         pubnub.publish({
           channel: NEW_ORDER_NOTIFICATIONS,
           message: "new-order",
         });
       },
-      onSuccess: handleSuccess,
       onError: () => {
         showToast({
           title: "Đặt hàng không thành công. Vui lòng thử lại.",

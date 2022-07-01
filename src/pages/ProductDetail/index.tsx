@@ -46,7 +46,6 @@ const ProductDetail = () => {
   if (!fetchedItem) return null;
 
   const menuItem = {
-    id: fetchedItem.id,
     title: fetchedItem.title,
     imageUrl: fetchedItem.imageUrl,
     description: fetchedItem.description,

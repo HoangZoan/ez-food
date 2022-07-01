@@ -2,7 +2,6 @@ import { useCallback } from "react";
 import { useSetRecoilState } from "recoil";
 import { ProductDetailType } from "shared/types";
 import {
-  productIdState,
   productOptionsState,
   productPriceState,
   productQuantityState,
@@ -15,24 +14,16 @@ export const useProductDetail = () => {
   const setProductPriceState = useSetRecoilState(productPriceState);
   const setProductSideDishState = useSetRecoilState(productSideDishState);
   const setProductTypePriceState = useSetRecoilState(productTypePriceState);
-  const setProductIdState = useSetRecoilState(productIdState);
   const setProductQuantityState = useSetRecoilState(productQuantityState);
 
   const setProductDetailInitialState = useCallback(
     (item: ProductDetailType) => {
-      const {
-        options,
-        price,
-        availableSideDish,
-        selectedSideDish,
-        id,
-        quantity,
-      } = item;
+      const { options, price, availableSideDish, selectedSideDish, quantity } =
+        item;
       const typePricesArr = options.map(
         ({ variants }) => variants.find(({ selected }) => selected)!.price
       );
 
-      setProductIdState(id!);
       setProductOptionState(options);
       setProductTypePriceState(typePricesArr);
       setProductPriceState(price);
@@ -43,7 +34,6 @@ export const useProductDetail = () => {
       });
     },
     [
-      setProductIdState,
       setProductOptionState,
       setProductTypePriceState,
       setProductQuantityState,
@@ -53,7 +43,6 @@ export const useProductDetail = () => {
   );
 
   const clearProductState = useCallback(() => {
-    setProductIdState("");
     setProductOptionState([]);
     setProductTypePriceState([]);
     setProductPriceState(0);
@@ -63,7 +52,6 @@ export const useProductDetail = () => {
       selectedSideDish: [],
     });
   }, [
-    setProductIdState,
     setProductOptionState,
     setProductTypePriceState,
     setProductPriceState,

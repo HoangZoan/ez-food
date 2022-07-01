@@ -17,10 +17,10 @@ const CheckOut = () => {
 
       {cart.length === 0 && (
         <Stack alignItems="center" spacing={5} sx={{ mt: 12, mb: 15 }}>
-          <Typography variant="h5">Ban chua co don hang nao!</Typography>
+          <Typography variant="h5">Bạn chưa có đơn hàng nào!</Typography>
 
           <Button component={Link} to="/" variant="contained">
-            <Typography variant="h6">Xem thuc don</Typography>
+            <Typography variant="h6">Xem thực đơn</Typography>
           </Button>
         </Stack>
       )}
