@@ -35,7 +35,7 @@ const Products = () => {
 
   return (
     <MenuListLayout title={title} onTop>
-      <Container sx={{ py: 8, minHeight: "calc(100vh - 6.4rem)" }}>
+      <Container sx={{ py: 8 }}>
         <Stack alignItems="center">
           <ProductCardList items={menuItems} />
 

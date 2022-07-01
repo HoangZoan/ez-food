@@ -8,7 +8,7 @@ import {
   List,
   ListItem as MuiListItem,
 } from "@mui/material";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import logo from "shared/images/logo.svg";
@@ -42,6 +42,7 @@ const Footer = () => {
   const { pathname } = useLocation();
   const pathRef = useRef(pathname);
   const menu = useRecoilValue(menuState);
+  const [show, setShow] = useState(false);
 
   const handleMenuClick = () => {
     if (pathRef.current === window.location.pathname) {
@@ -50,6 +51,18 @@ const Footer = () => {
       pathRef.current = window.location.pathname;
     }
   };
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setShow(true);
+    }, 1000);
+
+    return () => clearTimeout(timeout);
+  }, []);
+
+  if (!show) {
+    return null;
+  }
 
   return (
     <AppBar

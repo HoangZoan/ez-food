@@ -54,9 +54,7 @@ const ProductDetail = () => {
   } as ProductDetailType;
 
   return (
-    <Container
-      sx={{ pt: { xs: 11, sm: 13 }, minHeight: "calc(100vh - 6.4rem)" }}
-    >
+    <Container sx={{ pt: { xs: 11, sm: 13 } }}>
       <Stack alignItems="center">
         <Typography
           textAlign="center"
