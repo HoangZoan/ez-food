@@ -152,7 +152,7 @@ const CheckOutOrder = ({ item }: CheckOutOrderProps) => {
           }}
           actionButton={<ActionButtons onCancel={closeChangeModal} />}
           onSubmit={handleChangeProduct}
-          sx={{ minWidth: "54rem" }}
+          sx={{ minWidth: { sm: "54rem" } }}
         />
       </Dialog>
     </Card>

@@ -19,6 +19,7 @@ import PriceField from "../PriceField";
 import { useCreateOrder } from "api/order/hooks";
 import { useNavigate } from "react-router-dom";
 import { DateType } from "shared/types";
+import { useMediaQueries } from "hooks/useMediaQueries";
 
 interface CustomerInfoType {
   fullName: string;
@@ -62,6 +63,7 @@ const CheckOutForm = () => {
   const addressHasError = Boolean(errors.address);
   const [showModal, setShowModal] = useState(false);
   const { resetCart } = useCart();
+  const { smUp } = useMediaQueries();
 
   const handleSubmitSuccess = () => {
     setShowModal(true);
@@ -155,8 +157,14 @@ const CheckOutForm = () => {
       </Stack>
 
       <Modal open={showModal} onClose={handleCloseModal} disableScrollLock>
-        <ModalBox sx={{ backgroundColor: "white", py: 5, px: 8 }}>
-          <Stack direction="row" alignItems="center" spacing={4}>
+        <ModalBox
+          sx={{ backgroundColor: "white", py: 5, px: { xs: 4, md: 8 } }}
+        >
+          <Stack
+            direction={smUp ? "row" : "column-reverse"}
+            alignItems="center"
+            spacing={2}
+          >
             <Typography variant="h6">Đặt hàng thành công</Typography>
             <CheckCircleIcon color="primary" sx={{ fontSize: "4.8rem" }} />
           </Stack>

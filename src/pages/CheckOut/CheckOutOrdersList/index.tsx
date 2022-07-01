@@ -9,7 +9,7 @@ const CheckOutOrdersList = () => {
   return (
     <List sx={{ p: 0 }}>
       {orders.map((order) => (
-        <ListItem key={order.orderId} sx={{ py: 0 }}>
+        <ListItem key={order.orderId} sx={{ p: 0 }}>
           <CheckOutOrder item={order} />
         </ListItem>
       ))}
