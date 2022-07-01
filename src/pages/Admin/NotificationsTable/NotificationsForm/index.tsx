@@ -65,21 +65,21 @@ const NotificationsForm = ({ item, onClose }: NotificationsFormProps) => {
 
     if (isAddingNew) {
       uploadNotification({
-        title,
-        description,
+        title: title.trim(),
+        description: description.trim(),
         imageUrl: imageUrl!,
         isPublished: true,
-        url,
+        url: url.trim(),
       });
     } else {
       updateNotification({
         id: item.id!,
         data: {
-          title,
-          description,
+          title: title.trim(),
+          description: description.trim(),
           imageUrl: imageUrl!,
           isPublished: true,
-          url,
+          url: url.trim(),
         },
       });
     }

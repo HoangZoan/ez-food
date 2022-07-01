@@ -12,9 +12,9 @@ const ProductCounter = () => {
   };
 
   const handleReduceProduct = () => {
-    setProductQuantity(
-      (oldQuantity) => (oldQuantity = 1 ? 1 : oldQuantity - 1)
-    );
+    if (productQuantity === 1) return;
+
+    setProductQuantity((oldQuantity) => oldQuantity - 1);
   };
 
   return (

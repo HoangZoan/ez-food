@@ -80,7 +80,7 @@ const MenuForm = ({ onClose, item, tableType }: MenuFormProps) => {
     }
 
     const submitData = {
-      title,
+      title: title.trim(),
       price: Number(price) * 1000,
       menuType,
       options,
@@ -88,7 +88,7 @@ const MenuForm = ({ onClose, item, tableType }: MenuFormProps) => {
       itemType: tableType,
       imageUrl,
       isPublished: true,
-      description,
+      description: description.trim(),
     };
 
     if (isAddingNew) {

@@ -32,7 +32,7 @@ const OrderDeleteDialog = ({
   } = useForm();
 
   const submitForm = (values: any) => {
-    const message = values.cancelMessage as string;
+    const message = values.cancelMessage.trim() as string;
     onRemoveOrder(message);
     reset();
   };
