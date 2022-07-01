@@ -1,4 +1,3 @@
-import React from "react";
 import { Avatar, Box, Stack, Typography } from "@mui/material";
 import { styled } from "shared/theme";
 

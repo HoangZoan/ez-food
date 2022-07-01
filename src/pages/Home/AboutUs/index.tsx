@@ -10,7 +10,7 @@ const chefsData = [
   {
     id: "1",
     message:
-      "“It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters.”",
+      "Là chủ của 2 nhà hàng danh tiếng ở Texas, tôi thấu hiểu được mong muốn của người bán và người mua. Họ thật sự cần một ứng dụng tiện dụng cho nhu cầu và niềm đam mê ẩm thực.",
     author: "Chị Hà - Bếp trưởng",
     images: {
       large:
@@ -22,25 +22,13 @@ const chefsData = [
   {
     id: "2",
     message:
-      "“It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters.”",
+      "Nó không cần phải quá tỉ mỉ trong việc kết hợp với các nguyên liệu bởi vì tất cả những cảm hứng của tôi xuất phát từ đường phố. Và điều quan trọng nhất là kể được một câu chuyện qua từng món ăn.",
     author: "Anh Nam - Bếp trưởng",
     images: {
       large:
-        "https://firebasestorage.googleapis.com/v0/b/qua-pho.appspot.com/o/chefs%2Fchef.jpg?alt=media&token=386bddc8-e59d-4a65-bc25-03be2cdffc88",
+        "https://firebasestorage.googleapis.com/v0/b/qua-pho.appspot.com/o/chefs%2Fchef-2.jpg?alt=media&token=eb4562d7-bf8c-4c0f-9853-f69f158cda5d",
       square:
-        "https://firebasestorage.googleapis.com/v0/b/qua-pho.appspot.com/o/chefs%2Fchef-1-square.jpg?alt=media&token=323be60b-5413-4f94-91f6-8eb266a7f93f",
-    },
-  },
-  {
-    id: "3",
-    message:
-      "“It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters.”",
-    author: "Anh Nam - Bếp trưởng",
-    images: {
-      large:
-        "https://firebasestorage.googleapis.com/v0/b/qua-pho.appspot.com/o/chefs%2Fchef.jpg?alt=media&token=386bddc8-e59d-4a65-bc25-03be2cdffc88",
-      square:
-        "https://firebasestorage.googleapis.com/v0/b/qua-pho.appspot.com/o/chefs%2Fchef-1-square.jpg?alt=media&token=323be60b-5413-4f94-91f6-8eb266a7f93f",
+        "https://firebasestorage.googleapis.com/v0/b/qua-pho.appspot.com/o/chefs%2Fchef-2-square.jpg?alt=media&token=c4fb4be7-bb7e-4f76-8ad4-a516255a0997",
     },
   },
 ];
