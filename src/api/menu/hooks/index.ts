@@ -9,15 +9,31 @@ import { menuApi } from "..";
 import lodash from "lodash";
 
 export const prefetchMenuPopup = async () => {
-  return menuApi.fetchAllMenuItems(TYPE_FRIED, [], 3);
+  return menuApi.fetchAllMenuItems(
+    TYPE_FRIED,
+    [{ field: "isPublished", condition: "==", value: true }],
+    3
+  );
 };
 
 export const useFetchTrends = () => {
   const { data } = useQuery("trends", () => {
     return Promise.all([
-      menuApi.fetchAllMenuItems(TYPE_FRIED, [], 3),
-      menuApi.fetchAllMenuItems(TYPE_STEAM, [], 3),
-      menuApi.fetchAllMenuItems(TYPE_BEVERAGE, [], 3),
+      menuApi.fetchAllMenuItems(
+        TYPE_FRIED,
+        [{ field: "isPublished", condition: "==", value: true }],
+        3
+      ),
+      menuApi.fetchAllMenuItems(
+        TYPE_STEAM,
+        [{ field: "isPublished", condition: "==", value: true }],
+        3
+      ),
+      menuApi.fetchAllMenuItems(
+        TYPE_BEVERAGE,
+        [{ field: "isPublished", condition: "==", value: true }],
+        3
+      ),
     ]);
   });
 
